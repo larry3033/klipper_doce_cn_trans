@@ -66,50 +66,30 @@ serial:
 ```
 [printer]
 kinematics:
-#   The type of printer in use. This option may be one of: cartesian,
-#   corexy, corexz, hybrid_corexy, hybrid_corexz, generic_cartesian,
-#   rotary_delta, delta, deltesian, polar, winch, or none.
-#   This parameter must be specified.
+#   打印机的类型。此选项可以是以下之一：cartesian（笛卡尔）、
+#   corexy、corexz、hybrid_corexy、hybrid_corexz、generic_cartesian（通用笛卡尔）、
+#   rotary_delta（旋转式三角洲）、delta（三角洲）、deltesian、polar（极坐标）、winch（绞盘式）或 none（无）。
+#   此参数必须指定。
 max_velocity:
-#   Maximum velocity (in mm/s) of the toolhead (relative to the
-#   print). This parameter must be specified.
+#   机头的最大速度（单位：mm/s）（相对于打印过程而言）。此参数必须指定。
 max_accel:
-#   Maximum acceleration (in mm/s^2) of the toolhead (relative to the
-#   print). Although this parameter is described as a "maximum"
-#   acceleration, in practice most moves that accelerate or decelerate
-#   will do so at the rate specified here. The value specified here
-#   may be changed at runtime using the SET_VELOCITY_LIMIT command.
-#   This parameter must be specified.
+#   机头的最大加速度（单位：mm/s²）（相对于打印过程而言）。尽管此参数被描述为“最大”加速度，
+#   但在实际中，大多数加速或减速的移动都会以此处指定的速率进行。此处指定的值可在运行时通过 SET_VELOCITY_LIMIT 命令更改。
+#   此参数必须指定。
 #minimum_cruise_ratio: 0.5
-#   Most moves will accelerate to a cruising speed, travel at that
-#   cruising speed, and then decelerate. However, some moves that
-#   travel a short distance could nominally accelerate and then
-#   immediately decelerate. This option reduces the top speed of these
-#   moves to ensure there is always a minimum distance traveled at a
-#   cruising speed. That is, it enforces a minimum distance traveled
-#   at cruising speed relative to the total distance traveled. It is
-#   intended to reduce the top speed of short zigzag moves (and thus
-#   reduce printer vibration from these moves). For example, a
-#   minimum_cruise_ratio of 0.5 would ensure that a standalone 1.5mm
-#   move would have a minimum cruising distance of 0.75mm. Specify a
-#   ratio of 0.0 to disable this feature (there would be no minimum
-#   cruising distance enforced between acceleration and deceleration).
-#   The value specified here may be changed at runtime using the
-#   SET_VELOCITY_LIMIT command. The default is 0.5.
+#   大多数移动会先加速到巡航速度，保持巡航速度移动一段距离，然后减速。然而，某些短距离移动可能会在加速后立即减速。
+#   此选项会降低这类移动的最高速度，以确保始终存在最小的巡航速度移动距离。也就是说，它强制规定了巡航速度下的移动距离占总移动距离的最小比例。
+#   其目的是降低短距离锯齿形移动的最高速度（从而减少此类移动引起的打印机振动）。
+#   例如，minimum_cruise_ratio 设为 0.5 时，一个独立的 1.5mm 移动将至少有 0.75mm 的最小巡航距离。
+#   指定比值为 0.0 可禁用此功能（即在加速和减速之间不强制执行最小巡航距离）。
+#   此处指定的值可在运行时通过 SET_VELOCITY_LIMIT 命令更改。默认值为 0.5。
 #square_corner_velocity: 5.0
-#   The maximum velocity (in mm/s) that the toolhead may travel a 90
-#   degree corner at. A non-zero value can reduce changes in extruder
-#   flow rates by enabling instantaneous velocity changes of the
-#   toolhead during cornering. This value configures the internal
-#   centripetal velocity cornering algorithm; corners with angles
-#   larger than 90 degrees will have a higher cornering velocity while
-#   corners with angles less than 90 degrees will have a lower
-#   cornering velocity. If this is set to zero then the toolhead will
-#   decelerate to zero at each corner. The value specified here may be
-#   changed at runtime using the SET_VELOCITY_LIMIT command. The
-#   default is 5mm/s.
+#   机头通过 90 度拐角时允许的最大速度（单位：mm/s）。设置非零值可通过在拐角过程中允许机头速度的瞬时变化，
+#   来减少挤出机流速的变化。该值用于配置内部的向心速度拐角算法；大于 90 度的拐角将具有更高的过弯速度，
+#   而小于 90 度的拐角则具有更低的过弯速度。如果设置为零，机头将在每个拐角处减速至零。
+#   此处指定的值可在运行时通过 SET_VELOCITY_LIMIT 命令更改。默认值为 5mm/s。
 #max_accel_to_decel:
-#   This parameter is deprecated and should no longer be used.
+#   此参数已弃用，不应再使用。
 ```
 
 ### [stepper]
