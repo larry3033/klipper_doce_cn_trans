@@ -1,8 +1,8 @@
 # 安装
 
-These instructions assume the software will run on a Linux-based host running a Klipper-compatible front end. It is recommended that a SBC(Small Board Computer) such as a Raspberry Pi or Debian-based Linux device be used as the host machine (see the [FAQ](FAQ.md#can-i-run-klipper-on-something-other-than-a-raspberry-pi-3) for other options).
+这些说明假定软件将运行在基于 Linux 的主机上，并且该主机运行着与 Klipper 兼容的前端。建议使用树莓派或基于 Debian 的 Linux 设备等小型单板计算机（SBC，Small Board Computer）作为主机（有关其他选项，请参见[常见问题](FAQ.md#can-i-run-klipper-on-something-other-than-a-raspberry-pi-3)）。
 
-For the purposes of these instructions, host relates to the Linux device and mcu relates to the printer board. SBC relates to the term Small Board Computer such as the Raspberry Pi.
+根据本说明，主机指 Linux 设备，mcu 指打印机主板。SBC 指小型单板计算机，例如树莓派。
 
 ## 获取 Klipper 配置文件
 
@@ -24,9 +24,9 @@ Klipper 是一个 3D 打印机固件，因此需要某种方式让用户与其�
 
 ## 获取 SBC 的操作系统映像
 
-There are many ways to obtain an OS image for Klipper for SBC use, most depend on what front end you wish to use. Some manufacturers of these SBC boards also provide their own Klipper-centric images.
+有多种方式可以获取用于 SBC 的 Klipper 操作系统镜像，具体方法大多取决于您希望使用的前端。一些 SBC 主板制造商也提供以 Klipper 为中心的预装镜像。
 
-The two main Moonraker-based front ends are [Fluidd](https://docs.fluidd.xyz/) and [Mainsail](https://docs.mainsail.xyz/), the latter of which has a premade install image ["MainsailOS"](https://docs-os.mainsail.xyz/), this has the option for Raspberry Pi and some OrangePi variants.
+两个主要基于 Moonraker 的前端是 [Fluidd](https://docs.fluidd.xyz/) 和 [Mainsail](https://docs.mainsail.xyz/)，其中后者提供了一个预制作的安装镜像 ["MainsailOS"](https://docs-os.mainsail.xyz/)，支持树莓派和部分 OrangePi 变体。
 
 Fluidd 可以通过 KIAUH（Klipper 安装和更新助手）进行安装，如下所述，它是所有 Klipper 的第三方安装程序。
 
@@ -34,9 +34,9 @@ OctoPrint 可以通过流行的 OctoPi 镜像或通过 KIAUH 安装，此过程�
 
 ## 通过 KIAUH 安装
 
-Normally you would start with a base image for your SBC, RPiOS Lite for example, or in the case of an x86 Linux device, Ubuntu Server. Please note that Desktop variants are not recommended due to certain helper programs that can stop some Klipper functions from working and even mask access to some printer boards.
+通常，您应从 SBC 的基础镜像开始，例如 RPiOS Lite，或者对于 x86 架构的 Linux 设备，则使用 Ubuntu Server。请注意，不建议使用桌面版系统，因为某些辅助程序可能会阻止 Klipper 的部分功能运行，甚至屏蔽对某些打印机主板的访问。
 
-KIAUH can be used to install Klipper and its associated programs on a variety of Linux-based systems that run a form of Debian. More information can be found at https://github.com/dw-0/kiauh
+KIAUH 可用于在运行 Debian 系统的各种基于 Linux 的设备上安装 Klipper 及其相关程序。更多信息请访问 https://github.com/dw-0/kiauh
 
 ## 构建和刷写微控制器
 
@@ -53,8 +53,7 @@ make menuconfig
 make
 ```
 
-If the comments at the top of the [printer configuration file](#obtain-a-klipper-configuration-file) describe custom steps for "flashing" the final image to the printer control board, then follow those steps and then proceed to [configuring OctoPrint](#configuring-octoprint-to-use-klipper).
-
+如果[打印机配置文件](#obtain-a-klipper-configuration-file)顶部的注释描述了将最终镜像“烧录”到打印机控制板的自定义步骤，则请按照这些步骤操作，然后继续进行[配置 OctoPrint 以使用 Klipper](#configuring-octoprint-to-use-klipper)。
 否则，通常采用以下步骤来"flash"打印机控制板。首先，需要确定连接到微控制器的串行端口。然后，运行以下程序：
 
 ```
@@ -69,21 +68,21 @@ ls /dev/serial/by-id/*
 
 通常，每台打印机都有自己独特的串行端口名称。此唯一名称将在刷新微控制器时使用。上面的输出中可能有多行 - 如果是这样，请选择与微控制器相对应的行。如果列出了许多项目并且选择不明确，请拔下电路板并再次运行命令，缺少的项目将是您的打印板（有关更多信息，请参阅 [FAQ](FAQ.md#wheres-my-serial-port)）。
 
-For common micro-controllers with STM32 or clone chips, LPC chips and others, it is usual that these need an initial Klipper flash via SD card.
+对于使用 STM32 或兼容芯片、LPC 芯片及其他常见微控制器的设备，通常需要通过 SD 卡进行首次 Klipper 固件烧录。
 
-When flashing with this method, it is important to make sure that the print board is not connected with USB to the host, due to some boards being able to feed power back to the board and stopping a flash from occurring.
+使用此方法烧录时，务必将打印主板与主机的 USB 连接断开，因为某些主板可能会通过 USB 反向供电，从而导致烧录失败。
 
-Please note, that most print boards that use SD cards for flash will implement some kind of flash loop protection for when the sd card is left in place. There are two common methods:
+请注意，大多数使用 SD 卡进行烧录的打印主板会实现某种形式的烧录循环保护机制，以防 SD 卡长期留在主板上导致重复烧录。常见的有两种方法：
 
-Filename Change Required (usually "stock" print boards):
+需要更改文件名（通常是“原厂”打印主板）：
 
-These boards require the firmware file to have a different name each time you flash (for example, firmware1.bin, firmware2.bin, etc.). If you reuse the same filename, the board may ignore it and not update.
+此类主板要求每次烧录时固件文件必须使用不同的文件名（例如 firmware1.bin、firmware2.bin 等）。如果重复使用相同的文件名，主板可能会忽略该文件而不进行更新。
 
-Automatic File Renaming (usually aftermarket print boards:
+自动文件重命名（通常是 aftermarket 市售改装打印主板）：
 
-Other boards allow using the same filename, commonly firmware.bin, but after flashing, the board renames the file to firmware.cur. This helps indicate the firmware was successfully flashed and prevents it from flashing again on the next startup.
+其他主板允许使用相同的文件名（通常为 firmware.bin），但在烧录完成后，主板会自动将该文件重命名为 firmware.cur。这有助于指示固件已成功烧录，并防止在下次启动时重复烧录。
 
-Before flashing, make sure to check which behavior your board follows.
+在烧录前，请务必确认您的主板采用的是上述哪种机制。
 
 对于使用 Atmega 芯片的常见微控制器，例如 2560，代码可以使用类似以下内容进行烧录：
 
@@ -103,17 +102,17 @@ make flash FLASH_DEVICE=first
 sudo service klipper start
 ```
 
-It is important to note that RP2040 chips may need to be put into Boot mode before this operation.
+需要注意的是，RP2040 芯片在执行此操作前可能需要先进入 Boot 模式。
 
 ## 配置 Klipper
 
-The next step is to copy the [printer configuration file](#obtain-a-klipper-configuration-file) to the host.
+下一步是将[打印机配置文件](#obtain-a-klipper-configuration-file)复制到主机。
 
-Arguably the easiest way to set the Klipper configuration file is using the built-in editors in Mainsail or Fluidd. These will allow the user to open the configuration examples and save them to be printer.cfg.
+或许最简便的方法是使用 Mainsail 或 Fluidd 内置的编辑器来设置 Klipper 配置文件。这些编辑器允许用户打开配置示例文件，并将其保存为 printer.cfg。
 
-Another option is to use a desktop editor that supports editing files over the "scp" and/or "sftp" protocols. There are freely available tools that support this (eg, Notepad++, WinSCP, and Cyberduck). Load the printer config file in the editor and then save it as a file named "printer.cfg" in the home directory of the pi user (ie, /home/pi/printer.cfg).
+另一种选择是使用支持通过 "scp" 和/或 "sftp" 协议编辑文件的桌面编辑器。有许多免费工具支持此功能（例如，Notepad++、WinSCP 和 Cyberduck）。在编辑器中打开打印机配置文件，然后将其保存为 pi 用户主目录下的 "printer.cfg" 文件（即，/home/pi/printer.cfg）。
 
-Alternatively, one can also copy and edit the file directly on the host via SSH. That may look something like the following (be sure to update the command to use the appropriate printer config filename):
+或者，也可以通过 SSH 直接在主机上复制并编辑该文件。操作可能如下所示（请务必修改命令以使用正确的打印机配置文件名）：
 
 ```
 cp ~/klipper/config/example-cartesian.cfg ~/printer.cfg
@@ -139,10 +138,10 @@ ls /dev/serial/by-id/*
 serial: /dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0
 ```
 
-After creating and editing the file, it will be necessary to issue a "restart" command in the command console to load the config. A "status" command will report that the printer is ready if the Klipper config file is successfully read and the micro-controller is successfully found and configured.
+在创建并编辑该文件后，需要在命令控制台中发送“restart”命令以加载配置。如果 Klipper 配置文件被成功读取，并且微控制器被成功识别和配置，使用“status”命令将显示打印机已就绪。
 
 在定制打印机配置文件时，Klipper 报告配置错误是很正常的情况。如果发生错误，请对打印机配置文件进行必要的修正，并发出"restart"，直到"status"报告打印机已准备就绪。
 
-Klipper reports error messages via the command console and pop-ups in Fluidd and Mainsail. The "status" command can be used to re-report error messages. A log is available and usually located at `~/printer_data/logs/klippy.log`.
+Klipper 通过命令控制台以及 Fluidd 和 Mainsail 中的弹窗报告错误信息。“status”命令可用于重新显示错误信息。日志文件可查看，通常位于 `~/printer_data/logs/klippy.log`。
 
 在Klipper报告打印机已就绪后，继续进入[配置检查文件](Config_checks.md)，对配置文件中的定义进行一些基本检查。其他信息见主[文档参考](Overview.md)。
