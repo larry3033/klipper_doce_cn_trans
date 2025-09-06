@@ -6,46 +6,45 @@
 
 ## 变更
 
-20250428: The maximum `cycle_time` for pwm `[output_pin]`, `[pwm_cycle_time]`, `[pwm_tool]`, and similar config sections is now 3 seconds (reduced from 5 seconds). The `maximum_mcu_duration` in `[pwm_tool]` is now also 3 seconds.
+20250428：`[output_pin]`、`[pwm_cycle_time]`、`[pwm_tool]` 及类似配置部分的 PWM 最大 `cycle_time` 现在为 3 秒（此前为 5 秒）。`[pwm_tool]` 中的 `maximum_mcu_duration` 现在也为 3 秒。
 
-20250418: The manual_stepper `STOP_ON_ENDSTOP` feature may now take less time to complete. Previously, the command would wait the entire time the move could possibly take even if the endstop triggered earlier. Now, the command finishes shortly after the endstop trigger.
+20250418：手动步进器（manual_stepper）的 `STOP_ON_ENDSTOP` 功能现在可能耗时更短。此前，即使限位开关提前触发，命令仍会等待整个移动可能需要的时间。现在，命令在限位触发后不久即完成。
 
-20250417: SPI devices using "software SPI" are now rate limited. Previously, the `spi_speed` in the config was ignored and the transmission speed was only limited by the processing speed of the micro-controller. Now, speeds are limited by the `spi_speed` config parameter (actual hardware speeds are likely to be lower than the configured value due to software overhead).
+20250417：使用“软件SPI”的SPI设备现在受到速率限制。此前，配置中的 `spi_speed` 被忽略，传输速度仅受微控制器处理速度的限制。现在，速度受 `spi_speed` 配置参数限制（由于软件开销，实际硬件速度可能低于配置值）。
 
-20250411: Klipper v0.13.0 released.
+20250411：Klipper v0.13.0 发布。
 
-20250308: The `AUTO` parameter of the `AXIS_TWIST_COMPENSATION_CALIBRATE` command has been removed.
+20250308：`AXIS_TWIST_COMPENSATION_CALIBRATE` 命令的 `AUTO` 参数已被移除。
 
-20250131: Option `VARIABLE=<name>` in `SAVE_VARIABLE` requires lowercase value. For example, `extruder` instead of mixedcase `Extruder` or uppercase `EXTRUDER`. Using any uppercase letter will raise an error.
+20250131：`SAVE_VARIABLE` 中的 `VARIABLE=<name>` 选项要求使用小写值。例如，应使用 `extruder`，而不是大小写混合的 `Extruder` 或全大写的 `EXTRUDER`。使用任何大写字母都将引发错误。
 
-20241203: The resonance test has been changed to include slow sweeping moves. This change requires that testing point(s) have some clearance in X/Y plane (+/- 30 mm from the test point should suffice when using the default settings). The new test should generally produce more accurate and reliable test results. However, if required, the previous test behavior can be restored by adding options `sweeping_period: 0` and `accel_per_hz: 75` to the `[resonance_tester]` config section.
+20241203：共振测试已更改，以包含缓慢扫频移动。此更改要求测试点在X/Y平面上有一定 Clearance（使用默认设置时，测试点周围 +/- 30 mm 的范围应足够）。新测试通常应产生更准确和可靠的测试结果。但是，如果需要，可以通过在 `[resonance_tester]` 配置部分中添加选项 `sweeping_period: 0` 和 `accel_per_hz: 75` 来恢复之前的测试行为。
 
-20241201: In some cases Klipper may have ignored leading characters or spaces in a traditional G-Code command. For example, "99M123" may have been interpreted as "M123" and "M 321" may have been interpreted as "M321". Klipper will now report these cases with an "Unknown command" warning.
+20241201：在某些情况下，Klipper 可能会忽略传统 G 代码命令的前导字符或空格。例如，“99M123”可能被解释为“M123”，而“M 321”可能被解释为“M321”。Klipper 现在会将这些情况报告为“未知命令”警告。
 
-20241112: Option `CHIPS=<chip_name>` in `TEST_RESONANCES` and `SHAPER_CALIBRATE` requires specifying the full name(s) of the accel chip(s). For example, `adxl345 rpi` instead of short name - `rpi`.
+20241112：`TEST_RESONANCES` 和 `SHAPER_CALIBRATE` 中的 `CHIPS=<chip_name>` 选项需要指定加速度计芯片的完整名称。例如，应使用 `adxl345 rpi`，而不是缩写名 `rpi`。
 
-20240912: `SET_PIN`, `SET_SERVO`, `SET_FAN_SPEED`, `M106`, and `M107` commands are now collated. Previously, if many updates to the same object were issued faster than the minimum scheduling time (typically 100ms) then actual updates could be queued far into the future. Now if many updates are issued in rapid succession then it is possible that only the latest request will be applied. If the previous behavior is requried then consider adding explicit `G4` delay commands between updates.
+20240912：`SET_PIN`、`SET_SERVO`、`SET_FAN_SPEED`、`M106` 和 `M107` 命令现在会被合并处理。此前，如果对同一对象的多次更新发出速度超过最小调度时间（通常为100ms），则实际更新可能会被排到很远的未来。现在，如果在短时间内发出多次更新，则可能仅应用最新的请求。如果需要之前的行为，请考虑在更新之间添加显式的 `G4` 延迟命令。
 
-20240912: Support for `maximum_mcu_duration` and `static_value` parameters in `[output_pin]` config sections have been removed. These options have been deprecated since 20240123.
+20240912：`[output_pin]` 配置部分中对 `maximum_mcu_duration` 和 `static_value` 参数的支持已被移除。这些选项自 20240123 起已被弃用。
 
-20240415: The `on_error_gcode` parameter in the `[virtual_sdcard]` config section now has a default. If this parameter is not specified it now defaults to `TURN_OFF_HEATERS`. If the previous behavior is desired (take no default action on an error during a virtual_sdcard print) then define `on_error_gcode` with an empty value.
+20240415：`[virtual_sdcard]` 配置部分中的 `on_error_gcode` 参数现在有了默认值。如果未指定此参数，则默认为 `TURN_OFF_HEATERS`。如果希望恢复之前的行为（在虚拟SD卡打印期间发生错误时不采取默认操作），则将 `on_error_gcode` 定义为空值。
 
-20240313: The `max_accel_to_decel` parameter in the `[printer]` config section has been deprecated. The `ACCEL_TO_DECEL` parameter of the `SET_VELOCITY_LIMIT` command has been deprecated. The `printer.toolhead.max_accel_to_decel` status has been removed. Use the [minimum_cruise_ratio parameter](./Config_Reference.md#printer) instead. The deprecated features will be removed in the near future, and using them in the interim may result in subtly different behavior.
+20240313：`[printer]` 配置部分中的 `max_accel_to_decel` 参数已被弃用。`SET_VELOCITY_LIMIT` 命令的 `ACCEL_TO_DECEL` 参数已被弃用。`printer.toolhead.max_accel_to_decel` 状态已被移除。请改用 [minimum_cruise_ratio 参数](./Config_Reference.md#printer)。这些已弃用的功能将在不久的将来被移除，在此期间使用它们可能会导致行为上的细微差异。
 
-20240215: Several deprecated features have been removed. Using "NTC 100K beta 3950" as a thermistor name has been removed (deprecated on 20211110). The `SYNC_STEPPER_TO_EXTRUDER` and `SET_EXTRUDER_STEP_DISTANCE` commands have been removed, and the extruder `shared_heater` config option has been removed (deprecated on 20220210). The bed_mesh `relative_reference_index` option has been removed (deprecated on 20230619).
+20240215：已移除多个已弃用的功能。已移除使用“NTC 100K beta 3950”作为热敏电阻名称的功能（自 20211110 弃用）。已移除 `SYNC_STEPPER_TO_EXTRUDER` 和 `SET_EXTRUDER_STEP_DISTANCE` 命令，以及挤出机的 `shared_heater` 配置选项（自 20220210 弃用）。已移除 bed_mesh 的 `relative_reference_index` 选项（自 20230619 弃用）。
 
-20240123: The output_pin SET_PIN CYCLE_TIME parameter has been removed. Use the new [pwm_cycle_time](Config_Reference.md#pwm_cycle_time) module if it is necessary to dynamically change a pwm pin's cycle time.
+20240123：已移除 output_pin SET_PIN 的 CYCLE_TIME 参数。如果需要动态更改 PWM 引脚的周期时间，请使用新的 [pwm_cycle_time](Config_Reference.md#pwm_cycle_time) 模块。
 
-20240123: The output_pin `maximum_mcu_duration` parameter is deprecated. Use a [pwm_tool config section](Config_Reference.md#pwm_tool) instead. The option will be removed in the near future.
+20240123：output_pin 的 `maximum_mcu_duration` 参数已被弃用。请改用 [pwm_tool 配置部分](Config_Reference.md#pwm_tool)。该选项将在不久的将来被移除。
 
-20240123: The output_pin `static_value` parameter is deprecated. Replace with `value` and `shutdown_value` parameters. The option will be removed in the near future.
+20240123：output_pin 的 `static_value` 参数已被弃用。请使用 `value` 和 `shutdown_value` 参数替换。该选项将在不久的将来被移除。
 
-20231216: The `[hall_filament_width_sensor]` is changed to trigger filament runout when the thickness of the filament exceeds `max_diameter`. The maximum diameter defaults to `default_nominal_filament_diameter + max_difference`. See [[hall_filament_width_sensor] configuration
-reference](./Config_Reference.md#hall_filament_width_sensor) for more details.
+20231216：`[hall_filament_width_sensor]` 现改为当耗材直径超过 `max_diameter` 时触发耗材耗尽。最大直径默认为 `default_nominal_filament_diameter + max_difference`。更多详情请参见[[hall_filament_width_sensor] 配置参考](./Config_Reference.md#hall_filament_width_sensor)。
 
-20231207: Several undocumented config parameters in the `[printer]` config section have been removed (the buffer_time_low, buffer_time_high, buffer_time_start, and move_flush_time parameters).
+20231207：已移除 `[printer]` 配置部分中的多个未记录的配置参数（buffer_time_low、buffer_time_high、buffer_time_start 和 move_flush_time 参数）。
 
-20231110: Klipper v0.12.0 released.
+20231110：Klipper v0.12.0 发布。
 
 20230826：如果在 `[dual_carriage]`中将“safe_distance”设置或计算为0，则将根据文档禁用车厢接近检查。用户可能希望明确配置“safe_distance”，以防止车厢彼此意外碰撞。此外，主滑架和双滑架的归位顺序在某些配置中会发生变化（当两个滑架都在同一方向上归位时的某些配置，请参阅[[dual_carriage] 配置参考](./Config_Reference.md#dual_carriage)了解更多详细信息）。
 
