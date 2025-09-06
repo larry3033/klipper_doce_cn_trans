@@ -4,40 +4,40 @@ Klipper版本发布。如何安装Klipper ，请查看[installation](Installatio
 
 ## Klipper 0.13.0
 
-Available on 20250411. Major changes in this release:
+发布于2025年4月11日。此版本的主要更新：
 
-* New "sweeping vibrations" resonance testing mechanism for input shaper.
-* Fans and GPIO pins can now be assigned a formula (via Jinja2 "templates").
-* The bed_mesh code now supports "adaptive bed mesh". The area probed can be adjusted for the size of the print.
-* A new `minimum_cruise_ratio` kinematic parameter has been added (it replaces the previous `max_accel_to_decel` parameter).
-* Several new sensors added:
-   * Support for ldc1612 "eddy" current sensors. This includes probing support, fast "scan" probing, and temperature calibration.
-   * New support for "load cell" measurements. Support for connecting these load cells to hx71x and ads1220 ADC sensors.
-   * Support for BMP180, BMP388, and SHT3x temperature sensors. Support for measuring temperature with ADS1x1x ADC chips.
-   * New lis3dh and icm20948 accelerometer support.
-   * Support for mt6816 and mt6826s "hall angle" sensors.
-* New micro-controller improvements:
-   * New support for rp2350 micro-controllers.
-   * Existing rp2040 chips now run at 200MHz (up from 125Mhz).
-   * The micro-controller code can now define many more commands (up to 16384 from 128).
-* Other modules added: aip31068_spi, canbus_stats, error_mcu, garbage_collection, pwm_cycle_time, pwm_tool, garbage_collection.
+* 为输入整形器（input shaper）新增“扫频振动”共振测试机制。
+* 风扇和GPIO引脚现在可以分配一个公式（通过Jinja2“模板”实现）。
+* bed_mesh代码现在支持“自适应床网”（adaptive bed mesh）。可根据打印尺寸调整探测区域。
+* 新增一个`minimum_cruise_ratio`运动学参数（它取代了之前的`max_accel_to_decel`参数）。
+* 新增多种传感器支持：
+   * 支持ldc1612“涡流”传感器。包括探测支持、快速“扫描”探测以及温度校准。
+   * 新增对“称重传感器”（load cell）测量的支持。支持将这些称重传感器连接到hx71x和ads1220 ADC传感器。
+   * 支持BMP180、BMP388和SHT3x温度传感器。支持使用ADS1x1x ADC芯片进行温度测量。
+   * 新增对lis3dh和icm20948加速度计的支持。
+   * 支持mt6816和mt6826s“霍尔角度”传感器。
+* 新的微控制器改进：
+   * 新增对rp2350微控制器的支持。
+   * 现有的rp2040芯片现在以200MHz运行（此前为125MHz）。
+   * 微控制器代码现在可以定义更多命令（从128个增加到最多16384个）。
+* 其他新增模块：aip31068_spi、canbus_stats、error_mcu、garbage_collection、pwm_cycle_time、pwm_tool、garbage_collection。
 * 几个错误的修复和代码的清理。
 
 ## Klipper 0.12.0
 
-Available on 20231110. Major changes in this release:
+发布于2023年11月10日。此版本的主要更新：
 
-* Support for COPY and MIRROR modes on IDEX printers.
-* Several micro-controller improvements:
-   * Support for new ar100 and hc32f460 architectures.
-   * Support for stm32f7, stm32g0b0, stm32g07x, stm32g4, stm32h723, n32g45x, samc21, and samd21j18 chip variants.
-   * Improved DFU and Katapult reboot handling.
-   * Improved performance on USB to CANbus bridge mode.
-   * Improved performance on "linux mcu".
-   * New support for software based i2c.
-* New hardware support for tmc2240 stepper motor drivers, lis2dw12 accelerometers, and aht10 temperature sensors.
-* New axis_twist_compensation and temperature_combined modules added.
-* New support for gcode arcs in XY, XZ, and YZ planes.
+* 支持IDEX打印机上的COPY（复制）和MIRROR（镜像）模式。
+* 多项微控制器改进：
+   * 支持新的ar100和hc32f460架构。
+   * 支持stm32f7、stm32g0b0、stm32g07x、stm32g4、stm32h723、n32g45x、samc21和samd21j18芯片变体。
+   * 改进了DFU和Katapult重启处理。
+   * 提升了USB转CAN总线桥接模式的性能。
+   * 提升了“linux mcu”模式的性能。
+   * 新增对软件实现的I2C的支持。
+* 新增对tmc2240步进电机驱动器、lis2dw12加速度计和aht10温度传感器的硬件支持。
+* 新增axis_twist_compensation（轴扭曲补偿）和temperature_combined（温度合并）模块。
+* 新增对XY、XZ和YZ平面中G代码圆弧的支持。
 * 几个错误的修复和代码的清理。
 
 ## Klipper 0.11.0
