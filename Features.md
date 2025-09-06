@@ -23,12 +23,12 @@ Klipper 支持许多标准的 3d 打印机功能：
 * 标准 G 代码支持。支持由常见“切片软件”（SuperSlicer、Cura、PrusaSlicer 等）生成的通用 G 代码命令。
 * 支持多挤出机。包括对共享热端的挤出机（多进一出）和多头（IDEX）的支持。
 * 支持笛卡尔、三角洲、CoreXY、CoreXZ、混合CoreXY、混合CoreXZ、deltesian、旋转三角洲、极坐标和缆绳铰盘式打印机。
-* Automatic bed leveling support. Klipper can be configured for basic bed tilt detection or full mesh bed leveling. The bed mesh can be customized to the print size (adaptive bed mesh). If the bed uses multiple Z steppers then Klipper can also level by independently manipulating the Z steppers. Most Z height probes are supported, including BL-Touch probes and servo activated probes. Probes may be calibrated for axis twist compensation. If using an "eddy current probe" then one can utilize fast bed mesh scanning,
+* 支持自动调平床。Klipper 可配置用于基本的平台倾斜检测或完整的网格调平。床的网格可针对打印尺寸进行自定义（自适应床网格）。如果平台使用多个 Z 轴步进电机，Klipper 还可通过独立控制 Z 轴步进电机来实现调平。大多数 Z 轴高度探头都受支持，包括 BL-Touch 探头和伺服激活探头。探头可进行校准以补偿轴扭曲。如果使用“涡流探头”，则可利用快速床网格扫描功能。
 * 支持自动delta校准。校准工具可以进行基本的高度校准，以及增强的X和Y尺寸校准。校准可以用Z型高度探头或通过手动探测来完成。
 * 支持打印时“排除对象”。配置后，此模块可以取消多零件打印中的一个对象。
-* Support for common temperature sensors (eg, common thermistors, AD595, AD597, AD849x, PT100, PT1000, MAX6675, MAX31855, MAX31856, MAX31865, BME280, HTU21D, DS18B20, AHT10, SHT3x, and LM75). Custom thermistors and custom analog temperature sensors can also be configured. One can monitor the internal micro-controller temperature sensor and the internal temperature sensor of a Raspberry Pi.
+* 支持常见的温度传感器（例如，常用的热敏电阻、AD595、AD597、AD849x、PT100、PT1000、MAX6675、MAX31855、MAX31856、MAX31865、BME280、HTU21D、DS18B20、AHT10、SHT3x 和 LM75）。也可配置自定义热敏电阻和自定义模拟温度传感器。用户可以监控微控制器内部的温度传感器以及树莓派的内部温度传感器。
 * 默认启用基本加热器保护。
-* Support for standard fans, nozzle fans, and temperature controlled fans. No need to keep fans running when the printer is idle. Fan speed can be monitored on fans that have a tachometer. One can assign a "math formula" to a fan for automatic fan speed updating.
+* 支持标准风扇、喷嘴风扇和温度控制风扇。打印机空闲时无需让风扇持续运转。对于带有测速功能（转速计）的风扇，可以监控其转速。用户可为风扇分配“数学公式”，以实现风扇转速的自动调节。
 * 支持TMC2130、TMC2208/TMC2224、TMC2209、TMC2660和TMC5160步进电机驱动器的运行时配置。还支持通过AD5206、DAC084S085、MCP4451、MCP4728、MCP4018和PWM引脚对传统步进驱动器进行电流控制。
 * 支持直接连接到打印机的普通LCD显示器。还提供了一个默认的菜单。显示器和菜单的内容可以通过配置文件完全定制。
 * 恒定加速和“look-ahead”（前瞻）支持。所有打印机移动将从静止逐渐加速到巡航速度，然后减速回到静止。对传入的 G 代码移动命令流进行排队和分析 - 将优化类似方向上的移动之间的加速度，以减少打印停顿并改善整体打印时间。
