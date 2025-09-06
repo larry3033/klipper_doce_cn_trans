@@ -574,13 +574,13 @@ anchor_z:
 #   必须提供这些参数。
 ```
 
-### Generic Cartesian Kinematics
+### 通用笛卡尔运动系统（Generic Cartesian Kinematics）
 
-See [example-generic-cartesian.cfg](../config/example-generic-caretesian.cfg) for an example generic Cartesian kinematics config file.
+有关通用笛卡尔运动系统的配置文件示例，请参见 [example-generic-cartesian.cfg](../config/example-generic-caretesian.cfg)。
 
-This printer kinematic class allows a user to define in a pretty flexible manner an arbitrary Cartesian-style kinematics. In principle, the regular cartesian, corexy, hybrid_corexy can be defined this way too. However, more importantly, various otherwise unsupported kinematics such as inverted hybrid_corexy or corexyuv can be defined using this kinematic.
+此类打印机运动系统允许用户以非常灵活的方式定义任意类型的笛卡尔式运动系统。原则上，常规的 cartesian（笛卡尔）、corexy、hybrid_corexy 也可以通过此方式定义。但更重要的是，其他一些不被直接支持的运动系统，例如反向 hybrid_corexy 或 corexyuv，也可以通过这种运动系统类型来定义。
 
-Notably, the definition of a generic Cartesian kinematic deviates significantly from the other kinematic types. It follows the following convention: a user defines a set of carriages with certain range of motion that can move independently from each other (they should move over the Cartesian axes X, Y, and Z, hence the name of the kinematic) and corresponding endstops that allow the firmware to determine the position of carriages during homing, as well as a set of steppers that move those carriages. The `[printer]` section must specify the kinematic and other printer-level settings same as the regular Cartesian kinematic:
+值得注意的是，通用笛卡尔运动系统的定义方式与其他运动系统类型有显著不同。其遵循以下约定：用户定义一组可沿 X、Y 和 Z 笛卡尔轴独立移动的滑车（carriage），并为每个滑车指定相应的限位开关，用于在回零过程中确定滑车位置，同时定义驱动这些滑车的步进电机。`[printer]` 部分必须像常规笛卡尔运动系统一样，指定运动系统类型及其他打印机级别的设置：
 
 ```
 [printer]
@@ -594,52 +594,39 @@ max_accel:
 #max_z_accel:
 ```
 
-Then a user must define the following three carriages: `[carriage x]`, `[carriage y]`, and `[carriage z]`, e.g.
+然后，用户必须定义以下三个滑车：`[carriage x]`、`[carriage y]` 和 `[carriage z]`，例如：
 
 ```
 [carriage x]
 endstop_pin:
-#   Endstop switch detection pin. If this endstop pin is on a
-#   different mcu than the stepper motor(s) moving this carriage,
-#   then it enables "multi-mcu homing". This parameter must be provided.
+#   限位开关检测引脚。如果该限位引脚位于与驱动此滑车的步进电机不同的 mcu 上，
+#   则启用“多 mcu 回零”功能。此参数必须提供。
 #position_min: 0
-#   Minimum valid distance (in mm) the user may command the carriage to
-#   move to.  The default is 0mm.
+#   用户可命令滑车移动到的最小有效距离（单位：mm）。默认值为 0mm。
 position_endstop:
-#   Location of the endstop (in mm). This parameter must be provided.
+#   限位开关的位置（单位：mm）。此参数必须提供。
 position_max:
-#   Maximum valid distance (in mm) the user may command the stepper to
-#   move to. This parameter must be provided.
+#   用户可命令步进电机移动到的最大有效距离（单位：mm）。此参数必须提供。
 #homing_speed: 5.0
-#   Maximum velocity (in mm/s) of the carriage when homing. The default
-#   is 5mm/s.
+#   回零时滑车的最大速度（单位：mm/s）。默认值为 5mm/s。
 #homing_retract_dist: 5.0
-#   Distance to backoff (in mm) before homing a second time during
-#   homing. Set this to zero to disable the second home. The default
-#   is 5mm.
+#   回零过程中，第二次触发前退回的距离（单位：mm）。设为零可禁用第二次回零。默认值为 5mm。
 #homing_retract_speed:
-#   Speed to use on the retract move after homing in case this should
-#   be different from the homing speed, which is the default for this
-#   parameter
+#   回零后退回移动所用的速度，若与回零速度不同则需指定；默认使用回零速度。
 #second_homing_speed:
-#   Velocity (in mm/s) of the carriage when performing the second home.
-#   The default is homing_speed/2.
+#   第二次回零时滑车的速度（单位：mm/s）。默认值为 homing_speed/2。
 #homing_positive_dir:
-#   If true, homing will cause the carriage to move in a positive
-#   direction (away from zero); if false, home towards zero. It is
-#   better to use the default than to specify this parameter. The
-#   default is true if position_endstop is near position_max and false
-#   if near position_min.
+#   若为 true，回零将使滑车向正方向移动（远离零点）；若为 false，则向零点移动。
+#   通常建议使用默认值而非手动指定。默认值为：若 position_endstop 靠近 position_max 则为 true，若靠近 position_min 则为 false。
 ```
 
-Afterwards, a user specifies the stepper motors that move these carriages, for instance
+之后，用户需指定驱动这些滑车的步进电机，例如：
 
 ```
 [stepper my_stepper]
 carriages:
-#   A string describing the carriages the stepper moves. All defined
-#   carriages can be specified here, as well as their linear combinations,
-#   e.g. x, x+y, y-0.5*z, x-z, etc. This parameter must be provided.
+#   描述该步进电机所驱动的滑车的字符串。此处可指定所有已定义的滑车，
+#   以及它们的线性组合，例如 x、x+y、y-0.5*z、x-z 等。此参数必须提供。
 step_pin:
 dir_pin:
 enable_pin:
@@ -650,9 +637,9 @@ microsteps:
 #step_pulse_duration:
 ```
 
-See [stepper](#stepper) section for more information on the regular stepper parameters. The `carriages` parameter defines how the stepper affects the motion of the carriages. For example, `x+y` indicates that the motion of the stepper in the positive direction by the distance `d` moves the carriages `x` and `y` by the same distance `d` in the positive direction, while `x-0.5*y` means the motion of the stepper in the positive direction by the distance `d` moves the carriage `x` by the distance `d` in the positive direction, but the carriage `y` will travel distance `d/2` in the negative direction.
+有关常规步进电机参数的更多信息，请参见 [stepper](#stepper) 部分。`carriages` 参数定义了步进电机如何影响滑车的运动。例如，`x+y` 表示步进电机正向移动距离 `d` 时，滑车 `x` 和 `y` 也各自正向移动距离 `d`；而 `x-0.5*y` 表示步进电机正向移动距离 `d` 时，滑车 `x` 正向移动距离 `d`，而滑车 `y` 则反向移动距离 `d/2`。
 
-More than a single stepper motor can be defined to drive the same axis or belt. For example, on a CoreXY AWD setups two motors driving the same belt can be defined as
+可以定义多个步进电机来驱动同一轴或皮带。例如，在 CoreXY AWD 结构中，两个驱动同一皮带的电机可定义为：
 
 ```
 [carriage x]
@@ -680,21 +667,20 @@ rotation_distance: ...
 ...
 ```
 
-with `a0` and `a1` steppers having their own control pins, but sharing the same `carriages` and corresponding endstops.
+其中 `a0` 和 `a1` 步进电机拥有各自的控制引脚，但共享相同的 `carriages` 和对应的限位开关。
 
-There are situations when a user wants to have more than one endstop per axis. Examples of such configurations include Y axis driven by two independent stepper motors with belts attached to both ends of the X beam, with effectively two carriages on Y axis each having an independent endstop, and multi-stepper Z axis with each stepper having its own endstop (not to be confused with the configurations with multiple Z motors but only a single endstop). These configurations can be declared by specifying additional carriage(s) with their endstops:
+在某些情况下，用户希望为同一轴配置多个限位开关。此类配置的示例包括：Y 轴由两个独立的步进电机驱动，皮带连接在 X 梁的两端，Y 轴上实际有两个滑车，每个滑车都有独立的限位开关；或者多步进电机 Z 轴，每个步进电机都有自己的限位开关（不要与多个 Z 电机但仅一个限位开关的配置混淆）。这些配置可通过为每个额外滑车定义限位开关来声明：
 
 ```
 [extra_carriage my_carriage]
 primary_carriage:
-#   The name of the primary carriage this carriage corresponds to.
-#   It also effectively defines the axis the carriage moves over.
-#   This parameter must be provided.
+#   此滑车对应的主滑车名称。它也有效地定义了该滑车移动的轴。
+#   此参数必须提供。
 endstop_pin:
-#   Endstop switch detection pin. This parameter must be provided.
+#   限位开关检测引脚。此参数必须提供。
 ```
 
-and the corresponding stepper motors, for example:
+以及对应的步进电机，例如：
 
 ```
 [extra_carriage y1]
@@ -706,9 +692,9 @@ carriages: y1
 ...
 ```
 
-Notably, an `[extra_carriage]` does not define parameters such as `position_min`, `position_max`, and `position_endstop`, but instead inherits them from the specified `primary_carriage`, thus sharing the same range of motion with the primary carriage.
+值得注意的是，`[extra_carriage]` 不定义 `position_min`、`position_max` 和 `position_endstop` 等参数，而是从指定的 `primary_carriage` 继承这些参数，从而与主滑车共享相同的运动范围。
 
-For the references on how to configure IDEX setups, see the [dual carriage](#dual-carriage) section.
+有关 IDEX 结构配置的参考，请参见 [双滑车](#dual-carriage) 部分。
 
 ### 无运动学
 
@@ -771,79 +757,47 @@ filament_diameter:
 #   这个值以毫米每毫米每秒测量
 #   关闭压力提前时默认值是0
 #pressure_advance_smooth_time: 0.040
-#   A time range (in seconds) to use when calculating the average
-#   extruder velocity for pressure advance. A larger value results in
-#   smoother extruder movements. This parameter may not exceed 200ms.
-#   This setting only applies if pressure_advance is non-zero. The
-#   default is 0.040 (40 milliseconds).
+#   计算挤出机速度平均值以实现压力提前（pressure advance）时使用的时间范围（单位：秒）。较大的值可使挤出机运动更平滑。此参数不得超过 200 毫秒。
+#   仅当 pressure_advance 非零时此设置才生效。默认值为 0.040（即 40 毫秒）。
 #
-#  The remaining variables describe the extruder heater.
+#  以下变量用于描述挤出机加热器。
 heater_pin:
-#   PWM output pin controlling the heater. This parameter must be
-#   provided.
+#   控制加热器的 PWM 输出引脚。此参数必须提供。
 #max_power: 1.0
-#   The maximum power (expressed as a value from 0.0 to 1.0) that the
-#   heater_pin may be set to. The value 1.0 allows the pin to be set
-#   fully enabled for extended periods, while a value of 0.5 would
-#   allow the pin to be enabled for no more than half the time. This
-#   setting may be used to limit the total power output (over extended
-#   periods) to the heater. The default is 1.0.
+#   加热器引脚可设置的最大功率（以 0.0 到 1.0 的数值表示）。值为 1.0 表示引脚可长时间完全开启，而值为 0.5 表示引脚开启时间不得超过一半。
+#   此设置可用于限制加热器的总输出功率（长时间内）。默认值为 1.0。
 sensor_type:
-#   Type of sensor - common thermistors are "EPCOS 100K B57560G104F",
-#   "ATC Semitec 104GT-2", "ATC Semitec 104NT-4-R025H42G", "Generic
-#   3950","Honeywell 100K 135-104LAG-J01", "NTC 100K MGB18-104F39050L32",
-#   "SliceEngineering 450", and "TDK NTCG104LH104JT1". See the
-#   "Temperature sensors" section for other sensors. This parameter
-#   must be provided.
+#   传感器类型——常见的热敏电阻包括 "EPCOS 100K B57560G104F"、"ATC Semitec 104GT-2"、"ATC Semitec 104NT-4-R025H42G"、"Generic 3950"、
+#   "Honeywell 100K 135-104LAG-J01"、"NTC 100K MGB18-104F39050L32"、"SliceEngineering 450" 和 "TDK NTCG104LH104JT1"。
+#   其他传感器类型请参见“温度传感器”部分。此参数必须提供。
 sensor_pin:
-#   Analog input pin connected to the sensor. This parameter must be
-#   provided.
+#   连接到传感器的模拟输入引脚。此参数必须提供。
 #pullup_resistor: 4700
-#   The resistance (in ohms) of the pullup attached to the thermistor.
-#   This parameter is only valid when the sensor is a thermistor. The
-#   default is 4700 ohms.
+#   连接到热敏电阻的上拉电阻阻值（单位：欧姆）。此参数仅在传感器为热敏电阻时有效。默认值为 4700 欧姆。
 #smooth_time: 1.0
-#   A time value (in seconds) over which temperature measurements will
-#   be smoothed to reduce the impact of measurement noise. The default
-#   is 1 seconds.
+#   温度测量值将在此时间段内（单位：秒）进行平滑处理，以减少测量噪声的影响。默认值为 1 秒。
 control:
-#   Control algorithm (either pid or watermark). This parameter must
-#   be provided.
+#   控制算法（可选 pid 或 watermark）。此参数必须提供。
 pid_Kp:
 pid_Ki:
 pid_Kd:
-#   The proportional (pid_Kp), integral (pid_Ki), and derivative
-#   (pid_Kd) settings for the PID feedback control system. Klipper
-#   evaluates the PID settings with the following general formula:
+#   PID 反馈控制系统中的比例（pid_Kp）、积分（pid_Ki）和微分（pid_Kd）参数。Klipper 使用以下通用公式计算 PID 参数：
 #     heater_pwm = (Kp*error + Ki*integral(error) - Kd*derivative(error)) / 255
-#   Where "error" is "requested_temperature - measured_temperature"
-#   and "heater_pwm" is the requested heating rate with 0.0 being full
-#   off and 1.0 being full on. Consider using the PID_CALIBRATE
-#   command to obtain these parameters. The pid_Kp, pid_Ki, and pid_Kd
-#   parameters must be provided for PID heaters.
+#   其中 "error" 为 "目标温度 - 测量温度"，"heater_pwm" 为请求的加热速率，0.0 表示完全关闭，1.0 表示完全开启。
+#   建议使用 PID_CALIBRATE 命令来获取这些参数。对于使用 PID 控制的加热器，必须提供 pid_Kp、pid_Ki 和 pid_Kd 参数。
 #max_delta: 2.0
-#   On 'watermark' controlled heaters this is the number of degrees in
-#   Celsius above the target temperature before disabling the heater
-#   as well as the number of degrees below the target before
-#   re-enabling the heater. The default is 2 degrees Celsius.
+#   对于采用 'watermark'（双阈值）控制的加热器，此值表示目标温度之上多少摄氏度时关闭加热器，以及目标温度之下多少摄氏度时重新开启加热器。
+#   默认值为 2 摄氏度。
 #pwm_cycle_time: 0.100
-#   Time in seconds for each software PWM cycle of the heater. It is
-#   not recommended to set this unless there is an electrical
-#   requirement to switch the heater faster than 10 times a second.
-#   The default is 0.100 seconds.
+#   加热器每个软件 PWM 周期的时间（单位：秒）。除非有电气需求要求加热器开关频率高于每秒 10 次，否则不建议设置此参数。
+#   默认值为 0.100 秒。
 #min_extrude_temp: 170
-#   The minimum temperature (in Celsius) at which extruder move
-#   commands may be issued. The default is 170 Celsius.
+#   可以发出挤出机移动指令的最低温度（单位：摄氏度）。默认值为 170 摄氏度。
 min_temp:
 max_temp:
-#   The maximum range of valid temperatures (in Celsius) that the
-#   heater must remain within. This controls a safety feature
-#   implemented in the micro-controller code - should the measured
-#   temperature ever fall outside this range then the micro-controller
-#   will go into a shutdown state. This check can help detect some
-#   heater and sensor hardware failures. Set this range just wide
-#   enough so that reasonable temperatures do not result in an error.
-#   These parameters must be provided.
+#   加热器必须保持的有效温度范围的最大值（单位：摄氏度）。这控制着微控制器代码中实现的一项安全功能——
+#   如果测量温度超出此范围，微控制器将进入关机状态。此检查有助于检测某些加热器和传感器的硬件故障。
+#   设置此范围时应略宽于合理温度范围，以避免误报错误。这些参数必须提供。
 ```
 
 ### [heater_bed]
@@ -894,97 +848,59 @@ max_temp:
 ```
 [bed_mesh]
 #speed: 50
-#   The speed (in mm/s) of non-probing moves during the calibration.
-#   The default is 50.
+#   校准过程中非探测移动的速度（单位：mm/s）。默认值为 50。
 #horizontal_move_z: 5
-#   The height (in mm) that the head should be commanded to move to
-#   just prior to starting a probe operation. The default is 5.
+#   在开始探测操作之前，喷头应移动到的高度（单位：mm）。默认值为 5。
 #mesh_radius:
-#   Defines the radius of the mesh to probe for round beds. Note that
-#   the radius is relative to the coordinate specified by the
-#   mesh_origin option. This parameter must be provided for round beds
-#   and omitted for rectangular beds.
+#   定义圆形热床的网格探测半径。注意，该半径是相对于 mesh_origin 选项指定的坐标而言的。
+#   此参数必须为圆形热床指定，矩形热床则必须省略。
 #mesh_origin:
-#   Defines the center X, Y coordinate of the mesh for round beds. This
-#   coordinate is relative to the probe's location. It may be useful
-#   to adjust the mesh_origin in an effort to maximize the size of the
-#   mesh radius. Default is 0, 0. This parameter must be omitted for
-#   rectangular beds.
+#   定义圆形热床的网格中心 X、Y 坐标。该坐标相对于探头的位置。调整 mesh_origin 可能有助于最大化 mesh_radius 的尺寸。
+#   默认值为 0, 0。此参数必须为圆形热床省略。
 #mesh_min:
-#   Defines the minimum X, Y coordinate of the mesh for rectangular
-#   beds. This coordinate is relative to the probe's location. This
-#   will be the first point probed, nearest to the origin. This
-#   parameter must be provided for rectangular beds.
+#   定义矩形热床的网格最小 X、Y 坐标。该坐标相对于探头的位置。这将是第一个探测点，最靠近原点。
+#   此参数必须为矩形热床提供。
 #mesh_max:
-#   Defines the maximum X, Y coordinate of the mesh for rectangular
-#   beds. Adheres to the same principle as mesh_min, however this will
-#   be the furthest point probed from the bed's origin. This parameter
-#   must be provided for rectangular beds.
+#   定义矩形热床的网格最大 X、Y 坐标。其原理与 mesh_min 相同，但这是距离热床原点最远的探测点。
+#   此参数必须为矩形热床提供。
 #probe_count: 3, 3
-#   For rectangular beds, this is a comma separate pair of integer
-#   values X, Y defining the number of points to probe along each
-#   axis. A single value is also valid, in which case that value will
-#   be applied to both axes. Default is 3, 3.
+#   对于矩形热床，这是用逗号分隔的一对整数 X, Y，定义在每个轴上探测的点数。也可以使用单个值，该值将同时应用于两个轴。
+#   默认值为 3, 3。
 #round_probe_count: 5
-#   For round beds, this integer value defines the maximum number of
-#   points to probe along each axis. This value must be an odd number.
-#   Default is 5.
+#   对于圆形热床，此整数值定义在每个轴上探测的最大点数。此值必须为奇数。默认值为 5。
 #fade_start: 1.0
-#   The gcode z position in which to start phasing out z-adjustment
-#   when fade is enabled. Default is 1.0.
+#   启用渐变（fade）时，开始逐步消除 Z 调整的 G-code Z 位置。默认值为 1.0。
 #fade_end: 0.0
-#   The gcode z position in which phasing out completes. When set to a
-#   value below fade_start, fade is disabled. It should be noted that
-#   fade may add unwanted scaling along the z-axis of a print. If a
-#   user wishes to enable fade, a value of 10.0 is recommended.
-#   Default is 0.0, which disables fade.
+#   渐变完成的 G-code Z 位置。当此值低于 fade_start 时，渐变功能被禁用。需要注意的是，渐变可能会在打印的 Z 轴上引入不必要的缩放。
+#   如果用户希望启用渐变，建议设置为 10.0。默认值为 0.0，表示禁用渐变。
 #fade_target:
-#   The z position in which fade should converge. When this value is
-#   set to a non-zero value it must be within the range of z-values in
-#   the mesh. Users that wish to converge to the z homing position
-#   should set this to 0. Default is the average z value of the mesh.
+#   渐变应收敛的 Z 位置。当此值设置为非零值时，它必须在网格的 Z 值范围内。希望收敛到 Z 回零位置的用户应将其设置为 0。
+#   默认值为网格的平均 Z 值。
 #split_delta_z: .025
-#   The amount of Z difference (in mm) along a move that will trigger
-#   a split. Default is .025.
+#   沿移动方向 Z 值变化量（单位：mm）超过此值时将触发分段。默认值为 .025。
 #move_check_distance: 5.0
-#   The distance (in mm) along a move to check for split_delta_z.
-#   This is also the minimum length that a move can be split. Default
-#   is 5.0.
+#   沿移动方向检查 split_delta_z 的距离（单位：mm）。这也是移动可被分割的最小长度。默认值为 5.0。
 #mesh_pps: 2, 2
-#   A comma separated pair of integers X, Y defining the number of
-#   points per segment to interpolate in the mesh along each axis. A
-#   "segment" can be defined as the space between each probed point.
-#   The user may enter a single value which will be applied to both
-#   axes. Default is 2, 2.
+#   用逗号分隔的一对整数 X, Y，定义在网格中每个轴上每段插值的点数。“段”可定义为各探测点之间的空间。
+#   用户可输入单个值，该值将同时应用于两个轴。默认值为 2, 2。
 #algorithm: lagrange
-#   The interpolation algorithm to use. May be either "lagrange" or
-#   "bicubic". This option will not affect 3x3 grids, which are forced
-#   to use lagrange sampling. Default is lagrange.
+#   使用的插值算法。可以是 "lagrange"（拉格朗日）或 "bicubic"（双三次）。此选项不影响强制使用拉格朗日采样的 3x3 网格。
+#   默认值为 lagrange。
 #bicubic_tension: .2
-#   When using the bicubic algorithm the tension parameter above may
-#   be applied to change the amount of slope interpolated. Larger
-#   numbers will increase the amount of slope, which results in more
-#   curvature in the mesh. Default is .2.
+#   使用双三次算法时，可应用此张力参数来改变插值的斜率大小。较大的数值会增加斜率，导致网格曲率更大。默认值为 .2。
 #zero_reference_position:
-#   An optional X,Y coordinate that specifies the location on the bed
-#   where Z = 0.  When this option is specified the mesh will be offset
-#   so that zero Z adjustment occurs at this location.  The default is
-#   no zero reference.
+#   一个可选的 X,Y 坐标，指定热床上 Z = 0 的位置。当指定此选项时，网格将被偏移，使得该位置处的 Z 调整为零。
+#   默认值为无零参考点。
 #faulty_region_1_min:
 #faulty_region_1_max:
-#   Optional points that define a faulty region.  See docs/Bed_Mesh.md
-#   for details on faulty regions.  Up to 99 faulty regions may be added.
-#   By default no faulty regions are set.
+#   定义故障区域的可选点。有关故障区域的详细信息，请参见 docs/Bed_Mesh.md。
+#   最多可添加 99 个故障区域。默认情况下未设置任何故障区域。
 #adaptive_margin:
-#   An optional margin (in mm) to be added around the bed area used by
-#   the defined print objects when generating an adaptive mesh.
+#   在生成自适应网格时，为定义的打印对象所使用的热床区域额外添加的可选边距（单位：mm）。
 #scan_overshoot:
-#  The maximum amount of travel (in mm) available outside of the mesh.
-#  For rectangular beds this applies to travel on the X axis, and for round beds
-#  it applies to the entire radius.  The tool must be able to travel the amount
-#  specified outside of the mesh.  This value is used to optimize the travel
-#  path when performing a "rapid scan".  The minimum value that may be specified
-#  is 1.  The default is no overshoot.
+#   执行“快速扫描”时，网格外部可用的最大行程（单位：mm）。对于矩形热床，这适用于 X 轴方向的行程；
+#   对于圆形热床，则适用于整个半径方向。工具必须能够在网格外部移动指定的距离。此值用于优化快速扫描的移动路径。
+#   可指定的最小值为 1。默认值为无过冲（no overshoot）。
 ```
 
 ### [bed_tilt]
@@ -1023,8 +939,7 @@ max_temp:
 
 ### [bed_screws]
 
-Tool to help adjust bed leveling screws. One may define a [bed_screws] config section to enable a BED_SCREWS_ADJUST g-code command.
-
+用于辅助调整床调平螺丝的工具。用户可以定义一个 [bed_screws] 配置部分，以启用 BED_SCREWS_ADJUST G-code 命令。
 有关更多信息，请参阅 [调平指南](Manual_Level.md#adjusting-bed-leveling-screws)和 [命令参考](G-Codes.md#bed_screws)。
 
 ```
@@ -1060,7 +975,7 @@ Tool to help adjust bed leveling screws. One may define a [bed_screws] config se
 
 ### [screws_tilt_adjust]
 
-Tool to help adjust bed screws tilt using Z probe. One may define a screws_tilt_adjust config section to enable a SCREWS_TILT_CALCULATE g-code command.
+用于借助 Z 探头辅助调整床调平螺丝倾斜度的工具。用户可以定义一个 screws_tilt_adjust 配置部分，以启用 SCREWS_TILT_CALCULATE G-code 命令。
 
 请参阅[调平指南](Manual_Level.md#adjusting-bed-leveling-screws-using-the-bed-probe)和[命令参考](G-Code.md#screws_tilt_adjust)了解更多信息。
 
@@ -1189,31 +1104,24 @@ Where x is the 0, 0 point on the bed
 ```
 [z_thermal_adjust]
 #temp_coeff:
-#   The temperature coefficient of expansion, in mm/degC. For example, a
-#   temp_coeff of 0.01 mm/degC will move the Z axis downwards by 0.01 mm for
-#   every degree Celsius that the temperature sensor increases. Defaults to
-#   0.0 mm/degC, which applies no adjustment.
+#   热膨胀温度系数，单位为 mm/°C。例如，temp_coeff 为 0.01 mm/°C 时，
+#   温度每升高 1 摄氏度，Z 轴就会向下移动 0.01 mm。默认值为 0.0 mm/°C（不进行任何调整）。
 #smooth_time:
-#   Smoothing window applied to the temperature sensor, in seconds. Can reduce
-#   motor noise from excessive small corrections in response to sensor noise.
-#   The default is 2.0 seconds.
+#   应用于温度传感器的平滑窗口，单位为秒。可减少因传感器噪声导致的频繁微小修正而产生的电机噪音。
+#   默认值为 2.0 秒。
 #z_adjust_off_above:
-#   Disables adjustments above this Z height [mm]. The last computed correction
-#   will remain applied until the toolhead moves below the specified Z height
-#   again. The default is 99999999.0 mm (always on).
+#   当 Z 高度超过此值时，禁用调整 [单位：mm]。最后一次计算的修正值将保持应用，直到喷头再次移动到该高度以下。
+#   默认值为 99999999.0 mm（始终启用）。
 #max_z_adjustment:
-#   Maximum absolute adjustment that can be applied to the Z axis [mm]. The
-#   default is 99999999.0 mm (unlimited).
+#   可应用于 Z 轴的最大绝对调整量 [单位：mm]。默认值为 99999999.0 mm（无限制）。
 #sensor_type:
 #sensor_pin:
 #min_temp:
 #max_temp:
-#   Temperature sensor configuration.
-#   See the "extruder" section for the definition of the above
-#   parameters.
+#   温度传感器配置。
+#   上述参数的定义请参见“extruder”（挤出机）部分。
 #gcode_id:
-#   See the "heater_generic" section for the definition of this
-#   parameter.
+#   此参数的定义请参见“heater_generic”部分。
 ```
 
 ## 自定义归零
@@ -1380,17 +1288,12 @@ filename:
 ```
 [virtual_sdcard]
 path:
-#   The path of the local directory on the host machine to look for
-#   g-code files. This is a read-only directory (sdcard file writes
-#   are not supported). One may point this to OctoPrint's upload
-#   directory (generally ~/.octoprint/uploads/ ). This parameter must
-#   be provided.
+#   主机上用于查找 G-code 文件的本地目录路径。该目录为只读（不支持向 sdcard 写入文件）。
+#   可以将其指向 OctoPrint 的上传目录（通常为 ~/.octoprint/uploads/）。此参数必须提供。
 #on_error_gcode:
-#   A list of G-Code commands to execute when an error is reported.
-#   See docs/Command_Templates.md for G-Code format. The default is to
-#   run TURN_OFF_HEATERS.
+#   当报告错误时要执行的一系列 G-Code 命令。G-Code 格式请参见 docs/Command_Templates.md。
+#   默认执行 TURN_OFF_HEATERS 命令。
 ```
-
 ### [sdcard_loop]
 
 一些具有阶段清空功能的打印机，如打印件移除器或带式打印机，可以找到并使用sdcard文件中循环部分。(例如，重复打印同一个零件，或者重复一个零件的某一节，以形成连锁或其他重复模式）。
@@ -1551,83 +1454,74 @@ cs_pin:
 
 ### [icm20948]
 
-Support for icm20948 accelerometers.
+支持 icm20948 加速度计。
 
 ```
 [icm20948]
 #i2c_address:
-#   Default is 104 (0x68). If AD0 is high, it would be 0x69 instead.
+#   默认值为 104 (0x68)。如果 AD0 为高电平，则应为 0x69。
 #i2c_mcu:
 #i2c_bus:
 #i2c_software_scl_pin:
 #i2c_software_sda_pin:
 #i2c_speed: 400000
-#   See the "common I2C settings" section for a description of the
-#   above parameters. The default "i2c_speed" is 400000.
+#   上述参数的说明，请参见“通用 I2C 设置”部分。默认的 "i2c_speed" 为 400000。
 #axes_map: x, y, z
-#   See the "adxl345" section for information on this parameter.
+#   有关此参数的信息，请参见“adxl345”部分。
 ```
 
 ### [lis2dw]
 
-Support for LIS2DW accelerometers.
+支持 LIS2DW 加速度计。
 
 ```
 [lis2dw]
 #cs_pin:
-#   The SPI enable pin for the sensor. This parameter must be provided
-#   if using SPI.
+#   传感器的 SPI 使能引脚。如果使用 SPI，则必须提供此参数。
 #spi_speed: 5000000
-#   The SPI speed (in hz) to use when communicating with the chip.
-#   The default is 5000000.
+#   与芯片通信时使用的 SPI 速度（单位为 Hz）。默认值为 5000000。
 #spi_bus:
 #spi_software_sclk_pin:
 #spi_software_mosi_pin:
 #spi_software_miso_pin:
-#   See the "common SPI settings" section for a description of the
-#   above parameters.
+#   上述参数的说明，请参见“通用 SPI 设置”部分。
 #i2c_address:
-#   Default is 25 (0x19). If SA0 is high, it would be 24 (0x18) instead.
+#   默认值为 25 (0x19)。如果 SA0 为高电平，则为 24 (0x18)。
 #i2c_mcu:
 #i2c_bus:
 #i2c_software_scl_pin:
 #i2c_software_sda_pin:
 #i2c_speed: 400000
-#   See the "common I2C settings" section for a description of the
-#   above parameters. The default "i2c_speed" is 400000.
+#   上述参数的说明，请参见“通用 I2C 设置”部分。默认的 "i2c_speed" 为 400000。
 #axes_map: x, y, z
-#   See the "adxl345" section for information on this parameter.
+#   有关此参数的信息，请参见“adxl345”部分。
 ```
 
 ### [lis3dh]
 
-Support for LIS3DH accelerometers.
+支持 LIS3DH 加速度计。
 
 ```
 [lis3dh]
 #cs_pin:
-#   The SPI enable pin for the sensor. This parameter must be provided
-#   if using SPI.
+#   传感器的 SPI 使能引脚。如果使用 SPI，则必须提供此参数。
 #spi_speed: 5000000
-#   The SPI speed (in hz) to use when communicating with the chip.
-#   The default is 5000000.
+#   与芯片通信时使用的 SPI 速度（单位为 Hz）。默认值为 5000000。
 #spi_bus:
 #spi_software_sclk_pin:
 #spi_software_mosi_pin:
 #spi_software_miso_pin:
-#   See the "common SPI settings" section for a description of the
-#   above parameters.
+#   上述参数的说明，请参见“通用 SPI 设置”部分。
 #i2c_address:
-#   Default is 25 (0x19). If SA0 is high, it would be 24 (0x18) instead.
+#   默认值为 25 (0x19)。如果 SA0 为高电平，则为 24 (0x18)。
 #i2c_mcu:
 #i2c_bus:
 #i2c_software_scl_pin:
 #i2c_software_sda_pin:
 #i2c_speed: 400000
-#   See the "common I2C settings" section for a description of the
-#   above parameters. The default "i2c_speed" is 400000.
+#   上述参数的说明，请参见“通用 I2C 设置”部分。默认的 "i2c_speed" 为 400000。
 #axes_map: x, y, z
-#   See the "adxl345" section for information on this parameter.
+#   有关此参数的信息，请参见“adxl345”部分。
 ```
 
 ### [mpu9250]
@@ -1637,16 +1531,15 @@ Support for LIS3DH accelerometers.
 ```
 [mpu9250 my_accelerometer]
 #i2c_address:
-#   Default is 104 (0x68). If AD0 is high, it would be 0x69 instead.
+#   默认值为 104 (0x68)。如果 AD0 为高电平，则应为 0x69。
 #i2c_mcu:
 #i2c_bus:
 #i2c_software_scl_pin:
 #i2c_software_sda_pin:
 #i2c_speed: 400000
-#   See the "common I2C settings" section for a description of the
-#   above parameters. The default "i2c_speed" is 400000.
+#   上述参数的说明，请参见“通用 I2C 设置”部分。默认的 "i2c_speed" 为 400000。
 #axes_map: x, y, z
-#   See the "adxl345" section for information on this parameter.
+#   有关此参数的信息，请参见“adxl345”部分。
 ```
 
 ### [resonance_tester]
@@ -1656,58 +1549,39 @@ Support for LIS3DH accelerometers.
 ```
 [resonance_tester]
 #probe_points:
-#   A list of X, Y, Z coordinates of points (one point per line) to test
-#   resonances at. At least one point is required. Make sure that all
-#   points with some safety margin in XY plane (~a few centimeters)
-#   are reachable by the toolhead.
+#   用于测试共振点的 X, Y, Z 坐标列表（每行一个点）。至少需要一个点。
+#   确保所有点在 XY 平面上均可被打印头到达，并留有一定的安全余量（约几厘米）。
 #accel_chip:
-#   A name of the accelerometer chip to use for measurements. If
-#   adxl345 chip was defined without an explicit name, this parameter
-#   can simply reference it as "accel_chip: adxl345", otherwise an
-#   explicit name must be supplied as well, e.g. "accel_chip: adxl345
-#   my_chip_name". Either this, or the next two parameters must be
-#   set.
+#   用于测量的加速度计芯片名称。如果 adxl345 芯片在定义时未指定显式名称，
+#   则此参数可直接引用为 "accel_chip: adxl345"；否则必须同时提供显式名称，
+#   例如 "accel_chip: adxl345 my_chip_name"。此参数与接下来的两个参数需设置其一。
 #accel_chip_x:
 #accel_chip_y:
-#   Names of the accelerometer chips to use for measurements for each
-#   of the axis. Can be useful, for instance, on bed slinger printer,
-#   if two separate accelerometers are mounted on the bed (for Y axis)
-#   and on the toolhead (for X axis). These parameters have the same
-#   format as 'accel_chip' parameter. Only 'accel_chip' or these two
-#   parameters must be provided.
+#   用于各轴测量的加速度计芯片名称。例如，在床式摆动打印机上，若在床身（Y 轴）
+#   和打印头（X 轴）上分别安装了两个独立的加速度计，则此设置将非常有用。
+#   这两个参数的格式与 'accel_chip' 参数相同。只能提供 'accel_chip' 或这两个参数之一。
 #max_smoothing:
-#   Maximum input shaper smoothing to allow for each axis during shaper
-#   auto-calibration (with 'SHAPER_CALIBRATE' command). By default no
-#   maximum smoothing is specified. Refer to Measuring_Resonances guide
-#   for more details on using this feature.
+#   在输入整形器自动校准（使用 'SHAPER_CALIBRATE' 命令）期间，每个轴允许的最大平滑度。
+#   默认情况下不指定最大平滑度。更多详细信息，请参考《测量共振》指南。
 #move_speed: 50
-#   The speed (in mm/s) to move the toolhead to and between test points
-#   during the calibration. The default is 50.
+#   校准过程中，打印头移动至各测试点及点间移动的速度（单位：mm/s）。默认值为 50。
 #min_freq: 5
-#   Minimum frequency to test for resonances. The default is 5 Hz.
+#   测试共振的最低频率。默认值为 5 Hz。
 #max_freq: 133.33
-#   Maximum frequency to test for resonances. The default is 133.33 Hz.
+#   测试共振的最高频率。默认值为 133.33 Hz。
 #accel_per_hz: 60
-#   This parameter is used to determine which acceleration to use to
-#   test a specific frequency: accel = accel_per_hz * freq. Higher the
-#   value, the higher is the energy of the oscillations. Can be set to
-#   a lower than the default value if the resonances get too strong on
-#   the printer. However, lower values make measurements of
-#   high-frequency resonances less precise. The default value is 75
-#   (mm/sec).
+#   该参数用于确定测试特定频率时所使用的加速度：accel = accel_per_hz * freq。
+#   值越高，振荡能量越大。如果打印机上的共振过强，可将此值设为低于默认值。
+#   但较低的值会使高频共振的测量精度降低。默认值为 75（mm/sec）。
 #hz_per_sec: 1
-#   Determines the speed of the test. When testing all frequencies in
-#   range [min_freq, max_freq], each second the frequency increases by
-#   hz_per_sec. Small values make the test slow, and the large values
-#   will decrease the precision of the test. The default value is 1.0
-#   (Hz/sec == sec^-2).
+#   决定测试速度。当在 [min_freq, max_freq] 范围内测试所有频率时，每秒频率增加 hz_per_sec。
+#   值过小会使测试变慢，值过大则会降低测试精度。默认值为 1.0（Hz/sec == sec^-2）。
 #sweeping_accel: 400
-#   An acceleration of slow sweeping moves. The default is 400 mm/sec^2.
+#   缓慢扫频移动时的加速度。默认值为 400 mm/sec²。
 #sweeping_period: 1.2
-#   A period of slow sweeping moves. Setting this parameter to 0
-#   disables slow sweeping moves. Avoid setting it to a too small
-#   non-zero value in order to not poison the measurements.
-#   The default is 1.2 sec which is a good all-round choice.
+#   缓慢扫频移动的周期。将此参数设为 0 可禁用缓慢扫频移动。
+#   避免将其设置为过小的非零值，以免影响测量结果。
+#   默认值为 1.2 秒，这是一个通用性良好的选择。
 ```
 
 ## 配置文件助手
@@ -1740,7 +1614,7 @@ aliases_<name>:
 
 ### [duplicate_pin_override]
 
-This tool allows a single micro-controller pin to be defined multiple times in a config file without normal error checking. This is intended for diagnostic and debugging purposes. This section is not needed where Klipper supports using the same pin multiple times, and using this override may cause confusing and unexpected results.
+此工具允许在配置文件中多次定义同一个微控制器引脚，而不会触发正常的错误检查。该功能旨在用于诊断和调试目的。在 Klipper 支持同一引脚多次使用的情况下，无需使用此功能；使用此覆盖功能可能导致混乱和意外的结果。
 
 ```
 [duplicate_pin_override]
@@ -1753,7 +1627,7 @@ pins:
 
 ### [probe]
 
-Z height probe. One may define this section to enable Z height probing hardware. When this section is enabled, PROBE and QUERY_PROBE extended [g-code commands](G-Codes.md#probe) become available. Also, see the [probe calibrate guide](Probe_Calibrate.md). The probe section also creates a virtual "probe:z_virtual_endstop" pin. One may set the stepper_z endstop_pin to this virtual pin on cartesian style printers that use the probe in place of a z endstop. If using "probe:z_virtual_endstop" then do not define a position_endstop in the stepper_z config section.
+Z 高度探针。可定义此部分以启用 Z 轴高度探测硬件。启用此部分后，扩展的 [G 代码命令](G-Codes.md#probe) PROBE 和 QUERY_PROBE 将可用。另请参阅 [探针校准指南](Probe_Calibrate.md)。该探针部分还会创建一个虚拟的 "probe:z_virtual_endstop" 引脚。在使用探针替代 Z 轴限位开关的笛卡尔结构打印机上，可将 stepper_z 的 endstop_pin 设置为该虚拟引脚。如果使用了 "probe:z_virtual_endstop"，则不要在 stepper_z 配置部分中定义 position_endstop。
 
 ```
 [probe]
@@ -1913,30 +1787,25 @@ z_offset:
 
 ### [probe_eddy_current]
 
-Support for eddy current inductive probes. One may define this section (instead of a probe section) to enable this probe. See the [command reference](G-Codes.md#probe_eddy_current) for further information.
+支持涡流电感式探针。可定义此部分（代替 probe 部分）以启用该探针。更多信息请参见 [命令参考](G-Codes.md#probe_eddy_current)。
 
 ```
 [probe_eddy_current my_eddy_probe]
 sensor_type: ldc1612
-#   The sensor chip used to perform eddy current measurements. This
-#   parameter must be provided and must be set to ldc1612.
+#   用于执行涡流测量的传感器芯片。必须提供此参数，且必须设置为 ldc1612。
 #frequency:
-#   The external crystal frequency (in Hz) of the LDC1612 chip.
-#   The default is 12000000.
+#   LDC1612 芯片的外部晶振频率（单位：Hz）。默认值为 12000000。
 #intb_pin:
-#   MCU gpio pin connected to the ldc1612 sensor's INTB pin (if
-#   available). The default is to not use the INTB pin.
+#   连接到 ldc1612 传感器 INTB 引脚的 MCU GPIO 引脚（如果可用）。默认不使用 INTB 引脚。
 #z_offset:
-#   The nominal distance (in mm) between the nozzle and bed that a
-#   probing attempt should stop at. This parameter must be provided.
+#   探测时喷嘴与床面之间应停止的标称距离（单位：mm）。必须提供此参数。
 #i2c_address:
 #i2c_mcu:
 #i2c_bus:
 #i2c_software_scl_pin:
 #i2c_software_sda_pin:
 #i2c_speed:
-#   The i2c settings for the sensor chip. See the "common I2C
-#   settings" section for a description of the above parameters.
+#   传感器芯片的 I2C 设置。有关上述参数的说明，请参见“通用 I2C 设置”部分。
 #x_offset:
 #y_offset:
 #speed:
@@ -1946,51 +1815,39 @@ sensor_type: ldc1612
 #samples_result:
 #samples_tolerance:
 #samples_tolerance_retries:
-#   See the "probe" section for information on these parameters.
+#   有关这些参数的信息，请参见“probe”部分。
 ```
 
 ### [axis_twist_compensation]
 
-A tool to compensate for inaccurate probe readings due to twist in X or Y gantry. See the [Axis Twist Compensation Guide](Axis_Twist_Compensation.md) for more detailed information regarding symptoms, configuration and setup.
+用于补偿因 X 或 Y 轴横梁扭曲而导致探针读数不准确的工具。有关症状、配置和设置的更详细信息，请参见 [轴扭曲补偿指南](Axis_Twist_Compensation.md)。
 
 ```
 [axis_twist_compensation]
 #speed: 50
-#   The speed (in mm/s) of non-probing moves during the calibration.
-#   The default is 50.
+#   校准过程中非探测移动的速度（单位：mm/s）。默认值为 50。
 #horizontal_move_z: 5
-#   The height (in mm) that the head should be commanded to move to
-#   just prior to starting a probe operation. The default is 5.
+#   在开始探测操作前，命令喷头移动到的高度（单位：mm）。默认值为 5。
 calibrate_start_x: 20
-#   Defines the minimum X coordinate of the calibration
-#   This should be the X coordinate that positions the nozzle at the starting
-#   calibration position.
+#   定义校准的最小 X 坐标。
+#   这应是将喷嘴定位到校准起始位置的 X 坐标。
 calibrate_end_x: 200
-#   Defines the maximum X coordinate of the calibration
-#   This should be the X coordinate that positions the nozzle at the ending
-#   calibration position.
+#   定义校准的最大 X 坐标。
+#   这应是将喷嘴定位到校准结束位置的 X 坐标。
 calibrate_y: 112.5
-#   Defines the Y coordinate of the calibration
-#   This should be the Y coordinate that positions the nozzle during the
-#   calibration process. This parameter is recommended to
-#   be near the center of the bed
+#   定义校准的 Y 坐标。
+#   这应是校准过程中喷嘴所处的 Y 坐标。建议将此参数设置在平台中心附近。
 
-# For Y-axis twist compensation, specify the following parameters:
+# 对于 Y 轴扭曲补偿，请指定以下参数：
 calibrate_start_y: ...
-#   Defines the minimum Y coordinate of the calibration
-#   This should be the Y coordinate that positions the nozzle at the starting
-#   calibration position for the Y axis. This parameter must be provided if
-#   compensating for Y axis twist.
+#   定义校准的最小 Y 坐标。
+#   这应是将喷嘴定位到 Y 轴校准起始位置的 Y 坐标。如果要补偿 Y 轴扭曲，则必须提供此参数。
 calibrate_end_y: ...
-#   Defines the maximum Y coordinate of the calibration
-#   This should be the Y coordinate that positions the nozzle at the ending
-#   calibration position for the Y axis. This parameter must be provided if
-#   compensating for Y axis twist.
+#   定义校准的最大 Y 坐标。
+#   这应是将喷嘴定位到 Y 轴校准结束位置的 Y 坐标。如果要补偿 Y 轴扭曲，则必须提供此参数。
 calibrate_x: ...
-#   Defines the X coordinate of the calibration for Y axis twist compensation
-#   This should be the X coordinate that positions the nozzle during the
-#   calibration process for Y axis twist compensation. This parameter must be
-#   provided and is recommended to be near the center of the bed.
+#   定义 Y 轴扭曲补偿校准的 X 坐标。
+#   这应是在进行 Y 轴扭曲补偿校准时喷嘴所处的 X 坐标。此参数必须提供，且建议设置在平台中心附近。
 ```
 
 ## 额外的步进电机和挤出机
@@ -2032,26 +1889,19 @@ calibrate_x: ...
 
 ### [dual_carriage]
 
-Support for cartesian, generic_cartesian and hybrid_corexy/z printers with dual carriages on a single axis. The carriage mode can be set via the SET_DUAL_CARRIAGE extended g-code command. For example, "SET_DUAL_CARRIAGE CARRIAGE=1" command will activate the carriage defined in this section (CARRIAGE=0 will return activation to the primary carriage). Dual carriage support is typically combined with extra extruders - the SET_DUAL_CARRIAGE command is often called at the same time as the ACTIVATE_EXTRUDER command. Be sure to park the carriages during deactivation. Note that during G28 homing, typically the primary carriage is homed first followed by the carriage defined in the `[dual_carriage]` config section. However, the `[dual_carriage]` carriage will be homed first if both carriages home in a positive direction and the [dual_carriage] carriage has a `position_endstop` greater than the primary carriage, or if both carriages home in a negative direction and the `[dual_carriage]` carriage has a `position_endstop` less than the primary carriage.
+支持在单个轴上具有双滑架的笛卡尔、generic_cartesian 和混合型 corexy/z 打印机。滑架模式可通过 SET_DUAL_CARRIAGE 扩展 G 代码命令进行设置。例如，"SET_DUAL_CARRIAGE CARRIAGE=1" 命令将激活在此部分中定义的滑架（CARRIAGE=0 将激活返回至主滑架）。双滑架功能通常与额外的挤出机结合使用——SET_DUAL_CARRIAGE 命令通常与 ACTIVATE_EXTRUDER 命令同时调用。请确保在停用时将滑架停靠。注意，在执行 G28 回零操作时，通常先对主滑架进行回零，然后对 `[dual_carriage]` 配置部分中定义的滑架进行回零。然而，如果两个滑架均向正方向回零且 `[dual_carriage]` 滑架的 `position_endstop` 大于主滑架，或两个滑架均向负方向回零且 `[dual_carriage]` 滑架的 `position_endstop` 小于主滑架，则 `[dual_carriage]` 滑架将优先回零。
 
-Additionally, one could use "SET_DUAL_CARRIAGE CARRIAGE=1 MODE=COPY" or "SET_DUAL_CARRIAGE CARRIAGE=1 MODE=MIRROR" commands to activate either copying or mirroring mode of the dual carriage, in which case it will follow the motion of the carriage 0 accordingly. These commands can be used to print two parts simultaneously - either two identical parts (in COPY mode) or mirrored parts (in MIRROR mode). Note that COPY and MIRROR modes also require appropriate configuration of the extruder on the dual carriage, which can typically be achieved with "SYNC_EXTRUDER_MOTION MOTION_QUEUE=extruder EXTRUDER=<dual_carriage_extruder>" or a similar command.
+此外，可以使用 "SET_DUAL_CARRIAGE CARRIAGE=1 MODE=COPY" 或 "SET_DUAL_CARRIAGE CARRIAGE=1 MODE=MIRROR" 命令来激活双滑架的复制或镜像模式，此时该滑架将相应地跟随滑架 0 的运动。这些命令可用于同时打印两个部件——要么是两个相同的部件（COPY 模式），要么是镜像部件（MIRROR 模式）。请注意，COPY 和 MIRROR 模式还需要对双滑架上的挤出机进行适当的配置，这通常可以通过 "SYNC_EXTRUDER_MOTION MOTION_QUEUE=extruder EXTRUDER=<dual_carriage_extruder>" 或类似命令实现。
 
-See [sample-idex.cfg](../config/sample-idex.cfg) for an example configuration with a regular Cartesian kinematic.
+有关使用常规笛卡尔运动学的双滑架配置示例，请参见 [sample-idex.cfg](../config/sample-idex.cfg)。
 
 ```
 [dual_carriage]
 axis:
-#   The axis this extra carriage is on (either x or y). This parameter
-#   must be provided.
+#   此额外滑架所在的轴（x 或 y）。必须提供此参数。
 #safe_distance:
-#   The minimum distance (in mm) to enforce between the dual and the primary
-#   carriages. If a G-Code command is executed that will bring the carriages
-#   closer than the specified limit, such a command will be rejected with an
-#   error. If safe_distance is not provided, it will be inferred from
-#   position_min and position_max for the dual and primary carriages. If set
-#   to 0 (or safe_distance is unset and position_min and position_max are
-#   identical for the primary and dual carriages), the carriages proximity
-#   checks will be disabled.
+#   双滑架与主滑架之间强制执行的最小距离（单位：mm）。如果执行的 G 代码命令会使两个滑架之间的距离小于指定限制，则该命令将被拒绝并报错。
+#   如果未提供 safe_distance，则会根据双滑架和主滑架的 position_min 和 position_max 自动推断。如果设置为 0（或未设置 safe_distance 且主滑架与双滑架的 position_min 和 position_max 相同），则禁用滑架接近度检查。
 #step_pin:
 #dir_pin:
 #enable_pin:
@@ -2061,26 +1911,19 @@ axis:
 #position_endstop:
 #position_min:
 #position_max:
-#   See the "stepper" section for the definition of the above parameters.
+#   有关上述参数的定义，请参见“stepper”部分。
 ```
 
-For an example of dual carriage configuration with `generic_cartesian` kinematic, see the following configuration [sample](../config/example-generic-caretesian.cfg). Please note that in this case the `[dual_carriage]` configuration deviates from the configuration described above:
+有关使用 `generic_cartesian` 运动学的双滑架配置示例，请参见以下配置 [示例](../config/example-generic-caretesian.cfg)。请注意，在这种情况下，`[dual_carriage]` 配置与上述描述的配置有所不同：
 
 ```
 [dual_carriage my_dc_carriage]
 primary_carriage:
-#   Defines the matching primary carriage of this dual carriage and
-#   the corresponding IDEX axis. Valid choices are x, y, z.
-#   This parameter must be provided.
+#   定义此双滑架对应的主滑架及相应的 IDEX 轴。有效选项为 x, y, z。
+#   必须提供此参数。
 #safe_distance:
-#   The minimum distance (in mm) to enforce between the dual and the primary
-#   carriages. If a G-Code command is executed that will bring the carriages
-#   closer than the specified limit, such a command will be rejected with an
-#   error. If safe_distance is not provided, it will be inferred from
-#   position_min and position_max for the dual and primary carriages. If set
-#   to 0 (or safe_distance is unset and position_min and position_max are
-#   identical for the primary and dual carriages), the carriages proximity
-#   checks will be disabled.
+#   双滑架与主滑架之间强制执行的最小距离（单位：mm）。如果执行的 G 代码命令会使两个滑架之间的距离小于指定限制，则该命令将被拒绝并报错。
+#   如果未提供 safe_distance，则会根据双滑架和主滑架的 position_min 和 position_max 自动推断。如果设置为 0（或未设置 safe_distance 且主滑架与双滑架的 position_min 和 position_max 相同），则禁用滑架接近度检查。
 endstop_pin:
 #position_min:
 position_endstop:
@@ -2093,9 +1936,9 @@ position_max:
 ...
 ```
 
-Refer to [generic cartesian](#generic-cartesian) section for more information on the regular `carriage` parameters.
+有关常规 `carriage` 参数的更多信息，请参见 [generic cartesian](#generic-cartesian) 部分。
 
-Then a user must define one or more stepper motors moving the dual carriage (and other carriages as appropriate), for instance
+然后用户必须定义一个或多个驱动双滑架（以及其他适当滑架）的步进电机，例如：
 
 ```
 [carriage x]
@@ -2113,11 +1956,11 @@ carriages: u-y
 ...
 ```
 
-`[dual_carriage]` requires special configuration for the input shaper. In general, it is necessary to run input shaper calibration twice - for the `dual_carriage` and its `primary_carriage` for the axis they share. Then the input shaper can be configured as follows, assuming the example above:
+`[dual_carriage]` 需要为输入整形器进行特殊配置。通常，需要针对 `dual_carriage` 及其 `primary_carriage` 在共享轴上分别运行两次输入整形器校准。然后可以按如下方式配置输入整形器，假设使用上述示例：
 
 ```
 [input_shaper]
-# Intentionally empty
+# 故意留空
 
 [delayed_gcode init_shaper]
 initial_duration: 0.1
@@ -2128,9 +1971,9 @@ gcode:
   SET_INPUT_SHAPER SHAPER_TYPE_X=<primary_carriage_x_shaper> SHAPER_FREQ_X=<primary_carriage_x_freq> SHAPER_TYPE_Y=<y_shaper> SHAPER_FREQ_Y=<y_freq>
 ```
 
-Note that `SHAPER_TYPE_Y` and `SHAPER_FREQ_Y` must be the same in both commands in this case, since the same motors drive Y axis when either of the `x` and `u` carriages are active.
+请注意，在此情况下，由于无论是 `x` 还是 `u` 滑架激活时均由相同的电机驱动 Y 轴，因此两次命令中的 `SHAPER_TYPE_Y` 和 `SHAPER_FREQ_Y` 必须相同。
 
-It is worth noting that `generic_cartesian` kinematic can support two dual carriages for X and Y axes. For reference, see for instance a [sample](../config/sample-corexyuv.cfg) of CoreXYUV configuration.
+值得注意的是，`generic_cartesian` 运动学可以支持 X 轴和 Y 轴上的两个双滑架。例如，可参考 [示例](../config/sample-corexyuv.cfg) 中的 CoreXYUV 配置。
 
 ### [extruder_stepper]
 
@@ -2163,27 +2006,16 @@ extruder:
 #enable_pin:
 #microsteps:
 #rotation_distance:
-#   See the "stepper" section for a description of these parameters.
+#   有关这些参数的说明，请参见“stepper”部分。
 #velocity:
-#   Set the default velocity (in mm/s) for the stepper. This value
-#   will be used if a MANUAL_STEPPER command does not specify a SPEED
-#   parameter. The default is 5mm/s.
+#   设置该步进电机的默认速度（单位：mm/s）。如果 MANUAL_STEPPER 命令未指定 SPEED 参数，则将使用此值。默认值为 5 mm/s。
 #accel:
-#   Set the default acceleration (in mm/s^2) for the stepper. An
-#   acceleration of zero will result in no acceleration. This value
-#   will be used if a MANUAL_STEPPER command does not specify an ACCEL
-#   parameter. The default is zero.
+#   设置该步进电机的默认加速度（单位：mm/s²）。若加速度设为零，则表示不使用加速度。如果 MANUAL_STEPPER 命令未指定 ACCEL 参数，则将使用此值。默认值为零。
 #endstop_pin:
-#   Endstop switch detection pin. If specified, then one may perform
-#   "homing moves" by adding a STOP_ON_ENDSTOP parameter to
-#   MANUAL_STEPPER movement commands.
+#   限位开关检测引脚。如果指定了此参数，则可通过在 MANUAL_STEPPER 移动命令中添加 STOP_ON_ENDSTOP 参数来执行“回零移动”。
 #position_min:
 #position_max:
-#   The minimum and maximum position the stepper can be commanded to
-#   move to. If specified then one may not command the stepper to move
-#   past the given position. Note that these limits do not prevent
-#   setting an arbitrary position with the `MANUAL_STEPPER
-#   SET_POSITION=x` command. The default is to not enforce a limit.
+#   步进电机可被命令移动到的最小和最大位置。如果指定了这些参数，则不允许命令电机移动超出给定位置。注意：这些限制不会阻止使用 `MANUAL_STEPPER SET_POSITION=x` 命令设置任意位置。默认情况下不施加限制。
 ```
 
 ## 自定义加热器和传感器
@@ -2221,7 +2053,7 @@ extruder:
 
 ### [homing_heaters]
 
-Tool to disable heaters when homing or probing an axis.
+用于在回零或探测某个轴时禁用加热器的工具。
 
 ```
 [homing_heaters]
@@ -2322,7 +2154,7 @@ Tool to disable heaters when homing or probing an axis.
 
 ### [temperature_probe]
 
-Reports probe coil temperature. Includes optional thermal drift calibration for eddy current based probes. A `[temperature_probe]` section may be linked to a `[probe_eddy_current]` by using the same postfix for both sections.
+报告探针线圈温度。包含用于基于涡流的探针的可选热漂移校准功能。通过为 `[temperature_probe]` 和 `[probe_eddy_current]` 两个部分使用相同的后缀，可将它们关联起来。
 
 ```
 [temperature_probe my_probe]
@@ -2330,54 +2162,28 @@ Reports probe coil temperature. Includes optional thermal drift calibration for 
 #sensor_pin:
 #min_temp:
 #max_temp:
-#   Temperature sensor configuration.
-#   See the "extruder" section for the definition of the above
-#   parameters.
+#   温度传感器配置。
+#   有关上述参数的定义，请参见“extruder”部分。
 #smooth_time:
-#   A time value (in seconds) over which temperature measurements will
-#   be smoothed to reduce the impact of measurement noise. The default
-#   is 2.0 seconds.
+#   温度测量值的平滑时间（单位：秒），用于减少测量噪声的影响。默认值为 2.0 秒。
 #gcode_id:
-#   See the "heater_generic" section for the definition of this
-#   parameter.
+#   有关此参数的定义，请参见“heater_generic”部分。
 #speed:
-#   The travel speed [mm/s] for xy moves during calibration.  Default
-#   is the speed defined by the probe.
+#   校准期间 XY 移动的移动速度 [mm/s]。默认值为 probe 中定义的速度。
 #horizontal_move_z:
-#   The z distance [mm] from the bed at which xy moves will occur
-#   during calibration. Default is 2mm.
+#   校准期间 XY 移动时距离热床的高度 [mm]。默认值为 2mm。
 #resting_z:
-#   The z distance [mm] from the bed at which the tool will rest
-#   to heat the probe coil during calibration.  Default is .4mm
+#   校准期间工具静止以加热探针线圈时距离热床的高度 [mm]。默认值为 0.4mm。
 #calibration_position:
-#   The X, Y, Z position where the tool should be moved when
-#   probe drift calibration initializes.  This is the location
-#   where the first manual probe will occur.  If omitted, the
-#   default behavior is not to move the tool prior to the first
-#   manual probe.
+#   探针漂移校准初始化时，工具应移动到的 X, Y, Z 位置。这是首次手动探测发生的位置。如果省略，则默认行为是在首次手动探测前不移动工具。
 #calibration_bed_temp:
-#   The maximum safe bed temperature (in C) used to heat the probe
-#   during probe drift calibration.  When set, the calibration
-#   procedure will turn on the bed after the first sample is
-#   taken.  When the calibration procedure is complete the bed
-#   temperature will be set to zero.  When omitted the default
-#   behavior is not to set the bed temperature.
+#   探针漂移校准期间用于加热探针的最高安全热床温度（单位：°C）。设置此参数后，校准程序将在获取第一个样本后开启热床。校准完成后，热床温度将被设为零。如果省略， 默认行为是不设置热床温度。
 #calibration_extruder_temp:
-#   The extruder temperature (in C) set probe during drift calibration.
-#   When this option is supplied the procedure will wait for until the
-#   specified temperature is reached before requesting the first manual
-#   probe.  When the calibration procedure is complete the extruder
-#   temperature will be set to 0.  When omitted the default behavior is
-#   not to set the extruder temperature.
+#   漂移校准期间为探针设定的挤出机温度（单位：°C）。当提供此选项时，程序将在请求首次手动探测前等待达到指定温度。校准完成后，挤出机温度将被设为 0。如果省略，默认行为是不设置挤出机温度。
 #extruder_heating_z: 50.
-#   The Z location where extruder heating will occur if the
-#   "calibration_extruder_temp" option is set.  Its recommended to heat
-#   the extruder some distance from the bed to minimize its impact on
-#   the probe coil temperature.  The default is 50.
+#   如果设置了 "calibration_extruder_temp" 选项，则在此 Z 位置进行挤出机加热。建议在距离热床一定高度处加热挤出机，以尽量减少对探针线圈温度的影响。默认值为 50。
 #max_validation_temp: 60.
-#   The maximum temperature used to validate the calibration.  It is
-#   recommended to set this to a value between 100 and 120 for enclosed
-#   printers.  The default is 60.
+#   用于验证校准的最大温度。建议在封闭式打印机上将此值设置在 100 到 120 之间。默认值为 60。
 ```
 
 ## 温度传感器
@@ -2472,22 +2278,20 @@ sensor_pin:
 #   每个参数的默认值在上述列表的参数名称旁边。
 ```
 
-### BMP180/BMP280/BME280/BMP388/BME680 temperature sensor
+### BMP180/BMP280/BME280/BMP388/BME680 温度传感器
 
-BMP180/BMP280/BME280/BMP388/BME680 two wire interface (I2C) environmental sensors. Note that these sensors are not intended for use with extruders and heater beds, but rather for monitoring ambient temperature (C), pressure (hPa), relative humidity and in case of the BME680 gas level. See [sample-macros.cfg](../config/sample-macros.cfg) for a gcode_macro that may be used to report pressure and humidity in addition to temperature.
+BMP180/BMP280/BME280/BMP388/BME680 两线接口（I2C）环境传感器。请注意，这些传感器并非用于挤出机和加热床，而是用于监测环境温度（°C）、气压（hPa）、相对湿度，以及 BME680 的气体浓度。有关可用于报告气压和湿度（除温度外）的 G 代码宏，请参见 [sample-macros.cfg](../config/sample-macros.cfg)。
 
 ```
 sensor_type: BME280
 #i2c_address:
-#   Default is 118 (0x76). The BMP180, BMP388 and some BME280 sensors
-#   have an address of 119 (0x77).
+#   默认地址为 118 (0x76)。BMP180、BMP388 和部分 BME280 传感器的地址为 119 (0x77)。
 #i2c_mcu:
 #i2c_bus:
 #i2c_software_scl_pin:
 #i2c_software_sda_pin:
 #i2c_speed:
-#   See the "common I2C settings" section for a description of the
-#   above parameters.
+#   有关上述参数的说明，请参见“通用 I2C 设置”部分。
 ```
 
 ### AHT10/AHT20/AHT21 温度传感器
@@ -2496,88 +2300,76 @@ AHT10/AHT20/AHT21 是两线接口（I2C）环境传感器。注意这些传感�
 
 ```
 sensor_type: AHT10
-#   Also use AHT10 for AHT20 and AHT21 sensors.
+#   AHT10 传感器类型也适用于 AHT20 和 AHT21 传感器。
 #i2c_address:
-#   Default is 56 (0x38). Some AHT10 sensors give the option to use
-#   57 (0x39) by moving a resistor.
+#   默认地址为 56 (0x38)。部分 AHT10 传感器可通过移动电阻选择使用 57 (0x39)。
 #i2c_mcu:
 #i2c_bus:
 #i2c_speed:
-#   See the "common I2C settings" section for a description of the
-#   above parameters.
+#   有关上述参数的说明，请参见“通用 I2C 设置”部分。
 #aht10_report_time:
-#   Interval in seconds between readings. Default is 30, minimum is 5
+#   读数之间的时间间隔（单位：秒）。默认值为 30，最小值为 5。
 ```
-
 ### HTU21D 传感器
 
 [adc_temperature]
 
 ```
 sensor_type:
-#   Must be "HTU21D" , "SI7013", "SI7020", "SI7021" or "SHT21"
+#   必须为 "HTU21D"、"SI7013"、"SI7020"、"SI7021" 或 "SHT21" 之一。
 #i2c_address:
-#   Default is 64 (0x40).
+#   默认地址为 64 (0x40)。
 #i2c_mcu:
 #i2c_bus:
 #i2c_software_scl_pin:
 #i2c_software_sda_pin:
 #i2c_speed:
-#   See the "common I2C settings" section for a description of the
-#   above parameters.
+#   有关上述参数的说明，请参见“通用 I2C 设置”部分。
 #htu21d_hold_master:
-#   If the sensor can hold the I2C buf while reading. If True no other
-#   bus communication can be performed while reading is in progress.
-#   Default is False.
+#   传感器在读取数据时是否能锁定 I2C 总线。如果为 True，则读取过程中无法进行其他总线通信。默认值为 False。
 #htu21d_resolution:
-#   The resolution of temperature and humidity reading.
-#   Valid values are:
-#    'TEMP14_HUM12' -> 14bit for Temp and 12bit for humidity
-#    'TEMP13_HUM10' -> 13bit for Temp and 10bit for humidity
-#    'TEMP12_HUM08' -> 12bit for Temp and 08bit for humidity
-#    'TEMP11_HUM11' -> 11bit for Temp and 11bit for humidity
-#   Default is: "TEMP11_HUM11"
+#   温度和湿度读数的分辨率。有效值包括：
+#    'TEMP14_HUM12' -> 温度 14 位，湿度 12 位
+#    'TEMP13_HUM10' -> 温度 13 位，湿度 10 位
+#    'TEMP12_HUM08' -> 温度 12 位，湿度 8 位
+#    'TEMP11_HUM11' -> 温度 11 位，湿度 11 位
+#   默认值为："TEMP11_HUM11"
 #htu21d_report_time:
-#   Interval in seconds between readings. Default is 30
+#   读数之间的时间间隔（单位：秒）。默认值为 30。
 ```
 
-### SHT3X sensor
+### SHT3X 传感器
 
-SHT3X family two wire interface (I2C) environmental sensor. These sensors have a range of -55~125 C, so are usable for e.g. chamber temperature monitoring. They can also function as simple fan/heater controllers.
+SHT3X 系列两线接口（I2C）环境传感器。该传感器测温范围为 -55~125 °C，因此可用于例如腔室温度监测。它们也可作为简单的风扇/加热器控制器使用。
 
 ```
 sensor_type: SHT3X
 #i2c_address:
-#   Default is 68 (0x44).
+#   默认地址为 68 (0x44)。
 #i2c_mcu:
 #i2c_bus:
 #i2c_software_scl_pin:
 #i2c_software_sda_pin:
 #i2c_speed:
-#   See the "common I2C settings" section for a description of the
-#   above parameters.
+#   有关上述参数的说明，请参见“通用 I2C 设置”部分。
 ```
 
 ### LM75 温度传感器
 
-LM75/LM75A两线（I2C）连接的温度传感器。这些传感器的温度范围为-55~125 C，因此可用于例如试验室温度监测。它们还可以作为简单的风扇/加热器控制器使用。
+LM75/LM75A 两线（I2C）连接的温度传感器。这些传感器的温度测量范围为 -55~125 °C，因此可用于例如实验室温度监测。它们还可以作为简单的风扇/加热器控制器使用。
 
 ```
 sensor_type: LM75
 #i2c_address:
-#   Default is 72 (0x48). Normal range is 72-79 (0x48-0x4F) and the 3
-#   low bits of the address are configured via pins on the chip
-#   (usually with jumpers or hard wired).
+#   默认地址为 72 (0x48)。正常地址范围为 72-79 (0x48-0x4F)，地址的低 3 位通过芯片上的引脚配置（通常通过跳线或硬连线）。
 #i2c_mcu:
 #i2c_bus:
 #i2c_software_scl_pin:
 #i2c_software_sda_pin:
 #i2c_speed:
-#   See the "common I2C settings" section for a description of the
-#   above parameters.
+#   有关上述参数的说明，请参见“通用 I2C 设置”部分。
 #lm75_report_time:
-#   Interval in seconds between readings. Default is 0.8, with minimum
-#   0.5.
+#   读数之间的时间间隔（单位：秒）。默认值为 0.8，最小值为 0.5。
 ```
 
 ### 微控制器的内置温度传感器
@@ -2640,22 +2432,19 @@ serial_no:
 #   读取的微控制器。必须是host_mcu
 ```
 
-### Combined temperature sensor
+### 组合温度传感器
 
-Combined temperature sensor is a virtual temperature sensor based on several other sensors. This sensor can be used with extruders, heater_generic and heater beds.
+组合温度传感器是一种基于多个其他传感器的虚拟温度传感器。该传感器可用于挤出机、heater_generic 和加热床。
 
 ```
 sensor_type: temperature_combined
 #sensor_list:
-#   Must be provided. List of sensors to combine to new "virtual"
-#   sensor.
-#   E.g. 'temperature_sensor sensor1,extruder,heater_bed'
+#   必须提供。用于组合成新的“虚拟”传感器的传感器列表。
+#   例如：'temperature_sensor sensor1, extruder, heater_bed'
 #combination_method:
-#   Must be provided. Combination method used for the sensor.
-#   Available options are 'max', 'min', 'mean'.
+#   必须提供。用于该传感器的组合方法。可用选项为 'max'（最大值）、'min'（最小值）、'mean'（平均值）。
 #maximum_deviation:
-#   Must be provided. Maximum permissible deviation between the sensors
-#   to combine (e.g. 5 degrees). To disable it, use a large value (e.g. 999.9)
+#   必须提供。待组合传感器之间允许的最大偏差（例如 5 摄氏度）。若要禁用此检查，请使用一个较大的值（例如 999.9）。
 ```
 
 ## 风扇
@@ -2738,19 +2527,13 @@ pin:
 #tachometer_ppr:
 #tachometer_poll_interval:
 #enable_pin:
-#   See the "fan" section for a description of the above parameters.
+#   有关上述参数的说明，请参见“fan”部分。
 #heater: extruder
-#   Name of the config section defining the heater that this fan is
-#   associated with. If a comma separated list of heater names is
-#   provided here, then the fan will be enabled when any of the given
-#   heaters are enabled. The default is "extruder".
+#   定义与此风扇关联的加热器的配置部分名称。如果此处提供以逗号分隔的多个加热器名称列表，则当任意一个指定的加热器启用时，该风扇都将被启用。默认值为 "extruder"。
 #heater_temp: 50.0
-#   A temperature (in Celsius) that the heater must drop below before
-#   the fan is disabled. The default is 50 Celsius.
+#   关联的加热器温度必须降至该值（单位：摄氏度）以下，风扇才会被关闭。默认值为 50 摄氏度。
 #fan_speed: 1.0
-#   The fan speed (expressed as a value from 0.0 to 1.0) that the fan
-#   will be set to when its associated heater is enabled. The default
-#   is 1.0
+#   当其关联的加热器启用时，风扇将被设置为此速度（以 0.0 到 1.0 的数值表示）。默认值为 1.0。
 ```
 
 ### [controller_fan]
@@ -2807,45 +2590,32 @@ pin:
 #tachometer_ppr:
 #tachometer_poll_interval:
 #enable_pin:
-#   See the "fan" section for a description of the above parameters.
+#   有关上述参数的说明，请参见“fan”部分。
 #sensor_type:
 #sensor_pin:
 #control:
 #max_delta:
 #min_temp:
 #max_temp:
-#   See the "extruder" section for a description of the above parameters.
+#   有关上述参数的说明，请参见“extruder”部分。
 #pid_Kp:
 #pid_Ki:
 #pid_Kd:
-#   The proportional (pid_Kp), integral (pid_Ki), and derivative
-#   (pid_Kd) settings for the PID feedback control system. Klipper
-#   evaluates the PID settings with the following general formula:
-#     fan_pwm = max_power - (Kp*e + Ki*integral(e) - Kd*derivative(e)) / 255
-#   Where "e" is "target_temperature - measured_temperature" and
-#   "fan_pwm" is the requested fan rate with 0.0 being full off and
-#   1.0 being full on. The pid_Kp, pid_Ki, and pid_Kd parameters must
-#   be provided when the PID control algorithm is enabled.
+#   PID 反馈控制系统中的比例（pid_Kp）、积分（pid_Ki）和微分（pid_Kd）参数。Klipper 使用以下通用公式计算 PID 参数：
+#     fan_pwm = max_power - (Kp*e + Ki*∫(e)dt - Kd*de/dt) / 255
+#   其中 "e" 为 "目标温度 - 测量温度"，"fan_pwm" 是请求的风扇转速，0.0 表示完全关闭，1.0 表示全速运行。
+#   当启用 PID 控制算法时，必须提供 pid_Kp、pid_Ki 和 pid_Kd 参数。
 #pid_deriv_time: 2.0
-#   A time value (in seconds) over which temperature measurements will
-#   be smoothed when using the PID control algorithm. This may reduce
-#   the impact of measurement noise. The default is 2 seconds.
+#   使用 PID 控制算法时，用于平滑温度测量值的时间（单位：秒）。这有助于减少测量噪声的影响。默认值为 2 秒。
 #target_temp: 40.0
-#   A temperature (in Celsius) that will be the target temperature.
-#   The default is 40 degrees.
+#   设定的目标温度（单位：摄氏度）。默认值为 40 摄氏度。
 #max_speed: 1.0
-#   The fan speed (expressed as a value from 0.0 to 1.0) that the fan
-#   will be set to when the sensor temperature exceeds the set value.
-#   The default is 1.0.
+#   当传感器温度超过设定值时，风扇将被设置为此速度（以 0.0 到 1.0 的数值表示）。默认值为 1.0。
 #min_speed: 0.3
-#   The minimum fan speed (expressed as a value from 0.0 to 1.0) that
-#   the fan will be set to for PID temperature fans.
-#   The default is 0.3.
+#   PID 温控风扇的最小风扇速度（以 0.0 到 1.0 的数值表示）。默认值为 0.3。
 #gcode_id:
-#   If set, the temperature will be reported in M105 queries using the
-#   given id. The default is to not report the temperature via M105.
+#   如果设置，该温度将在 M105 查询中使用指定的 ID 进行报告。默认情况下，不通过 M105 报告温度。
 ```
-
 ### [fan_generic]
 
 手动控制的风扇（可以用"fan_generic"前缀定义任何数量的手动风扇分）。可以通过 SET_FAN_SPEED[gcode命令](G-Code.md#fan_generic)设置风扇速度。
@@ -2951,20 +2721,18 @@ PCA9533 LED支持。PCA9533 在mightyboard上使用。
 ```
 [pca9533 my_pca9533]
 #i2c_address: 98
-#   The i2c address that the chip is using on the i2c bus. Use 98 for
-#   the PCA9533/1, 99 for the PCA9533/2. The default is 98.
+#   芯片在 I2C 总线上使用的 I2C 地址。PCA9533/1 使用 98，PCA9533/2 使用 99。默认值为 98。
 #i2c_mcu:
 #i2c_bus:
 #i2c_software_scl_pin:
 #i2c_software_sda_pin:
 #i2c_speed:
-#   See the "common I2C settings" section for a description of the
-#   above parameters.
+#   有关上述参数的说明，请参见“通用 I2C 设置”部分。
 #initial_RED: 0.0
 #initial_GREEN: 0.0
 #initial_BLUE: 0.0
 #initial_WHITE: 0.0
-#   See the "led" section for information on these parameters.
+#   有关这些参数的详细信息，请参见“led”部分。
 ```
 
 ### [pca9632]
@@ -2974,28 +2742,23 @@ PCA9632 LED支持。PCA9632在FlashForge Dreamer上使用。
 ```
 [pca9632 my_pca9632]
 #i2c_address: 98
-#   The i2c address that the chip is using on the i2c bus. This may be
-#   96, 97, 98, or 99.  The default is 98.
+#   芯片在 I2C 总线上使用的 I2C 地址。地址可能是 96、97、98 或 99。默认值为 98。
 #i2c_mcu:
 #i2c_bus:
 #i2c_software_scl_pin:
 #i2c_software_sda_pin:
 #i2c_speed:
-#   See the "common I2C settings" section for a description of the
-#   above parameters.
+#   有关上述参数的说明，请参见“通用 I2C 设置”部分。
 #scl_pin:
 #sda_pin:
-#   Alternatively, if the pca9632 is not connected to a hardware I2C
-#   bus, then one may specify the "clock" (scl_pin) and "data"
-#   (sda_pin) pins. The default is to use hardware I2C.
+#   或者，如果 pca9632 未连接到硬件 I2C 总线，则可以指定“时钟”（scl_pin）和“数据”（sda_pin）引脚。默认使用硬件 I2C。
 #color_order: RGBW
-#   Set the pixel order of the LED (using a string containing the
-#   letters R, G, B, W). The default is RGBW.
+#   设置 LED 的像素顺序（使用包含字母 R、G、B、W 的字符串）。默认值为 RGBW。
 #initial_RED: 0.0
 #initial_GREEN: 0.0
 #initial_BLUE: 0.0
 #initial_WHITE: 0.0
-#   See the "led" section for information on these parameters.
+#   有关这些参数的详细信息，请参见“led”部分。
 ```
 
 ## 额外的舵机、按钮和其他引脚
@@ -3033,99 +2796,67 @@ pin:
 ```
 [gcode_button my_gcode_button]
 pin:
-#   The pin on which the button is connected. This parameter must be
-#   provided.
+#   按钮所连接的引脚。此参数必须提供。
 #analog_range:
-#   Two comma separated resistances (in Ohms) specifying the minimum
-#   and maximum resistance range for the button. If analog_range is
-#   provided then the pin must be an analog capable pin. The default
-#   is to use digital gpio for the button.
+#   两个以逗号分隔的电阻值（单位：欧姆），用于指定按钮的最小和最大电阻范围。如果提供了 analog_range，则引脚必须是支持模拟信号的引脚。默认使用数字 GPIO 作为按钮输入。
 #analog_pullup_resistor:
-#   The pullup resistance (in Ohms) when analog_range is specified.
-#   The default is 4700 ohms.
+#   当指定了 analog_range 时，使用的上拉电阻值（单位：欧姆）。默认值为 4700 欧姆。
 #press_gcode:
-#   A list of G-Code commands to execute when the button is pressed.
-#   G-Code templates are supported. This parameter must be provided.
+#   按钮按下时要执行的 G 代码命令列表。支持 G 代码模板。此参数必须提供。
 #release_gcode:
-#   A list of G-Code commands to execute when the button is released.
-#   G-Code templates are supported. The default is to not run any
-#   commands on a button release.
+#   按钮释放时要执行的 G 代码命令列表。支持 G 代码模板。默认情况下，按钮释放时不执行任何命令。
 #debounce_delay:
-#   A period of time in seconds to debounce events prior to running the
-#   button gcode. If the button is pressed and released during this
-#   delay, the entire button press is ignored. Default is 0.
+#   在执行按钮 G 代码前用于消除抖动的时间（单位：秒）。如果在该延迟时间内按钮被按下后又释放，则整个按钮操作将被忽略。默认值为 0。
 ```
 
 ### [output_pin]
 
 运行时可配置的输出引脚（可以定义任意数量的带有 "output_pin "前缀的分段）。在这里配置的引脚将被设置为输出引脚，可以在运行时使用 "SET_PIN PIN=my_pin VALUE=.1 "类型的扩展[G代码命令](G-Code.md#output_pin)对其进行修改。
-
 ```
 [output_pin my_pin]
 pin:
-#   The pin to configure as an output. This parameter must be
-#   provided.
+#   要配置为输出的引脚。此参数必须提供。
 #pwm: False
-#   Set if the output pin should be capable of pulse-width-modulation.
-#   If this is true, the value fields should be between 0 and 1; if it
-#   is false the value fields should be either 0 or 1. The default is
-#   False.
+#   设置输出引脚是否支持脉宽调制（PWM）。如果为 True，则 value 字段的值应在 0 到 1 之间；如果为 False，则 value 字段应为 0 或 1。默认值为 False。
 #value:
-#   The value to initially set the pin to during MCU configuration.
-#   The default is 0 (for low voltage).
+#   在 MCU 配置期间，引脚初始设置的值。默认值为 0（低电平）。
 #shutdown_value:
-#   The value to set the pin to on an MCU shutdown event. The default
-#   is 0 (for low voltage).
+#   在 MCU 关闭事件发生时，引脚将被设置的值。默认值为 0（低电平）。
 #cycle_time: 0.100
-#   The amount of time (in seconds) per PWM cycle. It is recommended
-#   this be 10 milliseconds or greater when using software based PWM.
-#   The default is 0.100 seconds for pwm pins.
+#   每个 PWM 周期的时间（单位：秒）。当使用软件 PWM 时，建议该值至少为 10 毫秒。对于 PWM 引脚，默认值为 0.100 秒。
 #hardware_pwm: False
-#   Enable this to use hardware PWM instead of software PWM. When
-#   using hardware PWM the actual cycle time is constrained by the
-#   implementation and may be significantly different than the
-#   requested cycle_time. The default is False.
+#   启用此选项以使用硬件 PWM 而非软件 PWM。使用硬件 PWM 时，实际周期时间受具体实现限制，可能与请求的 cycle_time 有显著差异。默认值为 False。
 #scale:
-#   This parameter can be used to alter how the 'value' and
-#   'shutdown_value' parameters are interpreted for pwm pins. If
-#   provided, then the 'value' parameter should be between 0.0 and
-#   'scale'. This may be useful when configuring a PWM pin that
-#   controls a stepper voltage reference. The 'scale' can be set to
-#   the equivalent stepper amperage if the PWM were fully enabled, and
-#   then the 'value' parameter can be specified using the desired
-#   amperage for the stepper. The default is to not scale the 'value'
-#   parameter.
+#   此参数可用于改变 PWM 引脚的 'value' 和 'shutdown_value' 参数的解释方式。如果提供了该参数，则 'value' 参数的取值范围应为 0.0 到 'scale'。这在配置控制步进电机电压参考的 PWM 引脚时可能有用。例如，可将 'scale' 设置为 PWM 完全开启时对应的等效步进电流，然后 'value' 参数即可用期望的步进电流值来指定。默认情况下，不对 'value' 参数进行缩放。
 #maximum_mcu_duration:
 #static_value:
-#   These options are deprecated and should no longer be specified.
+#   这些选项已弃用，不应再使用。
 ```
 
 ### [pwm_tool]
 
-Pulse width modulation digital output pins capable of high speed updates (one may define any number of sections with an "output_pin" prefix). Pins configured here will be setup as output pins and one may modify them at run-time using "SET_PIN PIN=my_pin VALUE=.1" type extended [g-code commands](G-Codes.md#output_pin).
+支持高速更新的脉宽调制（PWM）数字输出引脚（可定义任意数量以 "output_pin" 为前缀的节）。在此处配置的引脚将被设置为输出引脚，并且可以在运行时使用 "SET_PIN PIN=my_pin VALUE=.1" 类型的扩展 [G 代码命令](G-Codes.md#output_pin) 进行修改。
 
 ```
 [pwm_tool my_tool]
 pin:
-#   The pin to configure as an output. This parameter must be provided.
+#   要配置为输出的引脚。此参数必须提供。
 #maximum_mcu_duration:
-#   The maximum duration a non-shutdown value may be driven by the MCU
-#   without an acknowledge from the host.
-#   If host can not keep up with an update, the MCU will shutdown
-#   and set all pins to their respective shutdown values.
-#   Default: 0 (disabled)
-#   Usual values are around 5 seconds.
+#   MCU 在没有来自主机确认的情况下，驱动非关机状态值的最长时间。
+#   如果主机无法跟上更新速度，MCU 将关闭并将其所有引脚设置为其各自的关机值。
+#   默认值：0（禁用）
+#   通常设置值约为 5 秒。
 #value:
 #shutdown_value:
 #cycle_time: 0.100
 #hardware_pwm: False
 #scale:
-#   See the "output_pin" section for the definition of these parameters.
+#   有关这些参数的定义，请参见“output_pin”部分。
 ```
 
 ### [pwm_cycle_time]
 
-Run-time configurable output pins with dynamic pwm cycle timing (one may define any number of sections with an "pwm_cycle_time" prefix). Pins configured here will be setup as output pins and one may modify them at run-time using "SET_PIN PIN=my_pin VALUE=.1 CYCLE_TIME=0.100" type extended [g-code commands](G-Codes.md#pwm_cycle_time).
+具有动态 PWM 周期时序的运行时可配置输出引脚（可定义任意数量以 "pwm_cycle_time" 为前缀的节）。在此处配置的引脚将被设置为输出引脚，并且可以在运行时使用 "SET_PIN PIN=my_pin VALUE=.1 CYCLE_TIME=0.100" 类型的扩展 [G 代码命令](G-Codes.md#pwm_cycle_time) 进行修改。
 
 ```
 [pwm_cycle_time my_pin]
@@ -3134,7 +2865,7 @@ pin:
 #shutdown_value:
 #cycle_time: 0.100
 #scale:
-#   See the "output_pin" section for information on these parameters.
+#   有关这些参数的详细信息，请参见“output_pin”部分。
 ```
 
 ### [static_digital_output]
