@@ -120,7 +120,7 @@ fade_target: 0
 
 ### 配置零点参考位置
 
-Many probes are susceptible to "drift", ie: inaccuracies in probing introduced by heat or interference. This can make calculating the probe's z-offset challenging, particularly at different bed temperatures. As such, some printers use an endstop for homing the Z axis and a probe for calibrating the mesh. In this configuration it is possible offset the mesh so that the (X, Y) `reference position` applies zero adjustment. The `reference postion` should be the location on the bed where a [Z_ENDSTOP_CALIBRATE](./Manual_Level.md#calibrating-a-z-endstop) paper test is performed. The bed_mesh module provides the `zero_reference_position` option for specifying this coordinate:
+许多探针容易受到“漂移”的影响，即由热量或干扰引起的探测不准确。这使得计算探针的Z偏移量变得困难，尤其是在不同的热床温度下。因此，一些打印机使用限位开关来对Z轴进行归位，而使用探针来校准网格。在这种配置下，可以调整网格，使得(X, Y) `参考位置` 不进行任何调整。`参考位置` 应该是进行[Z_ENDSTOP_CALIBRATE](./Manual_Level.md#calibrating-a-z-endstop) 纸张测试时热床上的位置。bed_mesh模块提供了`zero_reference_position`选项来指定此坐标：
 
 ```
 [bed_mesh]
@@ -182,17 +182,17 @@ faulty_region_4_max: 45.0, 210.0
 
 ![bedmesh_interpolated](img/bedmesh_faulty_regions.svg)
 
-### Adaptive Meshes
+### 自适应网格 (Adaptive Meshes)
 
-Adaptive bed meshing is a way to speed up the bed mesh generation by only probing the area of the bed used by the objects being printed. When used, the method will automatically adjust the mesh parameters based on the area occupied by the defined print objects.
+自适应床网格是一种通过仅探测打印对象所占用区域来加速床网格生成的方法。启用后，该方法会根据定义的打印对象所占据的区域自动调整网格参数。
 
-The adapted mesh area will be computed from the area defined by the boundaries of all the defined print objects so it covers every object, including any margins defined in the configuration. After the area is computed, the number of probe points will be scaled down based on the ratio of the default mesh area and the adapted mesh area. To illustrate this consider the following example:
+自适应网格区域将根据所有定义的打印对象边界所定义的区域计算得出，以覆盖每个对象，包括配置中定义的任何边距。计算出区域后，探测点的数量将根据默认网格区域与自适应网格区域的比率进行缩放。举例说明：
 
-For a 150mmx150mm bed with `mesh_min` set to `25,25` and `mesh_max` set to `125,125`, the default mesh area is a 100mmx100mm square. An adapted mesh area of `50,50` means a ratio of `0.5x0.5` between the adapted area and default mesh area.
+对于一个150mm x 150mm的热床，`mesh_min`设置为`25,25`，`mesh_max`设置为`125,125`，则默认网格区域是一个100mm x 100mm的正方形。如果自适应网格区域为`50,50`，则自适应区域与默认网格区域的比率为`0.5x0.5`。
 
-If the `bed_mesh` configuration specified `probe_count` as `7x7`, the adapted bed mesh will use 4x4 probe points (7 * 0.5 rounded up).
+如果`bed_mesh`配置中`probe_count`指定为`7x7`，那么自适应床网格将使用4x4个探测点（7 * 0.5 向上取整）。
 
-![adaptive_bedmesh](img/adaptive_bed_mesh.svg)
+[adaptive_bedmesh](img/adaptive_bed_mesh.svg)
 
 ```
 [bed_mesh]
@@ -204,33 +204,33 @@ probe_count: 5, 3
 adaptive_margin: 5
 ```
 
-- `adaptive_margin`  *Default Value: 0*  Margin (in mm) to add around the area of the bed used by the defined objects. The diagram below shows the adapted bed mesh area with an `adaptive_margin` of 5mm. The adapted mesh area (area in green) is computed as the used bed area (area in blue) plus the defined margin.
+- `adaptive_margin` *默认值：0* 在定义的打印对象所占用的热床区域周围添加的边距（单位：毫米）。下图显示了`adaptive_margin`为5mm的自适应床网格区域。自适应网格区域（绿色区域）的计算方式为使用的热床区域（蓝色区域）加上定义的边距。
 
-   ![adaptive_bedmesh_margin](img/adaptive_bed_mesh_margin.svg)
+   [adaptive_bedmesh_margin](img/adaptive_bed_mesh_margin.svg)
 
-By nature, adaptive bed meshes use the objects defined by the Gcode file being printed. Therefore, it is expected that each Gcode file will generate a mesh that probes a different area of the print bed. Therefore, adapted bed meshes should not be re-used. The expectation is that a new mesh will be generated for each print if adaptive meshing is used.
+本质上，自适应床网格使用正在打印的G代码文件中定义的对象。因此，每个G代码文件都会生成一个探测热床不同区域的网格。因此，不应重复使用自适应网格。如果使用自适应网格，预期是每次打印都会生成一个新的网格。
 
-It is also important to consider that adaptive bed meshing is best used on machines that can normally probe the entire bed and achieve a maximum variance less than or equal to 1 layer height. Machines with mechanical issues that a full bed mesh normally compensates for may have undesirable results when attempting print moves **outside** of the probed area. If a full bed mesh has a variance greater than 1 layer height, caution must be taken when using adaptive bed meshes and attempting print moves outside of the meshed area.
+还需要注意的是，自适应床网格最适合那些通常能够探测整个热床并使最大偏差小于或等于1层高度的机器。对于存在机械问题、通常需要全床网格来补偿的机器，在**超出**探测区域进行打印移动时可能会产生不良结果。如果全床网格的偏差大于1层高度，在使用自适应床网格并尝试在网格区域外进行打印移动时必须格外小心。
 
-## Surface Scans
+## 表面扫描 (Surface Scans)
 
-Some probes, such as the [Eddy Current Probe](./Eddy_Probe.md), are capable of "scanning" the surface of the bed. That is, these probes can sample a mesh without lifting the tool between samples. To activate scanning mode, the `METHOD=scan` or `METHOD=rapid_scan` probe parameter should be passed in the `BED_MESH_CALIBRATE` gcode command.
+某些探针（例如[涡流探针](./Eddy_Probe.md)）能够“扫描”热床表面，即这些探针可以在不抬起工具的情况下对网格进行采样。要激活扫描模式，应在`BED_MESH_CALIBRATE` G代码命令中传递`METHOD=scan`或`METHOD=rapid_scan`探针参数。
 
-### Scan Height
+### 扫描高度 (Scan Height)
 
-The scan height is set by the `horizontal_move_z` option in `[bed_mesh]`. In addition it can be supplied with the `BED_MESH_CALIBRATE` gcode command via the `HORIZONTAL_MOVE_Z` parameter.
+扫描高度由`[bed_mesh]`中的`horizontal_move_z`选项设置。此外，也可以通过`BED_MESH_CALIBRATE` G代码命令中的`HORIZONTAL_MOVE_Z`参数提供。
 
-The scan height must be sufficiently low to avoid scanning errors. Typically a height of 2mm (ie: `HORIZONTAL_MOVE_Z=2`) should work well, presuming that the probe is mounted correctly.
+扫描高度必须足够低，以避免扫描错误。通常，2mm的高度（例如：`HORIZONTAL_MOVE_Z=2`）效果良好，前提是探针安装正确。
 
-It should be noted that if the probe is more than 4mm above the surface then the results will be invalid. Thus, scanning is not possible on beds with severe surface deviation or beds with extreme tilt that hasn't been corrected.
+需要注意的是，如果探针高于表面超过4mm，则结果将无效。因此，对于表面偏差严重或倾斜度极大的热床（且未校正），无法进行扫描。
 
-### Rapid (Continuous) Scanning
+### 快速（连续）扫描 (Rapid (Continuous) Scanning)
 
-When performing a `rapid_scan` one should keep in mind that the results will have some amount of error. This error should be low enough to be useful on large print areas with reasonably thick layer heights. Some probes may be more prone to error than others.
+执行`rapid_scan`时，应记住结果会存在一定误差。这种误差应足够小，以便在具有合理厚层高的大面积打印区域上使用。某些探针可能比其他探针更容易产生误差。
 
-It is not recommended that rapid mode be used to scan a "dense" mesh. Some of the error introduced during a rapid scan may be gaussian noise from the sensor, and a dense mesh will reflect this noise (ie: there will be peaks and valleys).
+不建议在快速模式下扫描“密集”的网格。快速扫描引入的一些误差可能来自传感器的高斯噪声，而密集的网格会反映这种噪声（即会出现峰谷）。
 
-Bed Mesh will attempt to optimize the travel path to provide the best possible result based on the configuration. This includes avoiding faulty regions when collecting samples and "overshooting" the mesh when changing direction. This overshoot improves sampling at the edges of a mesh, however it requires that the mesh be configured in a way that allows the tool to travel outside of the mesh.
+Bed Mesh会尝试优化行进路径，以根据配置提供最佳可能的结果。这包括在采集样本时避开故障区域，以及在改变方向时“超出”网格。这种超出（overshoot）可以改善网格边缘的采样，但它要求网格配置方式允许工具在网格外移动。
 
 ```
 [bed_mesh]
@@ -242,9 +242,9 @@ probe_count: 5
 scan_overshoot: 8
 ```
 
-- `scan_overshoot` *Default Value: 0 (disabled)* The maximum amount of travel (in mm) available outside of the mesh. For rectangular beds this applies to travel on the X axis, and for round beds it applies to the entire radius. The tool must be able to travel the amount specified outside of the mesh. This value is used to optimize the travel path when performing a "rapid scan". The minimum value that may be specified is 1. The default is no overshoot.
+- `scan_overshoot` *默认值：0（禁用）* 网格外可用的最大移动距离（单位：毫米）。对于矩形热床，这适用于X轴方向的移动；对于圆形热床，它适用于整个半径。工具必须能够在网格外移动指定的距离。此值用于在执行“快速扫描”时优化行进路径。可指定的最小值为1。默认无超出。
 
-If no scan overshoot is configured then travel path optimization will not be applied to changes in direction.
+如果未配置扫描超出，则在改变方向时不会应用行进路径优化。
 
 ## 床网 G代码
 
@@ -254,14 +254,14 @@ If no scan overshoot is configured then travel path optimization will not be app
 
 启动床网校准的探测程序。
 
-The mesh will be immediately ready to use when the command completes and saved into a profile specified by the `PROFILE` parameter, or `default` if unspecified. The `METHOD` parameter takes one of the following values:
+当命令完成时，网格将立即准备好使用，并保存到由`PROFILE`参数指定的配置文件中，如果没有指定，则保存到`default`配置文件。`METHOD`参数接受以下值之一：
 
-- `METHOD=manual`: enables manual probing using the nozzle and the paper test
-- `METHOD=automatic`: Automatic (standard) probing. This is the default.
-- `METHOD=scan`: Enables surface scanning. The tool will pause over each position to collect a sample.
-- `METHOD=rapid_scan`: Enables continuous surface scanning.
+- `METHOD=manual`：启用使用喷嘴和纸张测试的手动探测。
+- `METHOD=automatic`：自动（标准）探测。这是默认设置。
+- `METHOD=scan`：启用表面扫描。工具将在每个位置上方暂停以收集样本。
+- `METHOD=rapid_scan`：启用连续表面扫描。
 
-XY positions are automatically adjusted to include the X and/or Y offsets when a probing method other than `manual` is selected.
+当选择了`manual`以外的探测方法时，XY位置会自动调整以包含X和/或Y偏移量。这意味着在进行非手动探测时，系统会考虑到任何已定义的偏移量，从而确保探测准确性和网格质量。这为用户提供了灵活性，无论是需要精确控制的手动校准，还是追求效率和速度的自动或扫描方法，都可以根据实际需求来选择。
 
 可以通过指定网格参数来修改探测区域。以下参数可用：
 
@@ -350,23 +350,23 @@ PGP 参数是“打印生成的点”的简写。如果设置了`PGP=1`，生成
 
 `BED_MESH_OFFSET [X=<value>] [Y=<value>] [ZFADE=<value>]`
 
-This is useful for printers with multiple independent extruders, as an offset is necessary to produce correct Z adjustment after a tool change. Offsets should be specified relative to the primary extruder. That is, a positive X offset should be specified if the secondary extruder is mounted to the right of the primary extruder, a positive Y offset should be specified if the secondary extruder is mounted "behind" the primary extruder, and a positive ZFADE offset should be specified if the secondary extruder's nozzle is above the primary extruder's.
+这对于拥有多个独立挤出机的打印机非常有用，因为在换工具后需要偏移量来进行正确的Z轴调整。偏移量应相对于主挤出机来指定。也就是说，如果副挤出机安装在主挤出机的右侧，则应指定正的X偏移量；如果副挤出机安装在主挤出机“后面”，则应指定正的Y偏移量；如果副挤出机的喷嘴高于主挤出机的喷嘴，则应指定正的ZFADE偏移量。
 
-Note that a ZFADE offset does *NOT* directly apply additional adjustment. It is intended to compensate for a `gcode offset` when [mesh fade](#mesh-fade) is enabled. For example, if a secondary extruder is higher than the primary and needs a negative gcode offset, ie: `SET_GCODE_OFFSET Z=-.2`, it can be accounted for in `bed_mesh` with `BED_MESH_OFFSET ZFADE=.2`.
+请注意，ZFADE偏移量*不会*直接应用额外的调整。它的目的是在启用[网格渐变](#mesh-fade)时补偿`gcode offset`。例如，如果副挤出机高于主挤出机并且需要负的gcode偏移量，即`SET_GCODE_OFFSET Z=-.2`，则可以在`bed_mesh`中通过`BED_MESH_OFFSET ZFADE=.2`来补偿。
 
-## Bed Mesh Webhooks APIs
+## 床网格Webhooks API
 
-### Dumping mesh data
+### 导出网格数据
 
 `{"id": 123, "method": "bed_mesh/dump_mesh"}`
 
-Dumps the configuration and state for the current mesh and all saved profiles.
+导出当前网格和所有已保存配置文件的配置和状态。
 
-The `dump_mesh` endpoint takes one optional parameter, `mesh_args`. This parameter must be an object, where the keys and values are parameters available to [BED_MESH_CALIBRATE](#bed_mesh_calibrate). This will update the mesh configuration and probe points using the supplied parameters prior to returning the result. It is recommended to omit mesh parameters unless it is desired to visualize the probe points and/or travel path before performing `BED_MESH_CALIBRATE`.
+`dump_mesh`端点接受一个可选参数`mesh_args`。该参数必须是一个对象，其键和值是[BED_MESH_CALIBRATE](#bed_mesh_calibrate)可用的参数。这将在返回结果之前使用提供的参数更新网格配置和探测点。除非希望在执行`BED_MESH_CALIBRATE`之前可视化探测点和/或行进路径，否则建议省略网格参数。
 
-## Visualization and analysis
+## 可视化与分析
 
-Most users will likely find that the visualizers included with applications such as Mainsail, Fluidd, and Octoprint are sufficient for basic analysis. However, Klipper's `scripts` folder contains the `graph_mesh.py` script that may be used to perform additional visualizations and more detailed analysis, particularly useful for debugging hardware or the results produced by `bed_mesh`:
+大多数用户可能会发现，像Mainsail、Fluidd和Octoprint这样的应用程序中包含的可视化工具足以满足基本分析需求。然而，Klipper的`scripts`文件夹中包含`graph_mesh.py`脚本，可用于进行额外的可视化和更详细的分析，对于调试硬件或`bed_mesh`产生的结果特别有用：
 
 ```
 usage: graph_mesh.py [-h] {list,plot,analyze,dump} ...
@@ -375,119 +375,119 @@ Graph Bed Mesh Data
 
 positional arguments:
   {list,plot,analyze,dump}
-    list                List available plot types
-    plot                Plot a specified type
-    analyze             Perform analysis on mesh data
-    dump                Dump API response to json file
+    list                列出可用的绘图类型
+    plot                绘制指定类型
+    analyze             对网格数据执行分析
+    dump                将API响应转储到json文件
 
 options:
-  -h, --help            show this help message and exit
+  -h, --help            显示此帮助信息并退出
 ```
 
-### Pre-requisites
+### 先决条件
 
-Like most graphing tools provided by Klipper, `graph_mesh.py` requires the `matplotlib` and `numpy` python dependencies. In addition, connecting to Klipper via Moonraker's websocket requires the `websockets` python dependency. While all visualizations can be output to an `svg` file, most of the visualizations offered by `graph_mesh.py` are better viewed in live preview mode on a desktop class PC. For example, the 3D visualizations may be rotated and zoomed in preview mode, and the path visualizations can optionally be animated in preview mode.
+与Klipper提供的大多数绘图工具一样，`graph_mesh.py`需要`matplotlib`和`numpy` python依赖项。此外，通过Moonraker的websocket连接到Klipper需要`websockets` python依赖项。虽然所有可视化都可以输出到`svg`文件，但`graph_mesh.py`提供的大多数可视化在桌面级PC的实时预览模式下查看效果更佳。例如，3D可视化可以在预览模式下旋转和缩放，路径可视化可以选择在预览模式下动画播放。
 
-### Plotting Mesh data
+### 绘制网格数据
 
-The `graph_mesh.py` tool can plot several types of visualizations. Available types can be shown by running `graph_mesh.py list`:
+`graph_mesh.py`工具可以绘制几种类型的可视化。通过运行`graph_mesh.py list`可以显示可用的类型：
 
 ```
 graph_mesh.py list
-points    Plot original generated points
-path      Plot probe travel path
-rapid     Plot rapid scan travel path
-probedz   Plot probed Z values
-meshz     Plot mesh Z values
-overlay   Plots the current probed mesh overlaid with a profile
-delta     Plots the delta between current probed mesh and a profile
+points    绘制原始生成的点
+path      绘制探测行进路径
+rapid     绘制快速扫描行进路径
+probedz   绘制探测的Z值
+meshz     绘制网格Z值
+overlay   将当前探测的网格与配置文件叠加绘制
+delta     绘制当前探测网格与配置文件之间的差值
 ```
 
-Several options are available when plotting visualizations:
+绘制可视化时有几种可用选项：
 
 ```
 usage: graph_mesh.py plot [-h] [-a] [-s] [-p PROFILE_NAME] [-o OUTPUT] <plot type> <input>
 
 positional arguments:
-  <plot type>           Type of data to graph
-  <input>               Path/url to Klipper Socket or path to json file
+  <plot type>           要绘制的数据类型
+  <input>               Klipper套接字的路径/URL或json文件的路径
 
 options:
-  -h, --help            show this help message and exit
-  -a, --animate         Animate paths in live preview
-  -s, --scale-plot      Use axis limits reported by Klipper to scale plot X/Y
+  -h, --help            显示此帮助信息并退出
+  -a, --animate         在实时预览中为路径添加动画
+  -s, --scale-plot      使用Klipper报告的axis_minimum和axis_maximum值来缩放绘图的X/Y轴
   -p PROFILE_NAME, --profile-name PROFILE_NAME
-                        Optional name of a profile to plot for 'probedz'
+                        为'probedz'生成3D网格可视化时可选的配置文件名称
   -o OUTPUT, --output OUTPUT
-                        Output file path
+                        输出文件路径
 ```
 
-Below is a description of each argument:
+以下是每个参数的描述：
 
-- `plot type`: A required positional argument designating the type of visualization to generate. Must be one of the types output by the `graph_mesh.py list` command.
-- `input`: A required positional argument containing a path or url to the input source. This must be one of the following:
-   - A path to Klipper's Unix Domain Socket
-   - A url to an instance of Moonraker
-   - A path to a json file produced by `graph_mesh.py dump <input>`
-- `-a`: Optional animation for the `path` and `rapid` visualization types. Animations only apply to a live preview.
-- `-s`: Optionally scales a plot using the `axis_minimum` and `axis_maximum` values reported by Klipper's `toolhead` object when the dump file was generated.
-- `-p`: A profile name that may be specified when generating the `probedz` 3D mesh visualization. When generating an `overlay` or `delta` visualization this argument must be provided.
-- `-o`: An optional file path indicating that the script should save the visualization to this location rather than run in preview mode. Images are saved in `svg` format.
+- `plot type`：指定要生成的可视化类型的必需位置参数。必须是`graph_mesh.py list`命令输出的类型之一。
+- `input`：包含输入源路径或URL的必需位置参数。必须是以下之一：
+   - Klipper的Unix域套接字路径
+   - Moonraker实例的URL
+   - 由`graph_mesh.py dump <input>`生成的json文件路径
+- `-a`：为`path`和`rapid`可视化类型提供可选的动画。动画仅适用于实时预览。
+- `-s`：可选地使用dump文件生成时Klipper的`toolhead`对象报告的`axis_minimum`和`axis_maximum`值来缩放绘图。
+- `-p`：生成`probedz` 3D网格可视化时可指定的配置文件名称。生成`overlay`或`delta`可视化时必须提供此参数。
+- `-o`：可选的文件路径，指示脚本应将可视化保存到此位置而不是以预览模式运行。图像以`svg`格式保存。
 
-For example, to plot an animated rapid path, connecting via Klipper's unix socket:
+例如，要通过Klipper的unix套接字绘制动画快速路径：
 
 ```
 graph_mesh.py plot -a rapid ~/printer_data/comms/klippy.sock
 ```
 
-Or to plot a 3d visualization of the mesh, connecting via Moonraker:
+或者通过Moonraker绘制网格的3D可视化：
 
 ```
 graph_mesh.py plot meshz http://my-printer.local
 ```
 
-### Bed Mesh Analysis
+### 床网格分析
 
-The `graph_mesh.py` tool may also be used to perform an analysis on the data provided by the [bed_mesh/dump_mesh](#dumping-mesh-data) API:
+`graph_mesh.py`工具也可用于对[bed_mesh/dump_mesh](#dumping-mesh-data) API提供的数据执行分析：
 
 ```
 graph_mesh.py analyze <input>
 ```
 
-As with the `plot` command, the `<input>` must be a path to Klipper's unix socket, a URL to an instance of Moonraker, or a path to a json file generated by the dump command.
+与`plot`命令一样，`<input>`必须是Klipper的unix套接字路径、Moonraker实例的URL或由dump命令生成的json文件路径。
 
-To begin, the analysis will perform various checks on the points and probe paths generated by `bed_mesh` at the time of the dump. This includes the following:
+分析开始时，将对`bed_mesh`在dump时生成的点和探测路径执行各种检查。这包括以下内容：
 
-- The number of probe points generated, without any additions
-- The number of probe points generated including any points generated as the result faulty regions and/or a configured zero reference position.
-- The number of probe points generated when performing a rapid scan.
-- The total number of moves generated for a rapid scan.
-- A validation that the probe points generated for a rapid scan are identical to the probe points generated for a standard probing procedure.
-- A "backtracking" check for both the standard probe path and a rapid scan path. Backtracking can be defined as moving to the same position more than once during the probing procedure. Backtracking should never occur during a standard probe. Faulty regions *can* result in backtracking during a rapid scan in an attempt to avoid entering a faulty region when approaching or leaving a probe location, however should never occur otherwise.
+- 生成的探测点数量，不包括任何添加
+- 生成的探测点数量，包括因故障区域和/或配置的零参考位置而生成的任何点
+- 执行快速扫描时生成的探测点数量
+- 快速扫描生成的总移动次数
+- 验证快速扫描生成的探测点与标准探测过程生成的探测点是否相同
+- 对标准探测路径和快速扫描路径进行“回溯”检查。回溯可定义为在探测过程中多次移动到同一位置。标准探测中不应发生回溯。在快速扫描中，故障区域*可能*会导致回溯，这是为了避免在接近或离开探测位置时进入故障区域，但其他情况下不应发生。
 
-Next each probed mesh present in the dump will by analyzed, beginning with the mesh loaded at the time of the dump (if present) and followed by any saved profiles. The following data is extracted:
+接下来，将分析dump中存在的每个探测网格，从dump时加载的网格（如果存在）开始，然后是任何已保存的配置文件。提取以下数据：
 
-- Mesh shape (Min X,Y, Max X,Y Probe Count)
-- Mesh Z range, (Minimum Z, Maximum Z)
-- Mean Z value in the mesh
-- Standard Deviation of the Z values in the Mesh
+- 网格形状（最小X,Y，最大X,Y 探测点数）
+- 网格Z范围（最小Z，最大Z）
+- 网格中的平均Z值
+- 网格中Z值的标准偏差
 
-In addition to the above, a delta analysis is performed between meshes with the same shape, reporting the following:
+除了上述内容外，还会对形状相同的网格执行差值分析，报告以下内容：
 
-- The range of the delta between to meshes (Minimum and Maximum)
-- The mean delta
-- Standard Deviation of the delta
-- The absolute maximum difference
-- The absolute mean
+- 两个网格之间差值的范围（最小值和最大值）
+- 平均差值
+- 差值的标准偏差
+- 绝对最大差值
+- 绝对平均差值
 
-### Save mesh data to a file
+### 将网格数据保存到文件
 
-The `dump` command may be used to save the response to a file which can be shared for analysis when troubleshooting:
+`dump`命令可用于将响应保存到文件中，以便在故障排除时共享进行分析：
 
 ```
-graph_mesh.py dump -o <output file name> <input>
+graph_mesh.py dump -o <输出文件名> <输入>
 ```
 
-The `<input>` should be a path to Klipper's unix socket or a URL to an instance of Moonraker. The `-o` option may be used to specify the path to the output file. If omitted, the file will be saved in the working directory, with a file name in the following format:
+`<input>`应为Klipper的unix套接字路径或Moonraker实例的URL。`-o`选项可用于指定输出文件的路径。如果省略，文件将保存在工作目录中，文件名格式如下：
 
-`klipper-bedmesh-{year}{month}{day}{hour}{minute}{second}.json`
+`klipper-bedmesh-{年}{月}{日}{小时}{分钟}{秒}.json`
