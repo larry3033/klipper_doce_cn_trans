@@ -2902,56 +2902,31 @@ pins:
 ```
 [tmc2130 stepper_x]
 cs_pin:
-#   The pin corresponding to the TMC2130 chip select line. This pin
-#   will be set to low at the start of SPI messages and raised to high
-#   after the message completes. This parameter must be provided.
+#   对应于TMC2130芯片选择线的引脚。在SPI消息开始时，该引脚将被设置为低电平，在消息完成后升高为高电平。必须提供此参数。
 #spi_speed:
 #spi_bus:
 #spi_software_sclk_pin:
 #spi_software_mosi_pin:
 #spi_software_miso_pin:
-#   See the "common SPI settings" section for a description of the
-#   above parameters.
+#   有关上述参数的描述，请参见“通用SPI设置”部分。
 #chain_position:
 #chain_length:
-#   These parameters configure an SPI daisy chain. The two parameters
-#   define the stepper position in the chain and the total chain length.
-#   Position 1 corresponds to the stepper that connects to the MOSI signal.
-#   The default is to not use an SPI daisy chain.
+#   这些参数用于配置SPI菊花链。这两个参数定义了步进电机在链中的位置和总链长度。位置1对应连接到MOSI信号的步进电机。
+#   默认情况下不使用SPI菊花链。
 #interpolate: True
-#   If true, enable step interpolation (the driver will internally
-#   step at a rate of 256 micro-steps). This interpolation does
-#   introduce a small systemic positional deviation - see
-#   TMC_Drivers.md for details. The default is True.
+#   如果为真，则启用步进插值（驱动器将内部以256微步的速率运行）。这种插值会引入微小的系统性位置偏差——详见TMC_Drivers.md中的说明。默认值为True。
 run_current:
-#   The amount of current (in amps RMS) to configure the driver to use
-#   during stepper movement. This parameter must be provided.
+#   配置驱动器在步进电机运动期间使用的电流大小（以安培有效值为单位）。必须提供此参数。
 #hold_current:
-#   The amount of current (in amps RMS) to configure the driver to use
-#   when the stepper is not moving. Setting a hold_current is not
-#   recommended (see TMC_Drivers.md for details). The default is to
-#   not reduce the current.
+#   配置步进电机不运动时驱动器使用的电流大小（以安培有效值为单位）。不建议设置保持电流（详见TMC_Drivers.md中的说明）。默认值为不降低电流。
 #sense_resistor: 0.110
-#   The resistance (in ohms) of the motor sense resistor. The default
-#   is 0.110 ohms.
+#   电机感应电阻的阻值（单位为欧姆）。默认值为0.110欧姆。
 #stealthchop_threshold: 0
-#   The velocity (in mm/s) to set the "stealthChop" threshold to. When
-#   set, "stealthChop" mode will be enabled if the stepper motor
-#   velocity is below this value. Note that the "sensorless homing"
-#   code may temporarily override this setting during homing
-#   operations. The default is 0, which disables "stealthChop" mode.
+#   设置“stealthChop”模式的阈值速度（单位为mm/s）。当设置后，如果步进电机的速度低于此值，则启用“stealthChop”模式。请注意，“无传感器归位”代码可能在归位操作期间临时覆盖此设置。默认值为0，表示禁用“stealthChop”模式。
 #coolstep_threshold:
-#   The velocity (in mm/s) to set the TMC driver internal "CoolStep"
-#   threshold to. If set, the coolstep feature will be enabled when
-#   the stepper motor velocity is near or above this value. Important
-#   - if coolstep_threshold is set and "sensorless homing" is used,
-#   then one must ensure that the homing speed is above the coolstep
-#   threshold! The default is to not enable the coolstep feature.
+#   设置TMC驱动器内部“CoolStep”功能的阈值速度（单位为mm/s）。如果设置，当步进电机速度接近或高于此值时，将启用coolstep功能。重要提示——如果设置了coolstep_threshold并使用“无传感器归位”，则必须确保归位速度高于coolstep阈值！默认情况下不启用coolstep功能。
 #high_velocity_threshold:
-#   The velocity (in mm/s) to set the TMC driver internal "high
-#   velocity" threshold (THIGH) to. This is typically used to disable
-#   the "CoolStep" feature at high speeds. The default is to not set a
-#   TMC "high velocity" threshold.
+#   设置TMC驱动器内部“高速”阈值（THIGH）的速度（单位为mm/s）。通常用于在高速时禁用“CoolStep”功能。默认情况下不设置TMC“高速”阈值。
 #driver_MSLUT0: 2863314260
 #driver_MSLUT1: 1251300522
 #driver_MSLUT2: 608774441
@@ -2969,13 +2944,7 @@ run_current:
 #driver_X3: 255
 #driver_START_SIN: 0
 #driver_START_SIN90: 247
-#   These fields control the Microstep Table registers directly. The optimal
-#   wave table is specific to each motor and might vary with current. An
-#   optimal configuration will have minimal print artifacts caused by
-#   non-linear stepper movement. The values specified above are the default
-#   values used by the driver. The value must be specified as a decimal integer
-#   (hex form is not supported). In order to compute the wave table fields,
-#   see the tmc2130 "Calculation Sheet" from the Trinamic website.
+#   这些字段直接控制微步表寄存器。最佳波形表针对每个电机而定，并可能随电流变化。最佳配置将最大程度减少由步进电机非线性运动引起的打印瑕疵。上面指定的值是驱动器使用的默认值。必须以十进制整数形式指定值（不支持十六进制）。要计算波形表字段，请参见Trinamic网站上的tmc2130“计算表”。
 #driver_IHOLDDELAY: 8
 #driver_TPOWERDOWN: 0
 #driver_TBL: 1
@@ -2996,20 +2965,10 @@ run_current:
 #driver_SEDN: 0
 #driver_SEIMIN: 0
 #driver_SFILT: 0
-#   Set the given register during the configuration of the TMC2130
-#   chip. This may be used to set custom motor parameters. The
-#   defaults for each parameter are next to the parameter name in the
-#   above list.
+#   在配置TMC2130芯片期间设置指定的寄存器。可用于设置自定义电机参数。上述列表中每个参数的默认值位于参数名称旁边。
 #diag0_pin:
 #diag1_pin:
-#   The micro-controller pin attached to one of the DIAG lines of the
-#   TMC2130 chip. Only a single diag pin should be specified. The pin
-#   is "active low" and is thus normally prefaced with "^!". Setting
-#   this creates a "tmc2130_stepper_x:virtual_endstop" virtual pin
-#   which may be used as the stepper's endstop_pin. Doing this enables
-#   "sensorless homing". (Be sure to also set driver_SGT to an
-#   appropriate sensitivity value.) The default is to not enable
-#   sensorless homing.
+#   连接到TMC2130芯片某条DIAG线的微控制器引脚。应仅指定一个diag引脚。该引脚为“低电平有效”，因此通常以“^!”开头。设置此引脚后，会创建一个“tmc2130_stepper_x:virtual_endstop”虚拟引脚，可用作步进电机的endstop_pin。这样做可以启用“无传感器归位”。（请确保同时将driver_SGT设置为适当的灵敏度值。）默认情况下不启用无传感器归位。
 ```
 
 ### [tmc2208]
@@ -3019,39 +2978,21 @@ run_current:
 ```
 [tmc2208 stepper_x]
 uart_pin:
-#   The pin connected to the TMC2208 PDN_UART line. This parameter
-#   must be provided.
+#   连接到TMC2208 PDN_UART线的引脚。必须提供此参数。
 #tx_pin:
-#   If using separate receive and transmit lines to communicate with
-#   the driver then set uart_pin to the receive pin and tx_pin to the
-#   transmit pin. The default is to use uart_pin for both reading and
-#   writing.
+#   如果使用独立的接收和发送线与驱动器通信，则将uart_pin设置为接收引脚，tx_pin设置为发送引脚。默认情况下使用uart_pin进行读写。
 #select_pins:
-#   A comma separated list of pins to set prior to accessing the
-#   tmc2208 UART. This may be useful for configuring an analog mux for
-#   UART communication. The default is to not configure any pins.
+#   在访问tmc2208 UART之前需要设置的引脚列表，以逗号分隔。这可能有助于配置模拟多路复用器以进行UART通信。默认情况下不配置任何引脚。
 #interpolate: True
-#   If true, enable step interpolation (the driver will internally
-#   step at a rate of 256 micro-steps). This interpolation does
-#   introduce a small systemic positional deviation - see
-#   TMC_Drivers.md for details. The default is True.
+#   如果为真，则启用步进插值（驱动器将内部以256微步的速率运行）。这种插值会引入微小的系统性位置偏差——详见TMC_Drivers.md中的说明。默认值为True。
 run_current:
-#   The amount of current (in amps RMS) to configure the driver to use
-#   during stepper movement. This parameter must be provided.
+#   配置驱动器在步进电机运动期间使用的电流大小（以安培有效值为单位）。必须提供此参数。
 #hold_current:
-#   The amount of current (in amps RMS) to configure the driver to use
-#   when the stepper is not moving. Setting a hold_current is not
-#   recommended (see TMC_Drivers.md for details). The default is to
-#   not reduce the current.
+#   配置步进电机不运动时驱动器使用的电流大小（以安培有效值为单位）。不建议设置保持电流（详见TMC_Drivers.md中的说明）。默认值为不降低电流。
 #sense_resistor: 0.110
-#   The resistance (in ohms) of the motor sense resistor. The default
-#   is 0.110 ohms.
+#   电机感应电阻的阻值（单位为欧姆）。默认值为0.110欧姆。
 #stealthchop_threshold: 0
-#   The velocity (in mm/s) to set the "stealthChop" threshold to. When
-#   set, "stealthChop" mode will be enabled if the stepper motor
-#   velocity is below this value. Note that the "sensorless homing"
-#   code may temporarily override this setting during homing
-#   operations. The default is 0, which disables "stealthChop" mode.
+#   设置“stealthChop”模式的阈值速度（单位为mm/s）。当设置后，如果步进电机的速度低于此值，则启用“stealthChop”模式。请注意，“无传感器归位”代码可能在归位操作期间临时覆盖此设置。默认值为0，表示禁用“stealthChop”模式。
 #driver_MULTISTEP_FILT: True
 #driver_IHOLDDELAY: 8
 #driver_TPOWERDOWN: 20
@@ -3067,10 +3008,7 @@ run_current:
 #driver_PWM_GRAD: 14
 #driver_PWM_OFS: 36
 #driver_FREEWHEEL: 0
-#   Set the given register during the configuration of the TMC2208
-#   chip. This may be used to set custom motor parameters. The
-#   defaults for each parameter are next to the parameter name in the
-#   above list.
+#   在配置TMC2208芯片期间设置指定的寄存器。可用于设置自定义电机参数。上述列表中每个参数的默认值位于参数名称旁边。
 ```
 
 ### [tmc2209]
@@ -3087,18 +3025,11 @@ run_current:
 #hold_current:
 #sense_resistor: 0.110
 #stealthchop_threshold: 0
-#   See the "tmc2208" section for the definition of these parameters.
+#   有关这些参数的定义，请参见“tmc2208”部分。
 #coolstep_threshold:
-#   The velocity (in mm/s) to set the TMC driver internal "CoolStep"
-#   threshold to. If set, the coolstep feature will be enabled when
-#   the stepper motor velocity is near or above this value. Important
-#   - if coolstep_threshold is set and "sensorless homing" is used,
-#   then one must ensure that the homing speed is above the coolstep
-#   threshold! The default is to not enable the coolstep feature.
+#   设置TMC驱动器内部“CoolStep”功能的阈值速度（单位为mm/s）。如果设置，当步进电机速度接近或高于此值时，将启用coolstep功能。重要提示——如果设置了coolstep_threshold并使用“无传感器归位”，则必须确保归位速度高于coolstep阈值！默认情况下不启用coolstep功能。
 #uart_address:
-#   The address of the TMC2209 chip for UART messages (an integer
-#   between 0 and 3). This is typically used when multiple TMC2209
-#   chips are connected to the same UART pin. The default is zero.
+#   TMC2209芯片用于UART通信的地址（0到3之间的整数）。当多个TMC2209芯片连接到同一UART引脚时通常使用此参数。默认值为0。
 #driver_MULTISTEP_FILT: True
 #driver_IHOLDDELAY: 8
 #driver_TPOWERDOWN: 20
@@ -3120,18 +3051,10 @@ run_current:
 #driver_SEMAX: 0
 #driver_SEDN: 0
 #driver_SEIMIN: 0
-#   Set the given register during the configuration of the TMC2209
-#   chip. This may be used to set custom motor parameters. The
-#   defaults for each parameter are next to the parameter name in the
-#   above list.
+#   在配置TMC2209芯片期间设置指定的寄存器。可用于设置自定义电机参数。上述列表中每个参数的默认值位于参数名称旁边。
 #diag_pin:
-#   The micro-controller pin attached to the DIAG line of the TMC2209
-#   chip. The pin is normally prefaced with "^" to enable a pullup.
-#   Setting this creates a "tmc2209_stepper_x:virtual_endstop" virtual
-#   pin which may be used as the stepper's endstop_pin. Doing this
-#   enables "sensorless homing". (Be sure to also set driver_SGTHRS to
-#   an appropriate sensitivity value.) The default is to not enable
-#   sensorless homing.
+#   连接到TMC2209芯片DIAG线的微控制器引脚。该引脚通常以“^”开头以启用上拉电阻。
+#   设置此引脚后，会创建一个“tmc2209_stepper_x:virtual_endstop”虚拟引脚，可用作步进电机的endstop_pin。这样做可以启用“无传感器归位”。（请确保同时将driver_SGTHRS设置为适当的灵敏度值。）默认情况下不启用无传感器归位。
 ```
 
 ### [tmc2660]
@@ -3195,62 +3118,36 @@ run_current:
 
 ### [tmc2240]
 
-Configure a TMC2240 stepper motor driver via SPI bus or UART. To use this feature, define a config section with a "tmc2240" prefix followed by the name of the corresponding stepper config section (for example, "[tmc2240 stepper_x]").
-
 ```
 [tmc2240 stepper_x]
 cs_pin:
-#   The pin corresponding to the TMC2240 chip select line. This pin
-#   will be set to low at the start of SPI messages and raised to high
-#   after the message completes. This parameter must be provided.
+#   对应于TMC2240芯片选择线的引脚。在SPI消息开始时，该引脚将被设置为低电平，在消息完成后升高为高电平。必须提供此参数。
 #spi_speed:
 #spi_bus:
 #spi_software_sclk_pin:
 #spi_software_mosi_pin:
 #spi_software_miso_pin:
-#   See the "common SPI settings" section for a description of the
-#   above parameters.
+#   有关上述参数的描述，请参见“通用SPI设置”部分。
 #uart_pin:
-#   The pin connected to the TMC2240 DIAG1/SW line. If this parameter
-#   is provided UART communication is used rather then SPI.
+#   连接到TMC2240 DIAG1/SW线的引脚。如果提供了此参数，则使用UART通信而非SPI。
 #chain_position:
 #chain_length:
-#   These parameters configure an SPI daisy chain. The two parameters
-#   define the stepper position in the chain and the total chain length.
-#   Position 1 corresponds to the stepper that connects to the MOSI signal.
-#   The default is to not use an SPI daisy chain.
+#   这些参数用于配置SPI菊花链。这两个参数定义了步进电机在链中的位置和总链长度。位置1对应连接到MOSI信号的步进电机。
+#   默认情况下不使用SPI菊花链。
 #interpolate: True
-#   If true, enable step interpolation (the driver will internally
-#   step at a rate of 256 micro-steps). The default is True.
+#   如果为真，则启用步进插值（驱动器将内部以256微步的速率运行）。默认值为True。
 run_current:
-#   The amount of current (in amps RMS) to configure the driver to use
-#   during stepper movement. This parameter must be provided.
+#   配置驱动器在步进电机运动期间使用的电流大小（以安培有效值为单位）。必须提供此参数。
 #hold_current:
-#   The amount of current (in amps RMS) to configure the driver to use
-#   when the stepper is not moving. Setting a hold_current is not
-#   recommended (see TMC_Drivers.md for details). The default is to
-#   not reduce the current.
+#   配置步进电机不运动时驱动器使用的电流大小（以安培有效值为单位）。不建议设置保持电流（详见TMC_Drivers.md中的说明）。默认值为不降低电流。
 #rref: 12000
-#   The resistance (in ohms) of the resistor between IREF and GND. The
-#   default is 12000.
+#   IREF与GND之间电阻的阻值（单位为欧姆）。默认值为12000。
 #stealthchop_threshold: 0
-#   The velocity (in mm/s) to set the "stealthChop" threshold to. When
-#   set, "stealthChop" mode will be enabled if the stepper motor
-#   velocity is below this value. Note that the "sensorless homing"
-#   code may temporarily override this setting during homing
-#   operations. The default is 0, which disables "stealthChop" mode.
+#   设置“stealthChop”模式的阈值速度（单位为mm/s）。当设置后，如果步进电机的速度低于此值，则启用“stealthChop”模式。请注意，“无传感器归位”代码可能在归位操作期间临时覆盖此设置。默认值为0，表示禁用“stealthChop”模式。
 #coolstep_threshold:
-#   The velocity (in mm/s) to set the TMC driver internal "CoolStep"
-#   threshold to. If set, the coolstep feature will be enabled when
-#   the stepper motor velocity is near or above this value. Important
-#   - if coolstep_threshold is set and "sensorless homing" is used,
-#   then one must ensure that the homing speed is above the coolstep
-#   threshold! The default is to not enable the coolstep feature.
+#   设置TMC驱动器内部“CoolStep”功能的阈值速度（单位为mm/s）。如果设置，当步进电机速度接近或高于此值时，将启用coolstep功能。重要提示——如果设置了coolstep_threshold并使用“无传感器归位”，则必须确保归位速度高于coolstep阈值！默认情况下不启用coolstep功能。
 #high_velocity_threshold:
-#   The velocity (in mm/s) to set the TMC driver internal "high
-#   velocity" threshold (THIGH) to. This is typically used to disable
-#   the "CoolStep" feature at high speeds. The default is to not set a
-#   TMC "high velocity" threshold.
+#   设置TMC驱动器内部“高速”阈值（THIGH）的速度（单位为mm/s）。通常用于在高速时禁用“CoolStep”功能。默认情况下不设置TMC“高速”阈值。
 #driver_MSLUT0: 2863314260
 #driver_MSLUT1: 1251300522
 #driver_MSLUT2: 608774441
@@ -3269,17 +3166,8 @@ run_current:
 #driver_START_SIN: 0
 #driver_START_SIN90: 247
 #driver_OFFSET_SIN90: 0
-#   These fields control the Microstep Table registers directly. The optimal
-#   wave table is specific to each motor and might vary with current. An
-#   optimal configuration will have minimal print artifacts caused by
-#   non-linear stepper movement. The values specified above are the default
-#   values used by the driver. The value must be specified as a decimal integer
-#   (hex form is not supported). In order to compute the wave table fields,
-#   see the tmc2130 "Calculation Sheet" from the Trinamic website.
-#   Additionally, this driver also has the OFFSET_SIN90 field which can be used
-#   to tune a motor with unbalanced coils. See the `Sine Wave Lookup Table`
-#   section in the datasheet for information about this field and how to tune
-#   it.
+#   这些字段直接控制微步表寄存器。最佳波形表针对每个电机而定，并可能随电流变化。最佳配置将最大程度减少由步进电机非线性运动引起的打印瑕疵。上面指定的值是驱动器使用的默认值。必须以十进制整数形式指定值（不支持十六进制）。要计算波形表字段，请参见Trinamic网站上的tmc2130“计算表”。
+#   此外，此驱动器还有一个OFFSET_SIN90字段，可用于调整线圈不平衡的电机。有关此字段及其调优方法的信息，请参见数据手册中的“正弦波查找表”部分。
 #driver_MULTISTEP_FILT: True
 #driver_IHOLDDELAY: 6
 #driver_IRUNDELAY: 4
@@ -3312,20 +3200,10 @@ run_current:
 #driver_SFILT: 0
 #driver_SG4_ANGLE_OFFSET: 1
 #driver_SLOPE_CONTROL: 0
-#   Set the given register during the configuration of the TMC2240
-#   chip. This may be used to set custom motor parameters. The
-#   defaults for each parameter are next to the parameter name in the
-#   above list.
+#   在配置TMC2240芯片期间设置指定的寄存器。可用于设置自定义电机参数。上述列表中每个参数的默认值位于参数名称旁边。
 #diag0_pin:
 #diag1_pin:
-#   The micro-controller pin attached to one of the DIAG lines of the
-#   TMC2240 chip. Only a single diag pin should be specified. The pin
-#   is "active low" and is thus normally prefaced with "^!". Setting
-#   this creates a "tmc2240_stepper_x:virtual_endstop" virtual pin
-#   which may be used as the stepper's endstop_pin. Doing this enables
-#   "sensorless homing". (Be sure to also set driver_SGT to an
-#   appropriate sensitivity value.) The default is to not enable
-#   sensorless homing.
+#   连接到TMC2240芯片某条DIAG线的微控制器引脚。应仅指定一个diag引脚。该引脚为“低电平有效”，因此通常以“^!”开头。设置此引脚后，会创建一个“tmc2240_stepper_x:virtual_endstop”虚拟引脚，可用作步进电机的endstop_pin。这样做可以启用“无传感器归位”。（请确保同时将driver_SGT设置为适当的灵敏度值。）默认情况下不启用无传感器归位。
 ```
 
 ### [tmc5160]
@@ -3335,54 +3213,31 @@ run_current:
 ```
 [tmc5160 stepper_x]
 cs_pin:
-#   The pin corresponding to the TMC5160 chip select line. This pin
-#   will be set to low at the start of SPI messages and raised to high
-#   after the message completes. This parameter must be provided.
+#   对应于TMC5160芯片选择线的引脚。在SPI消息开始时，该引脚将被设置为低电平，在消息完成后升高为高电平。必须提供此参数。
 #spi_speed:
 #spi_bus:
 #spi_software_sclk_pin:
 #spi_software_mosi_pin:
 #spi_software_miso_pin:
-#   See the "common SPI settings" section for a description of the
-#   above parameters.
+#   有关上述参数的描述，请参见“通用SPI设置”部分。
 #chain_position:
 #chain_length:
-#   These parameters configure an SPI daisy chain. The two parameters
-#   define the stepper position in the chain and the total chain length.
-#   Position 1 corresponds to the stepper that connects to the MOSI signal.
-#   The default is to not use an SPI daisy chain.
+#   这些参数用于配置SPI菊花链。这两个参数定义了步进电机在链中的位置和总链长度。位置1对应连接到MOSI信号的步进电机。
+#   默认情况下不使用SPI菊花链。
 #interpolate: True
-#   If true, enable step interpolation (the driver will internally
-#   step at a rate of 256 micro-steps). The default is True.
+#   如果为真，则启用步进插值（驱动器将内部以256微步的速率运行）。默认值为True。
 run_current:
-#   The amount of current (in amps RMS) to configure the driver to use
-#   during stepper movement. This parameter must be provided.
+#   配置驱动器在步进电机运动期间使用的电流大小（以安培有效值为单位）。必须提供此参数。
 #hold_current:
-#   The amount of current (in amps RMS) to configure the driver to use
-#   when the stepper is not moving. Setting a hold_current is not
-#   recommended (see TMC_Drivers.md for details). The default is to
-#   not reduce the current.
+#   配置步进电机不运动时驱动器使用的电流大小（以安培有效值为单位）。不建议设置保持电流（详见TMC_Drivers.md中的说明）。默认值为不降低电流。
 #sense_resistor: 0.075
-#   The resistance (in ohms) of the motor sense resistor. The default
-#   is 0.075 ohms.
+#   电机感应电阻的阻值（单位为欧姆）。默认值为0.075欧姆。
 #stealthchop_threshold: 0
-#   The velocity (in mm/s) to set the "stealthChop" threshold to. When
-#   set, "stealthChop" mode will be enabled if the stepper motor
-#   velocity is below this value. Note that the "sensorless homing"
-#   code may temporarily override this setting during homing
-#   operations. The default is 0, which disables "stealthChop" mode.
+#   设置“stealthChop”模式的阈值速度（单位为mm/s）。当设置后，如果步进电机的速度低于此值，则启用“stealthChop”模式。请注意，“无传感器归位”代码可能在归位操作期间临时覆盖此设置。默认值为0，表示禁用“stealthChop”模式。
 #coolstep_threshold:
-#   The velocity (in mm/s) to set the TMC driver internal "CoolStep"
-#   threshold to. If set, the coolstep feature will be enabled when
-#   the stepper motor velocity is near or above this value. Important
-#   - if coolstep_threshold is set and "sensorless homing" is used,
-#   then one must ensure that the homing speed is above the coolstep
-#   threshold! The default is to not enable the coolstep feature.
+#   设置TMC驱动器内部“CoolStep”功能的阈值速度（单位为mm/s）。如果设置，当步进电机速度接近或高于此值时，将启用coolstep功能。重要提示——如果设置了coolstep_threshold并使用“无传感器归位”，则必须确保归位速度高于coolstep阈值！默认情况下不启用coolstep功能。
 #high_velocity_threshold:
-#   The velocity (in mm/s) to set the TMC driver internal "high
-#   velocity" threshold (THIGH) to. This is typically used to disable
-#   the "CoolStep" feature at high speeds. The default is to not set a
-#   TMC "high velocity" threshold.
+#   设置TMC驱动器内部“高速”阈值（THIGH）的速度（单位为mm/s）。通常用于在高速时禁用“CoolStep”功能。默认情况下不设置TMC“高速”阈值。
 #driver_MSLUT0: 2863314260
 #driver_MSLUT1: 1251300522
 #driver_MSLUT2: 608774441
@@ -3400,13 +3255,7 @@ run_current:
 #driver_X3: 255
 #driver_START_SIN: 0
 #driver_START_SIN90: 247
-#   These fields control the Microstep Table registers directly. The optimal
-#   wave table is specific to each motor and might vary with current. An
-#   optimal configuration will have minimal print artifacts caused by
-#   non-linear stepper movement. The values specified above are the default
-#   values used by the driver. The value must be specified as a decimal integer
-#   (hex form is not supported). In order to compute the wave table fields,
-#   see the tmc2130 "Calculation Sheet" from the Trinamic website.
+#   这些字段直接控制微步表寄存器。最佳波形表针对每个电机而定，并可能随电流变化。最佳配置将最大程度减少由步进电机非线性运动引起的打印瑕疵。上面指定的值是驱动器使用的默认值。必须以十进制整数形式指定值（不支持十六进制）。要计算波形表字段，请参见Trinamic网站上的tmc2130“计算表”。
 #driver_MULTISTEP_FILT: True
 #driver_IHOLDDELAY: 6
 #driver_TPOWERDOWN: 10
@@ -3440,22 +3289,11 @@ run_current:
 #driver_BBMCLKS: 4
 #driver_BBMTIME: 0
 #driver_FILT_ISENSE: 0
-#   Set the given register during the configuration of the TMC5160
-#   chip. This may be used to set custom motor parameters. The
-#   defaults for each parameter are next to the parameter name in the
-#   above list.
+#   在配置TMC5160芯片期间设置指定的寄存器。可用于设置自定义电机参数。上述列表中每个参数的默认值位于参数名称旁边。
 #diag0_pin:
 #diag1_pin:
-#   The micro-controller pin attached to one of the DIAG lines of the
-#   TMC5160 chip. Only a single diag pin should be specified. The pin
-#   is "active low" and is thus normally prefaced with "^!". Setting
-#   this creates a "tmc5160_stepper_x:virtual_endstop" virtual pin
-#   which may be used as the stepper's endstop_pin. Doing this enables
-#   "sensorless homing". (Be sure to also set driver_SGT to an
-#   appropriate sensitivity value.) The default is to not enable
-#   sensorless homing.
+#   连接到TMC5160芯片某条DIAG线的微控制器引脚。应仅指定一个diag引脚。该引脚为“低电平有效”，因此通常以“^!”开头。设置此引脚后，会创建一个“tmc5160_stepper_x:virtual_endstop”虚拟引脚，可用作步进电机的endstop_pin。这样做可以启用“无传感器归位”。（请确保同时将driver_SGT设置为适当的灵敏度值。）默认情况下不启用无传感器归位。
 ```
-
 ## 运行时步进电机电流配置
 
 ### [ad5206]
