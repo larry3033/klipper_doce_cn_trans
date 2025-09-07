@@ -3337,33 +3337,20 @@ enable_pin:
 ```
 [mcp4451 my_digipot]
 i2c_address:
-#   The i2c address that the chip is using on the i2c bus. This
-#   parameter must be provided.
+#   芯片在I2C总线上使用的I2C地址。必须提供此参数。
 #i2c_mcu:
 #i2c_bus:
 #i2c_software_scl_pin:
 #i2c_software_sda_pin:
 #i2c_speed:
-#   See the "common I2C settings" section for a description of the
-#   above parameters.
+#   有关上述参数的说明，请参见“通用I2C设置”部分。
 #wiper_0:
 #wiper_1:
 #wiper_2:
 #wiper_3:
-#   The value to statically set the given MCP4451 "wiper" to. This is
-#   typically set to a number between 0.0 and 1.0 with 1.0 being the
-#   highest resistance and 0.0 being the lowest resistance. However,
-#   the range may be changed with the 'scale' parameter (see below).
-#   If a wiper is not specified then it is left unconfigured.
+#   静态设置指定MCP4451“滑臂”的值。通常设置为0.0到1.0之间的数字，1.0为最高电阻，0.0为最低电阻。但是，可以使用'scale'参数更改范围（见下文）。如果未指定滑臂，则保持未配置状态。
 #scale:
-#   This parameter can be used to alter how the 'wiper_x' parameters
-#   are interpreted. If provided, then the 'wiper_x' parameters should
-#   be between 0.0 and 'scale'. This may be useful when the MCP4451 is
-#   used to set stepper voltage references. The 'scale' can be set to
-#   the equivalent stepper amperage if the MCP4451 were at its highest
-#   resistance, and then the 'wiper_x' parameters can be specified
-#   using the desired amperage value for the stepper. The default is
-#   to not scale the 'wiper_x' parameters.
+#   此参数可用于改变对'wiper_x'参数的解释方式。如果提供，则'wiper_x'参数应在0.0到'scale'之间。当MCP4451用于设置步进电机电压参考时，此功能可能有用。'scale'可设置为MCP4451处于最高电阻时对应的步进电机电流值，然后'wiper_x'参数可用期望的步进电机电流值指定。默认情况下不对'wiper_x'参数进行缩放。
 ```
 
 ### [mcp4728]
@@ -3373,34 +3360,20 @@ i2c_address:
 ```
 [mcp4728 my_dac]
 #i2c_address: 96
-#   The i2c address that the chip is using on the i2c bus. The default
-#   is 96.
+#   芯片在I2C总线上使用的I2C地址。默认值为96。
 #i2c_mcu:
 #i2c_bus:
 #i2c_software_scl_pin:
 #i2c_software_sda_pin:
 #i2c_speed:
-#   See the "common I2C settings" section for a description of the
-#   above parameters.
+#   有关上述参数的说明，请参见“通用I2C设置”部分。
 #channel_a:
 #channel_b:
 #channel_c:
 #channel_d:
-#   The value to statically set the given MCP4728 channel to. This is
-#   typically set to a number between 0.0 and 1.0 with 1.0 being the
-#   highest voltage (2.048V) and 0.0 being the lowest voltage.
-#   However, the range may be changed with the 'scale' parameter (see
-#   below). If a channel is not specified then it is left
-#   unconfigured.
+#   静态设置指定MCP4728通道的值。通常设置为0.0到1.0之间的数字，1.0为最高电压（2.048V），0.0为最低电压。但是，可以使用'scale'参数更改范围（见下文）。如果未指定通道，则保持未配置状态。
 #scale:
-#   This parameter can be used to alter how the 'channel_x' parameters
-#   are interpreted. If provided, then the 'channel_x' parameters
-#   should be between 0.0 and 'scale'. This may be useful when the
-#   MCP4728 is used to set stepper voltage references. The 'scale' can
-#   be set to the equivalent stepper amperage if the MCP4728 were at
-#   its highest voltage (2.048V), and then the 'channel_x' parameters
-#   can be specified using the desired amperage value for the
-#   stepper. The default is to not scale the 'channel_x' parameters.
+#   此参数可用于改变对'channel_x'参数的解释方式。如果提供，则'channel_x'参数应在0.0到'scale'之间。当MCP4728用于设置步进电机电压参考时，此功能可能有用。'scale'可设置为MCP4728处于最高电压（2.048V）时对应的步进电机电流值，然后'channel_x'参数可用期望的步进电机电流值指定。默认情况下不对'channel_x'参数进行缩放。
 ```
 
 ### [mcp4018]
@@ -3438,82 +3411,46 @@ wiper:
 ```
 [display]
 lcd_type:
-#   The type of LCD chip in use. This may be "hd44780", "hd44780_spi",
-#   "aip31068_spi", "st7920", "emulated_st7920", "uc1701", "ssd1306", or
-#   "sh1106".
-#   See the display sections below for information on each type and
-#   additional parameters they provide. This parameter must be
-#   provided.
+#   使用的LCD芯片类型。可以是"hd44780"、"hd44780_spi"、
+#   "aip31068_spi"、"st7920"、"emulated_st7920"、"uc1701"、"ssd1306"或
+#   "sh1106"。
+#   有关每种类型的信息及其提供的额外参数，请参见下面的显示部分。
+#   此参数必须提供。
 #display_group:
-#   The name of the display_data group to show on the display. This
-#   controls the content of the screen (see the "display_data" section
-#   for more information). The default is _default_20x4 for hd44780 or
-#   aip31068_spi displays and _default_16x4 for other displays.
+#   要在显示屏上显示的display_data组的名称。这控制屏幕内容（更多信息请参见“display_data”部分）。
+#   默认值对于hd44780或aip31068_spi显示屏为_default_20x4，对于其他显示屏为_default_16x4。
 #menu_timeout:
-#   Timeout for menu. Being inactive this amount of seconds will
-#   trigger menu exit or return to root menu when having autorun
-#   enabled. The default is 0 seconds (disabled)
+#   菜单超时时间。在此秒数内无操作将触发菜单退出，或在启用自动运行时返回主菜单。默认值为0秒（禁用）。
 #menu_root:
-#   Name of the main menu section to show when clicking the encoder
-#   on the home screen. The defaults is __main, and this shows the
-#   the default menus as defined in klippy/extras/display/menu.cfg
+#   在主屏幕点击编码器时显示的主菜单部分的名称。默认值为__main，这将显示在klippy/extras/display/menu.cfg中定义的默认菜单。
 #menu_reverse_navigation:
-#   When enabled it will reverse up and down directions for list
-#   navigation. The default is False. This parameter is optional.
+#   启用后将反转列表导航的上下方向。默认值为False。此参数是可选的。
 #encoder_pins:
-#   The pins connected to encoder. 2 pins must be provided when using
-#   encoder. This parameter must be provided when using menu.
+#   连接到编码器的引脚。使用编码器时必须提供2个引脚。使用菜单时必须提供此参数。
 #encoder_steps_per_detent:
-#   How many steps the encoder emits per detent ("click"). If the
-#   encoder takes two detents to move between entries or moves two
-#   entries from one detent, try changing this. Allowed values are 2
-#   (half-stepping) or 4 (full-stepping). The default is 4.
+#   编码器每个齿距（“点击”）发出的步数。如果编码器需要两个齿距才能在条目之间移动，或一个齿距移动两个条目，请尝试更改此值。允许的值为2（半步）或4（全步）。默认值为4。
 #click_pin:
-#   The pin connected to 'enter' button or encoder 'click'. This
-#   parameter must be provided when using menu. The presence of an
-#   'analog_range_click_pin' config parameter turns this parameter
-#   from digital to analog.
+#   连接到“确认”按钮或编码器“点击”的引脚。使用菜单时必须提供此参数。存在'analog_range_click_pin'配置参数时，此参数将从数字变为模拟。
 #back_pin:
-#   The pin connected to 'back' button. This parameter is optional,
-#   menu can be used without it. The presence of an
-#   'analog_range_back_pin' config parameter turns this parameter from
-#   digital to analog.
+#   连接到“返回”按钮的引脚。此参数是可选的，菜单可以在没有它的情况下使用。存在'analog_range_back_pin'配置参数时，此参数将从数字变为模拟。
 #up_pin:
-#   The pin connected to 'up' button. This parameter must be provided
-#   when using menu without encoder. The presence of an
-#   'analog_range_up_pin' config parameter turns this parameter from
-#   digital to analog.
+#   连接到“上”按钮的引脚。在不使用编码器的情况下使用菜单时必须提供此参数。存在'analog_range_up_pin'配置参数时，此参数将从数字变为模拟。
 #down_pin:
-#   The pin connected to 'down' button. This parameter must be
-#   provided when using menu without encoder. The presence of an
-#   'analog_range_down_pin' config parameter turns this parameter from
-#   digital to analog.
+#   连接到“下”按钮的引脚。在不使用编码器的情况下使用菜单时必须提供此参数。存在'analog_range_down_pin'配置参数时，此参数将从数字变为模拟。
 #kill_pin:
-#   The pin connected to 'kill' button. This button will call
-#   emergency stop. The presence of an 'analog_range_kill_pin' config
-#   parameter turns this parameter from digital to analog.
+#   连接到“急停”按钮的引脚。此按钮将调用紧急停止。存在'analog_range_kill_pin'配置参数时，此参数将从数字变为模拟。
 #analog_pullup_resistor: 4700
-#   The resistance (in ohms) of the pullup attached to the analog
-#   button. The default is 4700 ohms.
+#   附加到模拟按钮的上拉电阻的阻值（单位：欧姆）。默认值为4700欧姆。
 #analog_range_click_pin:
-#   The resistance range for a 'enter' button. Range minimum and
-#   maximum comma-separated values must be provided when using analog
-#   button.
+#   “确认”按钮的电阻范围。使用模拟按钮时必须提供以逗号分隔的范围最小值和最大值。
 #analog_range_back_pin:
-#   The resistance range for a 'back' button. Range minimum and
-#   maximum comma-separated values must be provided when using analog
-#   button.
+#   “返回”按钮的电阻范围。使用模拟按钮时必须提供以逗号分隔的范围最小值和最大值。
 #analog_range_up_pin:
-#   The resistance range for a 'up' button. Range minimum and maximum
-#   comma-separated values must be provided when using analog button.
+#   “上”按钮的电阻范围。使用模拟按钮时必须提供以逗号分隔的范围最小值和最大值。
 #analog_range_down_pin:
-#   The resistance range for a 'down' button. Range minimum and
-#   maximum comma-separated values must be provided when using analog
-#   button.
+#   “下”按钮的电阻范围。使用模拟按钮时必须提供以逗号分隔的范围最小值和最大值。
 #analog_range_kill_pin:
-#   The resistance range for a 'kill' button. Range minimum and
-#   maximum comma-separated values must be provided when using analog
-#   button.
+#   “急停”按钮的电阻范围。使用模拟按钮时必须提供以逗号分隔的范围最小值和最大值。
 ```
 
 #### hd44780显示器
@@ -3572,7 +3509,7 @@ spi_software_miso_pin:
 
 #### aip31068_spi display
 
-Information on configuring an aip31068_spi display - a very similar to hd44780_spi a 20x04 (20 symbols by 4 lines) display with slightly different internal protocol.
+有关配置aip31068_spi显示屏的信息——这是一种与hd44780_spi非常相似的20x04（20个字符乘以4行）显示屏，但内部协议略有不同。
 
 ```
 [display]
@@ -3581,15 +3518,12 @@ latch_pin:
 spi_software_sclk_pin:
 spi_software_mosi_pin:
 spi_software_miso_pin:
-#   The pins connected to the shift register controlling the display.
-#   The spi_software_miso_pin needs to be set to an unused pin of the
-#   printer mainboard as the shift register does not have a MISO pin,
-#   but the software spi implementation requires this pin to be
-#   configured.
+#   连接到控制显示屏的移位寄存器的引脚。
+#   spi_software_miso_pin需要设置为打印机主板上的一个未使用引脚，因为移位寄存器没有MISO引脚，
+#   但软件SPI实现要求配置此引脚。
 #line_length:
-#   Set the number of characters per line for an hd44780 type lcd.
-#   Possible values are 20 (default) and 16. The number of lines is
-#   fixed to 4.
+#   设置hd44780类型液晶屏每行的字符数。
+#   可能的值是20（默认）和16。行数固定为4。
 ...
 ```
 
@@ -3658,15 +3592,13 @@ ssd1306 和 sh1106 显示屏的配置信息。
 ```
 [display]
 lcd_type:
-#   Set to either "ssd1306" or "sh1106" for the given display type.
+#   根据显示屏类型设置为"ssd1306"或"sh1106"。
 #i2c_mcu:
 #i2c_bus:
 #i2c_software_scl_pin:
 #i2c_software_sda_pin:
 #i2c_speed:
-#   Optional parameters available for displays connected via an i2c
-#   bus. See the "common I2C settings" section for a description of
-#   the above parameters.
+#   通过I2C总线连接的显示屏可用的可选参数。有关上述参数的说明，请参见“通用I2C设置”部分。
 #cs_pin:
 #dc_pin:
 #spi_speed:
@@ -3674,27 +3606,17 @@ lcd_type:
 #spi_software_sclk_pin:
 #spi_software_mosi_pin:
 #spi_software_miso_pin:
-#   The pins connected to the lcd when in "4-wire" spi mode. See the
-#   "common SPI settings" section for a description of the parameters
-#   that start with "spi_". The default is to use i2c mode for the
-#   display.
+#   在“4线”SPI模式下连接到液晶屏的引脚。有关以"spi_"开头的参数说明，请参见“通用SPI设置”部分。默认使用I2C模式连接显示屏。
 #reset_pin:
-#   A reset pin may be specified on the display. If it is not
-#   specified then the hardware must have a pull-up on the
-#   corresponding lcd line.
+#   可以为显示屏指定一个复位引脚。如果未指定，则硬件必须在相应的液晶屏线路上有上拉电阻。
 #contrast:
-#   The contrast to set. The value may range from 0 to 256 and the
-#   default is 239.
+#   设置的对比度。数值范围为0到256，默认值为239。
 #vcomh: 0
-#   Set the Vcomh value on the display. This value is associated with
-#   a "smearing" effect on some OLED displays. The value may range
-#   from 0 to 63. Default is 0.
+#   设置显示屏上的Vcomh值。此值与某些OLED显示屏上的“拖影”效应有关。数值范围为0到63。默认值为0。
 #invert: False
-#   TRUE inverts the pixels on certain OLED displays.  The default is
-#   False.
+#   True可在某些OLED显示屏上反转像素。默认值为False。
 #x_offset: 0
-#   Set the horizontal offset value on SH1106 displays. The default is
-#   0.
+#   设置SH1106显示屏的水平偏移值。默认值为0。
 ...
 ```
 
@@ -3856,37 +3778,19 @@ text:
 ```
 [filament_switch_sensor my_sensor]
 #pause_on_runout: True
-#   When set to True, a PAUSE will execute immediately after a runout
-#   is detected. Note that if pause_on_runout is False and the
-#   runout_gcode is omitted then runout detection is disabled. Default
-#   is True.
+#   设置为True时，检测到断料后将立即执行PAUSE。注意，如果pause_on_runout为False且省略了runout_gcode，则断料检测将被禁用。默认值为True。
 #runout_gcode:
-#   A list of G-Code commands to execute after a filament runout is
-#   detected. See docs/Command_Templates.md for G-Code format. If
-#   pause_on_runout is set to True this G-Code will run after the
-#   PAUSE is complete. The default is not to run any G-Code commands.
+#   检测到耗材用尽后要执行的G代码命令列表。有关G代码格式，请参见docs/Command_Templates.md。如果pause_on_runout设置为True，则此G代码将在PAUSE完成后运行。默认情况下不运行任何G代码命令。
 #insert_gcode:
-#   A list of G-Code commands to execute after a filament insert is
-#   detected. See docs/Command_Templates.md for G-Code format. The
-#   default is not to run any G-Code commands, which disables insert
-#   detection.
+#   检测到插入耗材后要执行的G代码命令列表。有关G代码格式，请参见docs/Command_Templates.md。默认情况下不运行任何G代码命令，这将禁用插入检测。
 #event_delay: 3.0
-#   The minimum amount of time in seconds to delay between events.
-#   Events triggered during this time period will be silently
-#   ignored. The default is 3 seconds.
+#   事件之间延迟的最短时间（以秒为单位）。在此时间段内触发的事件将被静默忽略。默认值为3秒。
 #pause_delay: 0.5
-#   The amount of time to delay, in seconds, between the pause command
-#   dispatch and execution of the runout_gcode. It may be useful to
-#   increase this delay if OctoPrint exhibits strange pause behavior.
-#   Default is 0.5 seconds.
+#   从发送暂停命令到执行runout_gcode之间的延迟时间（以秒为单位）。如果OctoPrint表现出奇怪的暂停行为，增加此延迟可能会有帮助。默认值为0.5秒。
 #debounce_delay:
-#   A period of time in seconds to debounce events prior to running the
-#   switch gcode. The switch must he held in a single state for at least
-#   this long to activate. If the switch is toggled on/off during this delay,
-#   the event is ignored. Default is 0.
+#   在运行开关G代码之前对事件进行去抖动的时间段（以秒为单位）。开关必须至少保持单一状态这么长时间才能激活。如果开关在此延迟期间被切换开/关，则该事件将被忽略。默认值为0。
 #switch_pin:
-#   The pin on which the switch is connected. This parameter must be
-#   provided.
+#   连接开关的引脚。必须提供此参数。
 ```
 
 ### [filament_motion_sensor]
@@ -3914,15 +3818,15 @@ switch_pin:
 
 ### [tsl1401cl_filament_width_sensor]
 
-TSLl401CL Based Filament Width Sensor. See the [guide](TSL1401CL_Filament_Width_Sensor.md) for more information.
+基于TSLl401CL的耗材宽度传感器。更多信息请参见[指南](TSL1401CL_Filament_Width_Sensor.md)。
 
 ```
 [tsl1401cl_filament_width_sensor]
 #pin:
 #default_nominal_filament_diameter: 1.75 # (mm)
-#   Maximum allowed filament diameter difference as mm.
+#   允许的最大耗材直径差，单位为毫米。
 #max_difference: 0.2
-#   The distance from sensor to the melting chamber as mm.
+#   传感器到熔融腔的距离，单位为毫米。
 #measurement_delay: 100
 ```
 
@@ -3984,169 +3888,136 @@ adc2:
 
 ### [load_cell]
 
-Load Cell. Uses an ADC sensor attached to a load cell to create a digital scale.
+称重传感器。使用连接到称重传感器的ADC传感器创建数字秤。
 
 ```
 [load_cell]
 sensor_type:
-#   This must be one of the supported sensor types, see below.
+#   此参数必须是支持的传感器类型之一，详见下文。
 #counts_per_gram:
-#   The floating point number of sensor counts that indicates 1 gram of force.
-#   This value is calculated by the LOAD_CELL_CALIBRATE command.
+#   表示1克力的浮点传感器计数值。
+#   此值由LOAD_CELL_CALIBRATE命令计算得出。
 #reference_tare_counts:
-#   The integer tare value, in raw sensor counts, taken when LOAD_CELL_CALIBRATE
-#   is run. This is the default tare value when klipper starts up.
+#   LOAD_CELL_CALIBRATE运行时采集的皮重值，单位为原始传感器计数。
+#   这是Klipper启动时的默认皮重值。
 #sensor_orientation:
-#   Change the sensor's orientation. Can be either 'normal' or 'inverted'.
-#   The default is 'normal'. Use 'inverted' if the sensor reports a
-#   decreasing force value when placed under load.
+#   更改传感器的方向。可以是'normal'（正常）或'inverted'（反转）。
+#   默认为'normal'。如果传感器在受力时报告的力值减小，请使用'inverted'。
 ```
 
 #### HX711
 
-This is a 24 bit low sample rate chip using "bit-bang" communications. It is suitable for filament scales.
+这是一种使用“位操作”通信的24位低采样率芯片。适用于耗材秤。
 
 ```
 [load_cell]
 sensor_type: hx711
 sclk_pin:
-#   The pin connected to the HX711 clock line. This parameter must be provided.
+#   连接到HX711时钟线的引脚。必须提供此参数。
 dout_pin:
-#   The pin connected to the HX711 data output line. This parameter must be
-#   provided.
+#   连接到HX711数据输出线的引脚。必须提供此参数。
 #gain: A-128
-#   Valid values for gain are: A-128, A-64, B-32. The default is A-128.
-#   'A' denotes the input channel and the number denotes the gain. Only the 3
-#   listed combinations are supported by the chip. Note that changing the gain
-#   setting also selects the channel being read.
+#   增益的有效值为：A-128, A-64, B-32。默认值为A-128。
+#   'A'表示输入通道，数字表示增益。芯片仅支持列出的3种组合。注意，更改增益设置也会选择要读取的通道。
 #sample_rate: 80
-#   Valid values for sample_rate are 80 or 10. The default value is 80.
-#   This must match the wiring of the chip. The sample rate cannot be changed
-#   in software.
+#   采样率的有效值为80或10。默认值为80。
+#   此值必须与芯片的接线匹配。采样率不能在软件中更改。
 ```
 
 #### HX717
 
-This is the 4x higher sample rate version of the HX711, suitable for probing.
+这是HX711的4倍高采样率版本，适用于探针。
 
 ```
 [load_cell]
 sensor_type: hx717
 sclk_pin:
-#   The pin connected to the HX717 clock line. This parameter must be provided.
+#   连接到HX717时钟线的引脚。必须提供此参数。
 dout_pin:
-#   The pin connected to the HX717 data output line. This parameter must be
-#   provided.
+#   连接到HX717数据输出线的引脚。必须提供此参数。
 #gain: A-128
-#   Valid values for gain are A-128, B-64, A-64, B-8.
-#   'A' denotes the input channel and the number denotes the gain setting.
-#   Only the 4 listed combinations are supported by the chip. Note that
-#   changing the gain setting also selects the channel being read.
+#   增益的有效值为A-128, B-64, A-64, B-8。
+#   'A'表示输入通道，数字表示增益设置。
+#   芯片仅支持列出的4种组合。注意，更改增益设置也会选择要读取的通道。
 #sample_rate: 320
-#   Valid values for sample_rate are: 10, 20, 80, 320. The default is 320.
-#   This must match the wiring of the chip. The sample rate cannot be changed
-#   in software.
+#   采样率的有效值为：10, 20, 80, 320。默认值为320。
+#   此值必须与芯片的接线匹配。采样率不能在软件中更改。
 ```
 
 #### ADS1220
 
-The ADS1220 is a 24 bit ADC supporting up to a 2Khz sample rate configurable in software.
+ADS1220是一款24位ADC，支持最高2Khz的采样率，可在软件中配置。
 
 ```
 [load_cell]
 sensor_type: ads1220
 cs_pin:
-#   The pin connected to the ADS1220 chip select line. This parameter must
-#   be provided.
+#   连接到ADS1220芯片选择线的引脚。必须提供此参数。
 #spi_speed: 512000
-#   This chip supports 2 speeds: 256000 or 512000. The faster speed is only
-#   enabled when one of the Turbo sample rates is used. The correct spi_speed
-#   is selected based on the sample rate.
+#   该芯片支持两种速度：256000或512000。只有在使用Turbo采样率之一时才启用较快速度。
+#   正确的spi_speed会根据采样率自动选择。
 #spi_bus:
 #spi_software_sclk_pin:
 #spi_software_mosi_pin:
 #spi_software_miso_pin:
-#   See the "common SPI settings" section for a description of the
-#   above parameters.
+#   有关上述参数的说明，请参见“通用SPI设置”部分。
 data_ready_pin:
-#   Pin connected to the ADS1220 data ready line. This parameter must be
-#   provided.
+#   连接到ADS1220数据就绪线的引脚。必须提供此参数。
 #gain: 128
-#   Valid gain values are 128, 64, 32, 16, 8, 4, 2, 1
-#   The default is 128
+#   有效的增益值为128, 64, 32, 16, 8, 4, 2, 1
+#   默认值为128
 #pga_bypass: False
-#   Disable the internal Programmable Gain Amplifier. If
-#   True the PGA will be disabled for gains 1, 2, and 4. The PGA is always
-#   enabled for gain settings 8 to 128, regardless of the pga_bypass setting.
-#   If AVSS is used as an input pga_bypass is forced to True.
-#   The default is False.
+#   禁用内部可编程增益放大器。如果为True，则增益为1, 2, 4时将禁用PGA。
+#   对于增益设置8到128，无论pga_bypass设置如何，PGA始终启用。
+#   如果使用AVSS作为输入，则pga_bypass强制为True。
+#   默认值为False。
 #sample_rate: 660
-#   This chip supports two ranges of sample rates, Normal and Turbo. In turbo
-#   mode the chip's internal clock runs twice as fast and the SPI communication
-#   speed is also doubled.
-#   Normal sample rates: 20, 45, 90, 175, 330, 600, 1000
-#   Turbo sample rates: 40, 90, 180, 350, 660, 1200, 2000
-#   The default is 660
+#   该芯片支持两种采样率范围：正常和Turbo。在Turbo模式下，芯片内部时钟运行速度加倍，SPI通信速度也加倍。
+#   正常采样率：20, 45, 90, 175, 330, 600, 1000
+#   Turbo采样率：40, 90, 180, 350, 660, 1200, 2000
+#   默认值为660
 #input_mux:
-#   Input multiplexer configuration, select a pair of pins to use. The first pin
-#   is the positive, AINP, and the second pin is the negative, AINN. Valid
-#   values are: 'AIN0_AIN1', 'AIN0_AIN2', 'AIN0_AIN3', 'AIN1_AIN2', 'AIN1_AIN3',
-#   'AIN2_AIN3', 'AIN1_AIN0', 'AIN3_AIN2', 'AIN0_AVSS', 'AIN1_AVSS', 'AIN2_AVSS'
-#   and 'AIN3_AVSS'. If AVSS is used the PGA is bypassed and the pga_bypass
-#   setting will be forced to True.
-#   The default is AIN0_AIN1.
+#   输入多路复用器配置，选择一对引脚使用。第一个引脚为正极AINP，第二个引脚为负极AINN。
+#   有效值为：'AIN0_AIN1', 'AIN0_AIN2', 'AIN0_AIN3', 'AIN1_AIN2', 'AIN1_AIN3', 'AIN2_AIN3', 'AIN1_AIN0', 'AIN3_AIN2', 'AIN0_AVSS', 'AIN1_AVSS', 'AIN2_AVSS'和'AIN3_AVSS'。
+#   如果使用AVSS，PGA将被旁路，pga_bypass设置将被强制为True。
+#   默认值为AIN0_AIN1。
 #vref:
-#   The selected voltage reference. Valid values are: 'internal', 'REF0', 'REF1'
-#   and 'analog_supply'. Default is 'internal'.
+#   选择的电压参考。有效值为：'internal'（内部）, 'REF0', 'REF1'和'analog_supply'（模拟电源）。
+#   默认值为'internal'。
 ```
 
 ### [load_cell_probe]
 
-Load Cell Probe. This combines the functionality of a [probe] and a [load_cell].
+称重传感器探针。此模块结合了[probe]和[load_cell]的功能。
 
 ```
 [load_cell_probe]
 sensor_type:
-#   This must be one of the supported bulk ADC sensor types and support
-#   load cell endstops on the mcu.
+#   此参数必须是支持的批量ADC传感器类型之一，并且MCU需支持称重传感器作为限位开关。
 #counts_per_gram:
 #reference_tare_counts:
 #sensor_orientation:
-#   These parameters must be configured before the probe will operate.
-#   See the [load_cell] section for further details.
+#   在探针正常工作前，这些参数必须进行配置。
+#   更多详细信息请参见[load_cell]部分。
 #force_safety_limit: 2000
-#   The safe limit for probing force relative to the reference_tare_counts on
-#   the load_cell. The default is +/-2Kg.
+#   相对于load_cell上reference_tare_counts的探针安全力限制。默认值为+/-2Kg。
 #trigger_force: 75.0
-#   The force that the probe will trigger at. 75g is the default.
+#   探针触发时的力。默认值为75g。
 #drift_filter_cutoff_frequency: 0.8
-#   Enable optional continuous taring while homing & probing to reject drift.
-#   The value is a frequency, in Hz, below which drift will be ignored. This
-#   option requires the SciPy library. Default: None
+#   在归位和探测时启用可选的连续去皮功能，以消除漂移。
+#   该值是一个频率（Hz），低于此频率的漂移将被忽略。此选项需要SciPy库。默认值：None
 #drift_filter_delay: 2
-#   The delay, or 'order', of the drift filter. This controls the number of
-#   samples required to make a trigger detection. Can be 1 or 2, the default
-#   is 2.
+#   漂移滤波器的延迟或“阶数”。这控制了触发检测所需的样本数。可以是1或2，默认值为2。
 #buzz_filter_cutoff_frequency: 100.0
-#   The value is a frequency, in Hz, above which high frequency noise in the
-#   load cell will be igfiltered outnored. This option requires the SciPy
-#   library. Default: None
+#   该值是一个频率（Hz），高于此频率的称重传感器高频噪声将被滤除。此选项需要SciPy库。默认值：None
 #buzz_filter_delay: 2
-#   The delay, or 'order', of the buzz filter. This controle the number of
-#   samples required to make a trigger detection. Can be 1 or 2, the default
-#   is 2.
+#   嗡嗡声滤波器的延迟或“阶数”。这控制了触发检测所需的样本数。可以是1或2，默认值为2。
 #notch_filter_frequencies: 50, 60
-#   1 or 2 frequencies, in Hz, to filter out of the load cell data. This is
-#   intended to reject power line noise. This option requires the SciPy
-#   library.  Default: None
+#   1或2个频率（Hz），用于从称重传感器数据中滤除。旨在消除电源线噪声。此选项需要SciPy库。默认值：None
 #notch_filter_quality: 2.0
-#   Controls how narrow the range of frequencies are that the notch filter
-#   removes. Larger numbers produce a narrower filter. Minimum value is 0.5 and
-#   maximum is 3.0. Default: 2.0
+#   控制陷波滤波器去除的频率范围有多窄。较大的数值产生更窄的滤波器。最小值为0.5，最大值为3.0。默认值：2.0
 #tare_time:
-#   The rime in seconds used for taring the load_cell before each probe. The
-#   default value is: 4 / 60 = 0.066. This collects samples from 4 cycles of
-#   60Hz mains power to cancel power line noise.
+#   每次探测前用于对称重传感器去皮的时间（秒）。默认值为：4 / 60 = 0.066。这会采集60Hz市电4个周期的样本，以抵消电源线噪声。
 #z_offset:
 #speed:
 #samples:
@@ -4157,7 +4028,7 @@ sensor_type:
 #samples_tolerance_retries:
 #activate_gcode:
 #deactivate_gcode:
-#   See the "[probe]" section for a description of the above parameters.
+#   有关上述参数的说明，请参见“[probe]”部分。
 ```
 
 ## 控制板特定硬件支持
@@ -4171,16 +4042,13 @@ sensor_type:
 ```
 [sx1509 my_sx1509]
 i2c_address:
-#   I2C address used by this expander. Depending on the hardware
-#   jumpers this is one out of the following addresses: 62 63 112
-#   113. This parameter must be provided.
+#   此扩展器使用的I2C地址。根据硬件跳线，此地址为以下地址之一：62、63、112、113。必须提供此参数。
 #i2c_mcu:
 #i2c_bus:
 #i2c_software_scl_pin:
 #i2c_software_sda_pin:
 #i2c_speed:
-#   See the "common I2C settings" section for a description of the
-#   above parameters.
+#   有关上述参数的说明，请参见“通用I2C设置”部分。
 ```
 
 ### [samd_sercom]
@@ -4226,40 +4094,30 @@ vssa_pin:
 
 ### [ads1x1x]
 
-ADS1013, ADS1014, ADS1015, ADS1113, ADS1114 and ADS1115 are I2C based Analog to Digital Converters that can be used for temperature sensors. They provide 4 analog input pins either as single line or as differential input.
+ADS1013、ADS1014、ADS1015、ADS1113、ADS1114和ADS1115是基于I2C的模数转换器，可用于温度传感器。它们提供4个模拟输入引脚，可作为单端输入或差分输入使用。
 
-Note: Use caution if using this sensor to control heaters. The heater min_temp and max_temp are only verified in the host and only if the host is running and operating normally. (ADC inputs directly connected to the micro-controller verify min_temp and max_temp within the micro-controller and do not require a working connection to the host.)
+注意：如果使用此传感器控制加热器，请谨慎操作。加热器的min_temp和max_temp仅在主机运行且正常工作时在主机端进行验证。（直接连接到微控制器的ADC输入会在微控制器内部验证min_temp和max_temp，且不需要与主机保持正常连接。）
 
 ```
 [ads1x1x my_ads1x1x]
 chip: ADS1115
 #pga: 4.096V
-#   Default value is 4.096V. The maximum voltage range used for the input. This
-#   scales all values read from the ADC. Options are: 6.144V, 4.096V, 2.048V,
-#   1.024V, 0.512V, 0.256V
+#   默认值为4.096V。输入使用的最大电压范围。这会缩放从ADC读取的所有值。选项有：6.144V、4.096V、2.048V、1.024V、0.512V、0.256V
 #adc_voltage: 3.3
-#   The suppy voltage for the device. This allows additional software scaling
-#   for all values read from the ADC.
+#   该设备的供电电压。这允许对从ADC读取的所有值进行额外的软件缩放。
 i2c_mcu: host
 i2c_bus: i2c.1
 #address_pin: GND
-#   Default value is GND.  There can be up to four addressed devices depending
-#   upon wiring of the device. Check the datasheet for details. The i2c_address
-#   can be specified directly instead of using the address_pin.
+#   默认值为GND。根据设备的接线方式，最多可以有四个可寻址的设备。详情请查阅数据手册。也可以直接指定i2c_address，而不使用address_pin。
 ```
 
-The chip provides pins that can be used on other sensors.
+该芯片提供的引脚可用于其他传感器。
 
 ```
 sensor_type: ...
-#   Can be any thermistor or adc_temperature.
+#   可以是任何热敏电阻或adc_temperature。
 sensor_pin: my_ads1x1x:AIN0
-#   A combination of the name of the ads1x1x chip and the pin. Possible
-#   pin values are AIN0, AIN1, AIN2 and AIN3 for single ended lines and
-#   DIFF01, DIFF03, DIFF13 and DIFF23 for differential between their
-#   correspoding lines. For example
-#   DIFF03 measures the differential between line 0 and 3. Only specific
-#   combinations for the differentials are allowed.
+#   ADS1x1x芯片名称和引脚的组合。可能的引脚值有：单端输入的AIN0、AIN1、AIN2和AIN3，以及差分输入的DIFF01、DIFF03、DIFF13和DIFF23，用于测量相应线路之间的差值。例如，DIFF03测量0号线和3号线之间的差值。差分输入仅允许特定组合。
 ```
 
 ### [replicape]
@@ -4332,7 +4190,7 @@ Palette 2 多材料支持 - 提供更紧密的集成，支持处于连接模式�
 
 不要和 Octoprint 的 Palette 2插件一起使用这个模块，因为它们会发生冲突，造成初始化和打印失败。
 
-If you use Octoprint and stream gcode over the serial port instead of printing from virtual_sd, then remove **M1** and **M0** from *Pausing commands* in *Settings > Serial Connection > Firmware & protocol* will prevent the need to start print on the Palette 2 and unpausing in Octoprint for your print to begin.
+如果你使用OctoPrint并通过串口流式传输G代码，而不是从虚拟SD卡（virtual_sd）打印，那么在 *设置（Settings）> 串行连接（Serial Connection）> 固件与协议（Firmware & protocol）* 中的“暂停命令（Pausing commands）”里移除 **M1** 和 **M0**，就可以避免在Palette 2上开始打印并在OctoPrint中取消暂停，从而使打印顺利开始。
 
 ```
 [palette2]
@@ -4356,32 +4214,25 @@ serial:
 
 ### [angle]
 
-Magnetic hall angle sensor support for reading stepper motor angle shaft measurements using a1333, as5047d, mt6816, mt6826s, or tle5012b SPI chips. The measurements are available via the [API Server](API_Server.md) and [motion analysis tool](Debugging.md#motion-analysis-and-data-logging). See the [G-Code reference](G-Codes.md#angle) for available commands.
+支持使用a1333、as5047d、mt6816、mt6826s或tle5012b SPI芯片的磁性霍尔角度传感器，用于读取步进电机轴的角度测量值。测量数据可通过[API服务器](API_Server.md)和[运动分析工具](Debugging.md#motion-analysis-and-data-logging)获取。有关可用命令，请参见[G代码参考](G-Codes.md#angle)。
 
 ```
 [angle my_angle_sensor]
 sensor_type:
-#   The type of the magnetic hall sensor chip. Available choices are
-#   "a1333", "as5047d", "mt6816", "mt6826s", and "tle5012b". This parameter must be
-#   specified.
+#   磁性霍尔传感器芯片的类型。可用选项为"a1333"、"as5047d"、"mt6816"、"mt6826s"和"tle5012b"。必须指定此参数。
 #sample_period: 0.000400
-#   The query period (in seconds) to use during measurements. The
-#   default is 0.000400 (which is 2500 samples per second).
+#   测量期间使用的查询周期（以秒为单位）。默认值为0.000400（即每秒2500个样本）。
 #stepper:
-#   The name of the stepper that the angle sensor is attached to (eg,
-#   "stepper_x"). Setting this value enables an angle calibration
-#   tool. To use this feature, the Python "numpy" package must be
-#   installed. The default is to not enable angle calibration for the
-#   angle sensor.
+#   角度传感器所连接的步进电机名称（例如"stepper_x"）。设置此值可启用角度校准工具。
+#   要使用此功能，必须安装Python的"numpy"包。默认情况下，不为角度传感器启用角度校准。
 cs_pin:
-#   The SPI enable pin for the sensor. This parameter must be provided.
+#   传感器的SPI使能引脚。必须提供此参数。
 #spi_speed:
 #spi_bus:
 #spi_software_sclk_pin:
 #spi_software_mosi_pin:
 #spi_software_miso_pin:
-#   See the "common SPI settings" section for a description of the
-#   above parameters.
+#   有关上述参数的说明，请参见“通用SPI设置”部分。
 ```
 
 ## 常见的总线参数
@@ -4411,29 +4262,18 @@ cs_pin:
 
 请注意，Klipper当前的微控制器对I2C的支持通常不能容忍线路噪声。I2C线路上的意外错误可能会导致Klipper产生运行时错误。Klipper 对错误恢复的支持在每种微控制器类型之间有所不同。通常建议只使用与微控制器位于同一印刷电路板上的I2C设备。
 
-Most Klipper micro-controller implementations only support an `i2c_speed` of 100000 (*standard mode*, 100kbit/s). The Klipper "Linux" micro-controller supports a 400000 speed (*fast mode*, 400kbit/s), but it must be [set in the operating system](RPi_microcontroller.md#optional-enabling-i2c) and the `i2c_speed` parameter is otherwise ignored. The Klipper "RP2040" micro-controller and ATmega AVR family and some STM32 (F0, G0, G4, L4, F7, H7) support a rate of 400000 via the `i2c_speed` parameter. All other Klipper micro-controllers use a 100000 rate and ignore the `i2c_speed` parameter.
+大多数Klipper微控制器实现仅支持100000的`i2c_speed`（*标准模式*，100kbit/s）。Klipper的“Linux”微控制器支持400000的速度（*快速模式*，400kbit/s），但必须在[操作系统中设置](RPi_microcontroller.md#optional-enabling-i2c)，否则`i2c_speed`参数将被忽略。Klipper的“RP2040”微控制器以及ATmega AVR系列和部分STM32（F0、G0、G4、L4、F7、H7）可通过`i2c_speed`参数支持400000的速率。所有其他Klipper微控制器均使用100000的速率，并忽略`i2c_speed`参数。
 
 ```
 #i2c_address:
-#   The i2c address of the device. This must specified as a decimal
-#   number (not in hex). The default depends on the type of device.
+#   设备的I2C地址。必须以十进制数字形式指定（而非十六进制）。默认值取决于设备类型。
 #i2c_mcu:
-#   The name of the micro-controller that the chip is connected to.
-#   The default is "mcu".
+#   芯片所连接的微控制器的名称。默认值为"mcu"。
 #i2c_bus:
-#   If the micro-controller supports multiple I2C busses then one may
-#   specify the micro-controller bus name here. The default depends on
-#   the type of micro-controller.
+#   如果微控制器支持多个I2C总线，则可在此处指定微控制器总线名称。默认值取决于微控制器类型。
 #i2c_software_scl_pin:
 #i2c_software_sda_pin:
-#   Specify these parameters to use micro-controller software based
-#   I2C "bit-banging" support. The two parameters should the two pins
-#   on the micro-controller to use for the scl and sda wires. The
-#   default is to use hardware based I2C support as specified by the
-#   i2c_bus parameter.
+#   指定这些参数以使用微控制器软件实现的I2C“位操作”（bit-banging）支持。这两个参数应为微控制器上用于scl和sda线的两个引脚。默认使用由i2c_bus参数指定的硬件I2C支持。
 #i2c_speed:
-#   The I2C speed (in Hz) to use when communicating with the device.
-#   The Klipper implementation on most micro-controllers is hard-coded
-#   to 100000 and changing this value has no effect. The default is
-#   100000. Linux, RP2040 and ATmega support 400000.
+#   与设备通信时使用的I2C速度（单位为Hz）。大多数微控制器上的Klipper实现硬编码为100000，更改此值无效。默认值为100000。Linux、RP2040和ATmega支持400000。
 ```
